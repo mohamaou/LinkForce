@@ -1,9 +1,9 @@
 using System;
 using DG.Tweening;
 using MoreMountains.Feedbacks;
+using Players;
 using UnityEngine;
 using UnityEngine.UI;
-using Zombies;
 
 namespace UI
 {

@@ -1,9 +1,8 @@
-using System;
 using DG.Tweening;
 using MoreMountains.Feedbacks;
+using Players;
 using UnityEditor;
 using UnityEngine;
-using Zombies;
 
 namespace Troops
 {

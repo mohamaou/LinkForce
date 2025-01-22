@@ -1,8 +1,8 @@
 using Core;
 using DG.Tweening;
+using Players;
 using UnityEditor;
 using UnityEngine;
-using Zombies;
 
 namespace Level
 {

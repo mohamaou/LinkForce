@@ -1,7 +1,6 @@
 using DG.Tweening;
+using Players;
 using UnityEngine;
-using Zombies;
-
 namespace Troops
 {
     public class Arrow : Weapon

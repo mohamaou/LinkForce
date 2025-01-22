@@ -1,10 +1,8 @@
 using System;
 using Core;
 using DG.Tweening;
-using UI;
 using UnityEngine;
 using UnityEngine.UI;
-using Zombies;
 
 
 namespace Players

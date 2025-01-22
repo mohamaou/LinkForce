@@ -1,7 +1,6 @@
 using MoreMountains.Feedbacks;
 using Players;
 using UnityEngine;
-using Zombies;
 
 namespace Troops
 {

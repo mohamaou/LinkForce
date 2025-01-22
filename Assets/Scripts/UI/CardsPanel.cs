@@ -1,7 +1,5 @@
 using Cards;
-using Players;
 using UnityEngine;
-using Zombies;
 
 namespace UI
 {

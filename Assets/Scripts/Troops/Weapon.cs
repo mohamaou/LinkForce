@@ -1,7 +1,6 @@
-using System;
 using Players;
 using UnityEngine;
-using Zombies;
+
 
 namespace Troops
 {

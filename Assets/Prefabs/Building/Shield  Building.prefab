@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 92918623927543366}
   - component: {fileID: 2832940480316813797}
   m_Layer: 9
-  m_Name: Humans Building
+  m_Name: Shield  Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,8 +104,8 @@ MonoBehaviour:
   landFeedback: {fileID: 3154667304981306446}
   player1: {fileID: 2100000, guid: a83218fe7992d2340a8d70306f1c333b, type: 2}
   player2: {fileID: 2100000, guid: 37429d5e8cc7d034e963ba1383049def, type: 2}
-  buildingType: 0
-  id: Human
+  buildingType: 2
+  id: Shield
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
 --- !u!1001 &3211651164878615691
 PrefabInstance:

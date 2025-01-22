@@ -2,10 +2,8 @@ using System.Collections;
 using AI;
 using DG.Tweening;
 using Players;
-using UI;
 using UnityEngine;
-using UnityEngine.UI;
-using Zombies;
+
 
 namespace Core
 {

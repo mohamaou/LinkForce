@@ -1,17 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using AI;
-using Cards;
 using Core;
-using DG.Tweening;
-using Level;
 using MoreMountains.Feedbacks;
 using Players;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using Zombies;
 
 namespace Troops
 {

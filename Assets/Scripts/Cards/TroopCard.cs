@@ -1,10 +1,7 @@
 using System;
-using AI;
-using Core;
-using Players;
 using Troops;
 using UnityEngine;
-using Zombies;
+
 
 namespace Cards
 {

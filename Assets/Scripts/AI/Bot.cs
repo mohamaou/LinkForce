@@ -1,16 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Cards;
 using Core;
-using DG.Tweening;
-using Level;
-using Players;
 using Troops;
 using UI;
 using UnityEngine;
-using Zombies;
 using Random = UnityEngine.Random;
 
 namespace AI
