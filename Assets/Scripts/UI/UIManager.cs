@@ -1,0 +1,194 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Core;
+using DG.Tweening;
+using MoreMountains.Feedbacks;
+using Start_UI;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
+
+namespace UI
+{
+    [Serializable]
+    public class StartUI
+    {
+        [SerializeField] private TextMeshProUGUI player1Name, player2Name;
+        [SerializeField] private TextMeshProUGUI player1Trophies, player2Trophies;
+        [SerializeField] private Image player1Image, player2Image;
+        [SerializeField] private Transform vsIcon, player1Holder, player2Holder;
+        [SerializeField] private Image background;
+        [SerializeField] private CardUI[] player1Cards, player2Cards;
+
+
+        public void Start(Action onFinished)
+        {
+            if (PlayersProfiles.Instance != null)
+            {
+                player1Name.text = PlayersProfiles.Instance.Player1Name;
+                player2Name.text = PlayersProfiles.Instance.Player2Name;
+                player1Trophies.text = PlayersProfiles.Instance.Player1Trophies.ToString();
+                player2Trophies.text =
+                    $"{Mathf.Clamp(PlayersProfiles.Instance.Player1Trophies + Random.Range(-10, 10), 0, Mathf.Infinity)}";
+                player1Image.sprite = PlayersProfiles.Instance.Player1Sprite;
+                player2Image.sprite = PlayersProfiles.Instance.Player2Sprite;
+            }
+            
+            var sequence = DOTween.Sequence();
+
+            var player1StartPos = player1Holder.position;
+            player1Holder.position += Vector3.left * Screen.width / 1.2f;
+            sequence.Append(player1Holder.DOMove(player1StartPos, 0.4f).SetEase(Ease.OutBack));
+
+            var player2StartPos = player2Holder.position;
+            player2Holder.position += Vector3.right * Screen.width / 1.2f;
+            sequence.Join(player2Holder.DOMove(player2StartPos, 0.4f).SetEase(Ease.OutBack));
+
+            var vsIconStartScale = vsIcon.localScale;
+            vsIcon.localScale = Vector3.zero;
+            sequence.Join(vsIcon.DOScale(Vector3.one, 0.4f).SetEase(Ease.OutBack));
+
+            sequence.Join(vsIcon.DORotate(new Vector3(0, 0, 360), 0.4f, RotateMode.FastBeyond360).SetEase(Ease.Linear));
+
+            sequence.AppendInterval(1f);
+
+            sequence.Append(player1Holder.DOMove(player1StartPos + Vector3.left * Screen.width, 0.4f).SetEase(Ease.InBack));
+            sequence.Join(player2Holder.DOMove(player2StartPos + Vector3.right * Screen.width, 0.4f).SetEase(Ease.InBack));
+            sequence.Join(vsIcon.DOScale(Vector3.zero, 0.4f).SetEase(Ease.InBack));
+            sequence.Join(background.DOColor(Color.clear, 0.4f));
+            sequence.OnComplete(() => onFinished?.Invoke());
+
+        }
+    }
+
+    [Serializable]
+    public class PlayersHealth
+    {
+        [SerializeField] private List<Image> player1Health, player2Health;
+        [SerializeField] private Color deathColor;
+
+        public void PlayerTakesDamage()
+        {
+            if (player1Health.Count == 0) return;
+            var hearth = player1Health[0];
+            player1Health.RemoveAt(0);
+            var animationSpeed = 0.2f;
+            hearth.DOColor(deathColor, animationSpeed);
+            hearth.transform.DOScale(Vector3.one * 2, animationSpeed).OnComplete(() =>
+            {
+                var newColor = deathColor;
+                newColor.a = 1;
+                hearth.color = newColor;
+            }).SetLoops(2, LoopType.Yoyo);
+        }
+
+        public void EnemyTakesDamage()
+        {
+            if (player2Health.Count == 0) return;
+            var hearth = player2Health[0];
+            player2Health.RemoveAt(0);
+            var animationSpeed = 0.2f;
+            hearth.DOColor(deathColor, animationSpeed);
+            hearth.transform.DOScale(Vector3.one * 2, animationSpeed).OnComplete(() =>
+            {
+                var newColor = deathColor;
+                newColor.a = 1;
+                hearth.color = newColor;
+            }).SetLoops(2, LoopType.Yoyo);
+        }
+    }
+
+    [Serializable]
+    public class PlayPanel
+    {
+        [SerializeField] private TextMeshProUGUI player1Name, player2Name;
+        [SerializeField] private Image player1Image, player2Image;
+        [SerializeField] private TextMeshProUGUI timerText, costToSummon, availableGold;
+        [SerializeField] private Button summonButton, battleButton;
+        [SerializeField] private TextMeshProUGUI spaceErrorText;
+
+        public void Start()
+        {
+            spaceErrorText.gameObject.SetActive(false);
+            if (PlayersProfiles.Instance == null) return;
+            player1Name.text = PlayersProfiles.Instance.Player1Name;
+            player2Name.text = PlayersProfiles.Instance.Player2Name;
+            player1Image.sprite = PlayersProfiles.Instance.Player1Sprite;
+            player2Image.sprite = PlayersProfiles.Instance.Player2Sprite;
+        }
+        
+        public TextMeshProUGUI GetTimerText() => timerText;
+        public Button GetSummonButton() => summonButton;
+        public Button GetBattleButton() => battleButton;
+
+        public void ShowSpaceErrorText()
+        {
+            var errorTextCopy = Object.Instantiate(spaceErrorText, spaceErrorText.transform.parent);
+            errorTextCopy.gameObject.SetActive(true);
+
+            var originalPosition = errorTextCopy.rectTransform.anchoredPosition;
+            var targetPosition = originalPosition + new Vector2(0, 50);
+
+            var sequence = DOTween.Sequence();
+            sequence.Append(errorTextCopy.rectTransform.DOAnchorPos(targetPosition, 1f).SetEase(Ease.OutQuad));
+            sequence.Join(errorTextCopy.DOFade(0, 1f));
+            sequence.OnComplete(() => Object.Destroy(errorTextCopy.gameObject));
+        }
+    }
+
+    public class UIManager : MonoBehaviour
+    {
+        public static UIManager Instance { get; private set; }
+        public StartUI startUI;
+        public PlayersHealth playersHealth;
+        public PlayPanel playPanel;
+        [Space (40)]
+        [SerializeField] private GameObject startPanel;
+        [SerializeField] private GameObject playPanelObject;
+
+        [Header("Dice")]
+        [SerializeField] private Transform attackIconTarget;
+        [SerializeField] private Transform movementIconTarget;
+        [SerializeField] private Image[] abilityIcon;
+        [SerializeField] private Sprite movementIcon, attackIcon;
+        [SerializeField] private Transform diceCollection;
+        [SerializeField] private TextMeshProUGUI diceCollectionCountText;
+
+        [Header("Feedbacks")]
+        [SerializeField] private MMFeedbacks countdownFeedback;
+        [SerializeField] private MMFeedbacks gameStartFeedback, playerLoseFeedback, playerWinFeedback;
+
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        private IEnumerator Start()
+        {
+            playPanelObject.SetActive(false);
+            startPanel.SetActive(true);
+            var isStartUIComplete = false;
+            GameManager.State = GameState.Start;
+            startUI.Start(() => isStartUIComplete = true);
+            yield return new WaitUntil(() => isStartUIComplete || !GameManager.Instance.showPlayerPorofile);
+            
+            playPanel.Start();
+            startPanel.SetActive(false);
+            playPanelObject.SetActive(true);
+            GameManager.State = GameState.Play;
+        }
+        
+        
+        
+        public void GameEnd(bool win)
+        {
+            playPanelObject.SetActive(false);
+            if (win) playerWinFeedback?.PlayFeedbacks();
+            else playerLoseFeedback?.PlayFeedbacks();
+        }
+    }
+}

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa11ec82e9746928e211e7f096812ca, type: 3}
+  m_Name: Settings
+  m_EditorClassIdentifier: 
+  gameAnalyticsIosGameKey: 
+  gameAnalyticsIosSecretKey: 
+  gameAnalyticsAndroidGameKey: 2b241ee9f958a3ecfb213d3f02a3172a
+  gameAnalyticsAndroidSecretKey: fcd60f32697ae00c25d39f2cb2ad86b23b16ea29
+  facebookAppId: 599027156052210
+  facebookClientToken: b7ff669fdf29aac764cbf2a16710150d
+  adjustIOSToken: 
+  adjustAndroidToken: kxhq972jivpc
+  EditorIdfa: 4a1a923b-cb84-457a-8dfd-fc97d4da19cf
+  UseRemoteConfig: 0
+  UseVoodooAnalytics: 1
+  companyName: Wallo
+  privacyPolicyURL: https://docs.google.com/document/d/e/2PACX-1vT8DOul-ENvubfQ3Uqxhicqmf3ugfIfNmAsx_FdTgyGcyZat12zluAsMYxxGgbpJzryQpN9dfkrqGYW/pub
+  developerContactEmail: ifnisimo22@gmail.com

@@ -1,0 +1,174 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1d7f04e6685c644872f39c8eba5c5f, type: 3}
+  m_Name: Level 4
+  m_EditorClassIdentifier: 
+  waves:
+  - zombiesInfo:
+    - zombieTypeString: NormalZombie
+      zombieType: 0
+      zombiesCount: 4
+      spawnTime: 5
+      timeToStart: 0
+  - zombiesInfo:
+    - zombieTypeString: FastZombie
+      zombieType: 1
+      zombiesCount: 2
+      spawnTime: 4.5
+      timeToStart: 0
+    - zombieTypeString: HelmetZombie
+      zombieType: 4
+      zombiesCount: 2
+      spawnTime: 5.4
+      timeToStart: 6
+  - zombiesInfo:
+    - zombieTypeString: BarrelZombie
+      zombieType: 5
+      zombiesCount: 1
+      spawnTime: 7.2
+      timeToStart: 0
+    - zombieTypeString: NormalZombie
+      zombieType: 0
+      zombiesCount: 2
+      spawnTime: 5
+      timeToStart: 8
+  - zombiesInfo:
+    - zombieTypeString: ShieldZombie
+      zombieType: 3
+      zombiesCount: 2
+      spawnTime: 6.3
+      timeToStart: 0
+    - zombieTypeString: FastZombie
+      zombieType: 1
+      zombiesCount: 2
+      spawnTime: 4.5
+      timeToStart: 9
+  - zombiesInfo:
+    - zombieTypeString: ToughZombie
+      zombieType: 2
+      zombiesCount: 2
+      spawnTime: 6.3
+      timeToStart: 0
+    - zombieTypeString: HelmetZombie
+      zombieType: 4
+      zombiesCount: 2
+      spawnTime: 5.4
+      timeToStart: 10
+  - zombiesInfo:
+    - zombieTypeString: ZombieBoss1
+      zombieType: 6
+      zombiesCount: 1
+      spawnTime: 8.1
+      timeToStart: 0
+    - zombieTypeString: FastZombie
+      zombieType: 1
+      zombiesCount: 3
+      spawnTime: 4.5
+      timeToStart: 12
+  - zombiesInfo:
+    - zombieTypeString: BarrelZombie
+      zombieType: 5
+      zombiesCount: 2
+      spawnTime: 7.2
+      timeToStart: 0
+    - zombieTypeString: ShieldZombie
+      zombieType: 3
+      zombiesCount: 2
+      spawnTime: 6.3
+      timeToStart: 10
+  - zombiesInfo:
+    - zombieTypeString: NormalZombie
+      zombieType: 0
+      zombiesCount: 5
+      spawnTime: 5
+      timeToStart: 0
+    - zombieTypeString: ToughZombie
+      zombieType: 2
+      zombiesCount: 2
+      spawnTime: 6.3
+      timeToStart: 9
+    - zombieTypeString: FastZombie
+      zombieType: 1
+      zombiesCount: 3
+      spawnTime: 4.5
+      timeToStart: 15
+  - zombiesInfo:
+    - zombieTypeString: ZombieBoss2
+      zombieType: 7
+      zombiesCount: 1
+      spawnTime: 9
+      timeToStart: 0
+    - zombieTypeString: HelmetZombie
+      zombieType: 4
+      zombiesCount: 3
+      spawnTime: 5.4
+      timeToStart: 12
+  - zombiesInfo:
+    - zombieTypeString: BarrelZombie
+      zombieType: 5
+      zombiesCount: 3
+      spawnTime: 7.2
+      timeToStart: 0
+    - zombieTypeString: ShieldZombie
+      zombieType: 3
+      zombiesCount: 2
+      spawnTime: 6.3
+      timeToStart: 10
+    - zombieTypeString: FastZombie
+      zombieType: 1
+      zombiesCount: 3
+      spawnTime: 4.5
+      timeToStart: 16
+  - zombiesInfo:
+    - zombieTypeString: ZombieBoss3
+      zombieType: 8
+      zombiesCount: 1
+      spawnTime: 9
+      timeToStart: 0
+    - zombieTypeString: NormalZombie
+      zombieType: 0
+      zombiesCount: 4
+      spawnTime: 5
+      timeToStart: 12
+  - zombiesInfo:
+    - zombieTypeString: ToughZombie
+      zombieType: 2
+      zombiesCount: 3
+      spawnTime: 6.3
+      timeToStart: 0
+    - zombieTypeString: HelmetZombie
+      zombieType: 4
+      zombiesCount: 3
+      spawnTime: 5.4
+      timeToStart: 9
+    - zombieTypeString: FastZombie
+      zombieType: 1
+      zombiesCount: 4
+      spawnTime: 4.5
+      timeToStart: 15
+  - zombiesInfo:
+    - zombieTypeString: ZombieBoss4
+      zombieType: 9
+      zombiesCount: 1
+      spawnTime: 9.9
+      timeToStart: 0
+    - zombieTypeString: ShieldZombie
+      zombieType: 3
+      zombiesCount: 3
+      spawnTime: 6.3
+      timeToStart: 12
+    - zombieTypeString: BarrelZombie
+      zombieType: 5
+      zombiesCount: 2
+      spawnTime: 7.2
+      timeToStart: 18
+  jsonFile: {fileID: 4900000, guid: 07d4d3cf253256543b1e16c8522a9d1f, type: 3}

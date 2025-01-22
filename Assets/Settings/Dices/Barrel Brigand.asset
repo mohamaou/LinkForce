@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f51e36877284476396b9b02ea7afb47, type: 3}
+  m_Name: Barrel Brigand
+  m_EditorClassIdentifier: 
+  name: Barrel Brigand
+  cardSprite: {fileID: 21300000, guid: dcc4dc85d9d8e8448875b399969bdd18, type: 3}
+  troop: {fileID: 818590543884623240, guid: 8d5bf1212780fd64e81b0c15020a1011, type: 3}
+  defaultTroop: 1
+  troopLevel: 3
+  damage: 9
+  health: 8

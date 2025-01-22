@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da605f428482514b983a251337162a5, type: 3}
+  m_Name: SniperTower
+  m_EditorClassIdentifier: 
+  level1:
+    cost: 800
+    damage: 15
+    attackSpeed: 0.5
+    range: 15
+  level2:
+    cost: 1000
+    damage: 20
+    attackSpeed: 0.4
+    range: 15
+  level3:
+    cost: 1200
+    damage: 25
+    attackSpeed: 0.33333
+    range: 15
+  level4:
+    cost: 1500
+    damage: 30
+    attackSpeed: 0.2857143
+    range: 15
+  level5:
+    cost: 500
+    damage: 40
+    attackSpeed: 0.25
+    range: 15

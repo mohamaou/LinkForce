@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f51e36877284476396b9b02ea7afb47, type: 3}
+  m_Name: Cursed Pharaoh
+  m_EditorClassIdentifier: 
+  name: Cursed Pharaoh
+  cardSprite: {fileID: 21300000, guid: 8e150335e9ee1ba41b9e238c1e3ab3a4, type: 3}
+  troop: {fileID: 3699975842956863478, guid: 7992412ca7e080944a04b093672b0124, type: 3}
+  defaultTroop: 1
+  troopLevel: 3
+  damage: 14
+  health: 5
