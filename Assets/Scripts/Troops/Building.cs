@@ -30,10 +30,15 @@ namespace Troops
         public string GetId() => id;
         public bool IsActive() => _active;
         #endregion
-       
         
-        
-
+        #region Links
+        private void LinksUpdated()
+        {
+            foreach (var l in _myLinks)
+            {
+                
+            }
+        }
         public void SetBuildingLink(Link myLink)
         {
             _myLinks.Add(myLink);
@@ -44,12 +49,12 @@ namespace Troops
             }
             SetActive(active);
         }
-
         public void RemoveLink(Link myLink)
         {
             _myLinks.Remove(myLink);
         }
-
+        #endregion
+        
         #region Visuals
         public void Highlite()
         {
@@ -75,6 +80,7 @@ namespace Troops
             }
         }
         #endregion
-       
+        
+        
     }
 }

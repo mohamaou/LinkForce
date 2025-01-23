@@ -112,5 +112,10 @@ namespace Troops
             if (_building2.IsActive()) return true;
             return false;
         }
+
+        public Building GetLinkedBuilding(Building building)
+        {
+            return _building1 == building ? _building2 : _building1;
+        }
     }
 }
