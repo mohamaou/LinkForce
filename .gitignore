@@ -16,7 +16,6 @@ sysinfo.txt
 ###
 # VS/MD solution and project files
 ###
-Logs/
 [Ee]xportedObj/
 *.booproj
 *.csproj
@@ -40,4 +39,3 @@ Logs/
 Icon?
 ehthumbs.db
 Thumbs.db
-.idea

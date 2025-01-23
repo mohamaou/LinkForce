@@ -41,6 +41,7 @@ namespace Troops
         #region Public Variables
         public PlayerTeam GetTroopTeam() => _team;
         public Rigidbody GetTroopRigidbody() => GetComponent<Rigidbody>();
+        protected Renderer[] GetRenderers() => renderers;
         #endregion
         
         public void Set(PlayerTeam team)
@@ -58,6 +59,12 @@ namespace Troops
             tag = team == PlayerTeam.Player1 ? "Player 1" : "Player 2";
             gfx.DOScale(_localScale, 0.2f).OnComplete(() => landFeedback?.PlayFeedbacks()).SetEase(Ease.OutBack);
             gfx.DOLocalMove(Vector3.zero, 0.2f);
+            SetBuilding();
+        }
+
+        protected virtual void SetBuilding()
+        {
+            
         }
     }
     

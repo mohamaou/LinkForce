@@ -1,3 +1,4 @@
+using System;
 using Players;
 using UnityEngine;
 
@@ -11,10 +12,12 @@ namespace Troops
         [SerializeField] private float uvScale = 1f;
         [SerializeField] private Color player1Color, player2Color;
         private Building _building1, _building2;
+        private int random;
 
-        
-        public void SetLink(PlayerTeam team) =>
+        public void SetLink(PlayerTeam team)
+        {
             renderer.material.SetColor("_Color", team == PlayerTeam.Player1 ? player1Color : player2Color);
+        }
         public void ShowLink(Vector3 startPos, Vector3 endPos)
         {
             startPos += Vector3.up * 0.1f;
@@ -36,8 +39,8 @@ namespace Troops
 
             vertices[0] = localStartPos - right; // Bottom-left
             vertices[1] = localStartPos + right; // Bottom-right
-            vertices[2] = localEndPos - right;   // Top-left
-            vertices[3] = localEndPos + right;   // Top-right
+            vertices[2] = localEndPos - right; // Top-left
+            vertices[3] = localEndPos + right; // Top-right
 
             triangles[0] = 0;
             triangles[1] = 2;
@@ -58,11 +61,56 @@ namespace Troops
 
             meshFilter.mesh = mesh;
         }
-
         public void SetBuildings(Building building1, Building building2)
         {
-            _building1 = building1;
-            _building2 = building2;
+            if (ReverseLink(building1.GetBuildingType(), building2.GetBuildingType()))
+            {
+                _building1 = building2;
+                _building2 = building1;
+                ShowLink(building2.transform.position, building1.transform.position);
+            }
+            else
+            {
+                _building1 = building1;
+                _building2 = building2;
+            }
+        }
+        private bool ReverseLink(BuildingType building1, BuildingType building2)
+        {
+            if (building1 == BuildingType.Weapon && building2 == BuildingType.Troops) return true;
+            if (building1 == BuildingType.Buff && building2 == BuildingType.Weapon) return true;
+            return false;
+        }
+        public bool IsBeenCut(Vector3 cutPoint)
+        {
+            var point1 = _building1.transform.position;
+            var point2 = _building2.transform.position;
+
+            point1.y = 0;
+            point2.y = 0;
+            cutPoint.y = 0;
+
+            var lineDirection = (point2 - point1).normalized;
+            var toCutPoint = cutPoint - point1;
+
+            var projectionLength = Vector3.Dot(toCutPoint, lineDirection);
+            var closestPoint = point1 + projectionLength * lineDirection;
+
+            var distanceToLine = Vector3.Distance(cutPoint, closestPoint);
+            var withinSegment = projectionLength >= 0 && projectionLength <= Vector3.Distance(point1, point2);
+
+            return distanceToLine <= .5f && withinSegment;
+        }
+        public void Cut()
+        {
+            _building1.RemoveLink(this);
+            _building2.RemoveLink(this);
+        }
+        public bool LinkToActiveBuilding()
+        {
+            if (_building1.IsActive()) return true;
+            if (_building2.IsActive()) return true;
+            return false;
         }
     }
 }

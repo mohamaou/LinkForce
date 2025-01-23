@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Using pre-set license
 Built from '6000.0/staging' branch; Version is '6000.0.34f1 (5ab2d9ed9190) revision 5944025'; Using compiler version '193933523'; Build Type 'Release'
 OS: 'Windows 11  (10.0.22631) 64bit Professional' Language: 'en' Physical Memory: 16265 MB
@@ -229,3 +230,5 @@ Received Import Request.
 Start importing Assets/Scenes/Old Game Scene.unity using Guid(59b52498b20bc3b4898e8ad9b8d3d333) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '84fa1a16295a531223a0ad334a86f337') in 0.0007339 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
+=======
+>>>>>>> eda9682ff141bae69d62a4e757bc7eb1a11efb53
