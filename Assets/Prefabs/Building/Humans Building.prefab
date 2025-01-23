@@ -107,6 +107,7 @@ MonoBehaviour:
   buildingType: 0
   id: Human
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
+  linksCount: 1
 --- !u!1001 &3211651164878615691
 PrefabInstance:
   m_ObjectHideFlags: 0
