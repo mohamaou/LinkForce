@@ -12,10 +12,10 @@ EditorUserSettings:
       value: 5104025455565e0c5e5d5e2015200d44464f4b2e7f2c256679281b36e1b1676c
       flags: 0
     RecentlyUsedSceneGuid-2:
-      value: 56085653570150030f5c5c2013705d444e4e402f742922692f711960e6b3676b
+      value: 5a0051005705590d0959597416775e4115161e2b292b20357c781966b2e1646c
       flags: 0
     RecentlyUsedSceneGuid-3:
-      value: 5a0051005705590d0959597416775e4115161e2b292b20357c781966b2e1646c
+      value: 56085653570150030f5c5c2013705d444e4e402f742922692f711960e6b3676b
       flags: 0
     RecentlyUsedSceneGuid-4:
       value: 07010c5f07045d585b0a087244210e44414e1b7a78297163282d1e66b4b06761
@@ -28,6 +28,9 @@ EditorUserSettings:
       flags: 0
     UnityEditor.ShaderGraph.InspectorWindow:
       value: 18135939215a0a5004000b0e15254b524c1119263f2d6a722016393ce1eb3d36e5d339f9a5602b2e2c07a37e0901373ae01e0008f707250d171df81a53a5485d41895ac825e0100ec20313c0d91cddccd3d0c7efcca9bd80908fecb0f9cfddf1eff4e7a1b1eae482f0fcaee1e1928b86d888ed969b938797a7cf
+      flags: 0
+    lightmappingBakingProfile:
+      value: 51
       flags: 0
     vcSharedLogLevel:
       value: 0d5e400f0650
