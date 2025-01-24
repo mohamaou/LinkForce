@@ -34,10 +34,7 @@ namespace Troops
         #region Links
         private void LinksUpdated()
         {
-            foreach (var l in _myLinks)
-            {
-                
-            }
+            
         }
         public void SetBuildingLink(Link myLink)
         {
