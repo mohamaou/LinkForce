@@ -121,8 +121,8 @@ MonoBehaviour:
   - {fileID: 6413464701929226740}
   gfx: {fileID: 4304257189336155539}
   landFeedback: {fileID: 3154667304981306446}
-  player1: {fileID: 2100000, guid: 552506541cbd19e43bc94192fd2bb1f1, type: 2}
-  player2: {fileID: 2100000, guid: aec3bc38d369f7f4da5637570b8d229b, type: 2}
+  player1: {fileID: 2100000, guid: 74f3f57263a8f0e4fb55b9fd4e5ecc62, type: 2}
+  player2: {fileID: 2100000, guid: 3e64f58c704d24c4a807e38cae41391d, type: 2}
   buildingType: 1
   id: Sword
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}

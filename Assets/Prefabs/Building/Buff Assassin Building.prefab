@@ -104,9 +104,9 @@ MonoBehaviour:
   - {fileID: 7210982986726263703}
   gfx: {fileID: 1739037190814860442}
   landFeedback: {fileID: 3154667304981306446}
-  player1: {fileID: 2100000, guid: a83218fe7992d2340a8d70306f1c333b, type: 2}
-  player2: {fileID: 2100000, guid: 37429d5e8cc7d034e963ba1383049def, type: 2}
-  buildingType: 0
+  player1: {fileID: 2100000, guid: 552506541cbd19e43bc94192fd2bb1f1, type: 2}
+  player2: {fileID: 2100000, guid: aec3bc38d369f7f4da5637570b8d229b, type: 2}
+  buildingType: 2
   id: Human
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
   linksCount: 1
