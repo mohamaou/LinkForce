@@ -99,30 +99,12 @@ MonoBehaviour:
   collider: {fileID: 6942131277241466158}
   rigidbody: {fileID: 92918623927543366}
   renderers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  gfx: {fileID: 0}
+  - {fileID: 9082607649566634703}
+  - {fileID: 1223721584098796035}
+  gfx: {fileID: 7944573311679580576}
   landFeedback: {fileID: 3154667304981306446}
-  player1: {fileID: 2100000, guid: 552506541cbd19e43bc94192fd2bb1f1, type: 2}
-  player2: {fileID: 2100000, guid: aec3bc38d369f7f4da5637570b8d229b, type: 2}
+  player1: {fileID: 2100000, guid: f43295e432480ac47b5870c5660b01cc, type: 2}
+  player2: {fileID: 2100000, guid: b95c1f144c45e0b4393cb37fe8daefa3, type: 2}
   buildingType: 1
   id: Sword
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
@@ -273,8 +255,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 728402d75f113f341923adf38f150ed3, type: 3}
+--- !u!23 &1223721584098796035 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8733036463545338952, guid: 728402d75f113f341923adf38f150ed3, type: 3}
+  m_PrefabInstance: {fileID: 7623030838758256203}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7944573311679580576 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 728402d75f113f341923adf38f150ed3, type: 3}
+  m_PrefabInstance: {fileID: 7623030838758256203}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &9082607649566634703 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 728402d75f113f341923adf38f150ed3, type: 3}
   m_PrefabInstance: {fileID: 7623030838758256203}
   m_PrefabAsset: {fileID: 0}

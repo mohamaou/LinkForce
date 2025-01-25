@@ -99,11 +99,13 @@ MonoBehaviour:
   collider: {fileID: 6942131277241466158}
   rigidbody: {fileID: 92918623927543366}
   renderers:
-  - {fileID: 0}
-  gfx: {fileID: 0}
+  - {fileID: 3992633926002942108}
+  - {fileID: 379843421187427845}
+  - {fileID: 1308098530578092550}
+  gfx: {fileID: 4014600633271825883}
   landFeedback: {fileID: 3154667304981306446}
-  player1: {fileID: 2100000, guid: f43295e432480ac47b5870c5660b01cc, type: 2}
-  player2: {fileID: 2100000, guid: b95c1f144c45e0b4393cb37fe8daefa3, type: 2}
+  player1: {fileID: 2100000, guid: 6b5f5070dd8a4d6409f31deb9f2c437a, type: 2}
+  player2: {fileID: 2100000, guid: 7610ca34797f07d46a0e3a2383c948f0, type: 2}
   buildingType: 0
   id: Zombie
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
@@ -165,6 +167,21 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87f368ba20be53a4db0cc6de79505c57, type: 3}
+--- !u!23 &379843421187427845 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3853246093942955061, guid: 87f368ba20be53a4db0cc6de79505c57, type: 3}
+  m_PrefabInstance: {fileID: 3475656843727262256}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1308098530578092550 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6765726248110555082, guid: 87f368ba20be53a4db0cc6de79505c57, type: 3}
+  m_PrefabInstance: {fileID: 3475656843727262256}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3992633926002942108 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -8695135749285023060, guid: 87f368ba20be53a4db0cc6de79505c57, type: 3}
+  m_PrefabInstance: {fileID: 3475656843727262256}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4014600633271825883 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 87f368ba20be53a4db0cc6de79505c57, type: 3}

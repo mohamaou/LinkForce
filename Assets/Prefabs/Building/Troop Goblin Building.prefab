@@ -103,8 +103,8 @@ MonoBehaviour:
   - {fileID: 6125639738274463031}
   gfx: {fileID: 4184495403594681279}
   landFeedback: {fileID: 3154667304981306446}
-  player1: {fileID: 2100000, guid: f43295e432480ac47b5870c5660b01cc, type: 2}
-  player2: {fileID: 2100000, guid: b95c1f144c45e0b4393cb37fe8daefa3, type: 2}
+  player1: {fileID: 2100000, guid: 4c22de145f89b41f5ab9fb6845a37bd4, type: 2}
+  player2: {fileID: 2100000, guid: 4051aaece45de3941a24b52fc4dfce68, type: 2}
   buildingType: 0
   id: Goblin
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
