@@ -110,6 +110,10 @@ MonoBehaviour:
   - {fileID: 4687201204973711404}
   - {fileID: 6727363253987767152}
   - {fileID: 7837948525943112667}
+<<<<<<< HEAD
+=======
+  - {fileID: 0}
+>>>>>>> 60f190965b2ca0f369d657761f271f6cbcb64520
   - {fileID: 5011716565347196745}
   - {fileID: 4107552290606726746}
   - {fileID: 8406600260408100947}
@@ -127,7 +131,7 @@ MonoBehaviour:
   landFeedback: {fileID: 3154667304981306446}
   player1: {fileID: 2100000, guid: a83218fe7992d2340a8d70306f1c333b, type: 2}
   player2: {fileID: 2100000, guid: 37429d5e8cc7d034e963ba1383049def, type: 2}
-  buildingType: 0
+  buildingType: 2
   id: Human
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
   linksCount: 1
