@@ -139,27 +139,36 @@ namespace UI
         }
     }
 
+    [Serializable]
+    public class BuildingPanel
+    {
+        [SerializeField] private GameObject panel;
+        [SerializeField] private Image buildingIcon;
+        [SerializeField] private Sprite[] buildingIcons;
+        [SerializeField] private Transform availableLinksParent;
+        [SerializeField] private TextMeshProUGUI buildingLevelText;
+        [SerializeField] private Image buildingLevelIcon;
+        [SerializeField] private Sprite[] levelsSprites;
+
+        public void HidePanel() => panel.SetActive(false);
+    }
+
     public class UIManager : MonoBehaviour
     {
         public static UIManager Instance { get; private set; }
         public StartUI startUI;
         public PlayersHealth playersHealth;
         public PlayPanel playPanel;
+        public BuildingPanel buildingPanel;
+        
         [Space (40)]
         [SerializeField] private GameObject startPanel;
         [SerializeField] private GameObject playPanelObject;
-
-        [Header("Dice")]
-        [SerializeField] private Transform attackIconTarget;
-        [SerializeField] private Transform movementIconTarget;
-        [SerializeField] private Image[] abilityIcon;
-        [SerializeField] private Sprite movementIcon, attackIcon;
-        [SerializeField] private Transform diceCollection;
-        [SerializeField] private TextMeshProUGUI diceCollectionCountText;
+        
 
         [Header("Feedbacks")]
-        [SerializeField] private MMFeedbacks countdownFeedback;
-        [SerializeField] private MMFeedbacks gameStartFeedback, playerLoseFeedback, playerWinFeedback;
+        [SerializeField] private MMFeedbacks gameStartFeedback;
+        [SerializeField] private MMFeedbacks playerLoseFeedback, playerWinFeedback;
 
 
         private void Awake()
@@ -171,11 +180,14 @@ namespace UI
         {
             playPanelObject.SetActive(false);
             startPanel.SetActive(true);
+            buildingPanel.HidePanel();
+            
             var isStartUIComplete = false;
             GameManager.State = GameState.Start;
             startUI.Start(() => isStartUIComplete = true);
             yield return new WaitUntil(() => isStartUIComplete || !GameManager.Instance.showPlayerPorofile);
             
+            gameStartFeedback?.PlayFeedbacks();
             playPanel.Start();
             startPanel.SetActive(false);
             playPanelObject.SetActive(true);

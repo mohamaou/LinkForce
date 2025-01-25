@@ -110,7 +110,7 @@ MonoBehaviour:
   - {fileID: 4687201204973711404}
   - {fileID: 6727363253987767152}
   - {fileID: 7837948525943112667}
-  - {fileID: 384616639809450494}
+  - {fileID: 0}
   - {fileID: 5011716565347196745}
   - {fileID: 4107552290606726746}
   - {fileID: 8406600260408100947}
@@ -128,7 +128,7 @@ MonoBehaviour:
   landFeedback: {fileID: 3154667304981306446}
   player1: {fileID: 2100000, guid: a83218fe7992d2340a8d70306f1c333b, type: 2}
   player2: {fileID: 2100000, guid: 37429d5e8cc7d034e963ba1383049def, type: 2}
-  buildingType: 0
+  buildingType: 2
   id: Human
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
   linksCount: 1
@@ -205,11 +205,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: daf06c22b3871894a8ab824e78227e9e, type: 3}
---- !u!23 &384616639809450494 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -5467423410141472065, guid: daf06c22b3871894a8ab824e78227e9e, type: 3}
-  m_PrefabInstance: {fileID: 3551547539240463169}
-  m_PrefabAsset: {fileID: 0}
 --- !u!23 &447624609868511000 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -5224200180047782823, guid: daf06c22b3871894a8ab824e78227e9e, type: 3}

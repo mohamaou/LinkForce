@@ -99,11 +99,8 @@ MonoBehaviour:
   collider: {fileID: 6942131277241466158}
   rigidbody: {fileID: 92918623927543366}
   renderers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 3048157170484313076}
-  - {fileID: 0}
+  - {fileID: 5601027206451779633}
   - {fileID: 3961328660284164979}
   - {fileID: 1229222446099436887}
   - {fileID: 8351681698798290501}
@@ -134,8 +131,6 @@ MonoBehaviour:
   - {fileID: 471060508536138204}
   - {fileID: 9014294368541215100}
   - {fileID: 944859823032530011}
-  - {fileID: 0}
-  - {fileID: 0}
   gfx: {fileID: 4866171103365758524}
   landFeedback: {fileID: 3154667304981306446}
   player1: {fileID: 2100000, guid: 58cc851948d32f540975e78f2c024d35, type: 2}
@@ -331,6 +326,11 @@ Transform:
 --- !u!23 &5094969126931948122 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 195434645914123149, guid: 42f32cc12f6c6f3458cc99372e2169f9, type: 3}
+  m_PrefabInstance: {fileID: 4900661499982223831}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5601027206451779633 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 700447433456665062, guid: 42f32cc12f6c6f3458cc99372e2169f9, type: 3}
   m_PrefabInstance: {fileID: 4900661499982223831}
   m_PrefabAsset: {fileID: 0}
 --- !u!23 &6214835494780457458 stripped
