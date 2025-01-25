@@ -110,7 +110,6 @@ MonoBehaviour:
   - {fileID: 4687201204973711404}
   - {fileID: 6727363253987767152}
   - {fileID: 7837948525943112667}
-  - {fileID: 384616639809450494}
   - {fileID: 5011716565347196745}
   - {fileID: 4107552290606726746}
   - {fileID: 8406600260408100947}
@@ -205,11 +204,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: daf06c22b3871894a8ab824e78227e9e, type: 3}
---- !u!23 &384616639809450494 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -5467423410141472065, guid: daf06c22b3871894a8ab824e78227e9e, type: 3}
-  m_PrefabInstance: {fileID: 3551547539240463169}
-  m_PrefabAsset: {fileID: 0}
 --- !u!23 &447624609868511000 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -5224200180047782823, guid: daf06c22b3871894a8ab824e78227e9e, type: 3}
