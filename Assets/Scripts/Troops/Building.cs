@@ -16,6 +16,7 @@ namespace Troops
         [SerializeField] private int linksCount = 1;
         private List<Link> _myLinks = new List<Link>();
         private bool _active;
+        private bool _linkedToTroops;
 
 
         protected override void SetBuilding()
@@ -44,7 +45,12 @@ namespace Troops
             { 
                 if(l.LinkToActiveBuilding()) active = true;
             }
-            SetActive(active);
+            
+            if(!active) return;
+            foreach (var l in _myLinks)
+            { 
+                l.SetAllLinkedBuildingsActive();
+            }
         }
         public void RemoveLink(Link myLink)
         {
@@ -68,7 +74,7 @@ namespace Troops
                 r.material.SetFloat("_Highlite", 0);
             }
         }
-        private void SetActive(bool active)
+        public void SetActive(bool active)
         {
             _active = active;
             foreach (var r in GetRenderers())

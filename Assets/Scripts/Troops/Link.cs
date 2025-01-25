@@ -11,7 +11,7 @@ namespace Troops
         [SerializeField] private float lineWidth = 0.1f;
         [SerializeField] private float uvScale = 1f;
         [SerializeField] private Color player1Color, player2Color;
-        private Building _building1, _building2;
+        public Building _building1, _building2;
         private int random;
 
         public void SetLink(PlayerTeam team)
@@ -100,12 +100,14 @@ namespace Troops
             var withinSegment = projectionLength >= 0 && projectionLength <= Vector3.Distance(point1, point2);
 
             return distanceToLine <= .5f && withinSegment;
+            print("test");
         }
         public void Cut()
         {
             _building1.RemoveLink(this);
             _building2.RemoveLink(this);
         }
+        
         public bool LinkToActiveBuilding()
         {
             if (_building1.IsActive()) return true;
@@ -113,9 +115,21 @@ namespace Troops
             return false;
         }
 
+        public bool IsLinkedToTroops()
+        {
+            return _building1.GetBuildingType() == BuildingType.Troops ||
+                   _building2.GetBuildingType() == BuildingType.Troops;
+        }
+        
         public Building GetLinkedBuilding(Building building)
         {
             return _building1 == building ? _building2 : _building1;
+        }
+        
+        public void SetAllLinkedBuildingsActive()
+        {
+           _building1.SetActive(true);
+           _building2.SetActive(true);
         }
     }
 }
