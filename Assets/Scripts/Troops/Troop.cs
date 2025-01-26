@@ -20,10 +20,10 @@ namespace Troops
     public class Equipment
     {
         [SerializeField] private string id;
-        [SerializeField] private bool hideOriginalBody;
-        [SerializeField] private GameObject equipment;
-        [SerializeField] private Animator animator;
+        [SerializeField] private bool hideOriginalBody, changeAnimator;
+        [SerializeField] private GameObject[] equipments;
         [SerializeField] private Renderer[] renderers;
+        [SerializeField] private RuntimeAnimatorController  controller;
         [SerializeField] private Material player1Material, player2Material;
     }
 
@@ -36,8 +36,9 @@ namespace Troops
         [SerializeField] private Movement movement;
         [SerializeField] private LayerMask enemiesLayer;
         [SerializeField] private MMFeedbacks deathFeedbacks;
-
-        [Header("Equipment")] [SerializeField] private Equipment originalEquipment;
+        
+        [Header("Equipment")]
+        [SerializeField] private Equipment originalEquipment;
         [SerializeField] private Equipment[] equipments;
      
         private TroopState _troopState = TroopState.Idle;
@@ -104,11 +105,9 @@ namespace Troops
         #endregion
 
         #region Death
-
         private void Death()
         {
             if (_troopState == TroopState.Death) return;
-            animation?.Death();
             _onDeath?.Invoke();
             deathFeedbacks?.PlayFeedbacks();
             // if(_team == PlayerTeam.Player1) Bot.Instance.RemoveEnemyTroop(this);
@@ -139,14 +138,14 @@ namespace Troops
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
-
+            
             GUILayout.Space(20);
-
+            
             if (GUILayout.Button("Assign Components"))
             {
                 foreach (var t in targets)
                 {
-                    var eachTower = (Troop) t;
+                    var eachTower = (Troop)t;
                     eachTower.AssignComponents();
                     EditorUtility.SetDirty(eachTower);
                 }
@@ -156,7 +155,7 @@ namespace Troops
             {
                 foreach (var obj in targets)
                 {
-                    Troop eachTower = (Troop) obj;
+                    Troop eachTower = (Troop)obj;
                     SetupRigidbodyAndCollider(eachTower.gameObject);
                     EditorUtility.SetDirty(eachTower);
                 }
