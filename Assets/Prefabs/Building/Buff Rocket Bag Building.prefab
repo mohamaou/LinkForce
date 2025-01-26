@@ -107,9 +107,10 @@ MonoBehaviour:
   player1: {fileID: 2100000, guid: 6b5f5070dd8a4d6409f31deb9f2c437a, type: 2}
   player2: {fileID: 2100000, guid: 7610ca34797f07d46a0e3a2383c948f0, type: 2}
   buildingType: 2
-  id: Zombie
+  id: Rocket
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
-  linksCount: 1
+  availableLinks: 0
+  level: 1
   icon: {fileID: 21300000, guid: 88402480cb95047558203cbe393dce8f, type: 3}
 --- !u!1001 &3475656843727262256
 PrefabInstance:

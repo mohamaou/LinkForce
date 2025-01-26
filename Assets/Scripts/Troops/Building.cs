@@ -27,7 +27,7 @@ namespace Troops
         [SerializeField] private BuildingType buildingType;
         [SerializeField] private string id;
         [SerializeField] private Link link;
-        [SerializeField] private int linksCount = 1;
+        [SerializeField] private int possibleLinks = 0;
         [SerializeField] private int level = 1;
         [SerializeField] private Sprite icon;
         private List<Link> _myLinks = new List<Link>();
@@ -92,14 +92,14 @@ namespace Troops
         public bool IsActive() => _active;
         public Sprite GetIcon() => icon;
         public int GetLevel() => level;
-        public int GetLinksCount() => linksCount;
+        public int GetLinksCount() => _myLinks.Count;
+        public int GetPossibleLinks() => possibleLinks;
+        public void IncrementPossibleLinks(int nbr = 1) => possibleLinks += nbr;
+        public void DecrementPossibleLinks(int nbr = 1) => possibleLinks -= nbr;
         #endregion
         
         #region Links
-        private void LinksUpdated()
-        {
-            
-        }
+
         public void SetBuildingLink(Link myLink)
         {
             _myLinks.Add(myLink);
@@ -122,6 +122,12 @@ namespace Troops
         #endregion
         
         #region Visuals
+
+        public void IncrementLevel()
+        {
+            level++;
+        }
+        
         public void Highlite()
         {
             foreach (var r in GetRenderers())
@@ -144,6 +150,16 @@ namespace Troops
             {
                 r.material.SetFloat("_Saturation", active ? 1 : 0);
             }
+        }
+
+        public void RunGFX()
+        {
+            gfx.localScale = new Vector3(0, 2, 0);
+            gfx.localPosition = new Vector3(0, 1, 0);
+            _localScale = Vector3.one;
+            gfx.DOScale(_localScale, 0.2f).OnComplete(() => landFeedback?.PlayFeedbacks()).SetEase(Ease.OutBack);
+            gfx.DOLocalMove(Vector3.zero, 0.2f);
+            SetBuilding();
         }
         #endregion
     }
