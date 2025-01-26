@@ -20,17 +20,10 @@ namespace Troops
     public class Equipment
     {
         [SerializeField] private string id;
-<<<<<<< HEAD
         [SerializeField] private bool hideOriginalBody, changeAnimator;
         [SerializeField] private GameObject[] equipments;
         [SerializeField] private Renderer[] renderers;
         [SerializeField] private RuntimeAnimatorController  controller;
-=======
-        [SerializeField] private bool hideOriginalBody;
-        [SerializeField] private GameObject equipment;
-        [SerializeField] private Animator animator;
-        [SerializeField] private Renderer[] renderers;
->>>>>>> ab2bb7a9350fb735e856642b24695d7e79bcf020
         [SerializeField] private Material player1Material, player2Material;
     }
 
@@ -43,14 +36,9 @@ namespace Troops
         [SerializeField] private Movement movement;
         [SerializeField] private LayerMask enemiesLayer;
         [SerializeField] private MMFeedbacks deathFeedbacks;
-<<<<<<< HEAD
         
         [Header("Equipment")]
         [SerializeField] private Equipment originalEquipment;
-=======
-
-        [Header("Equipment")] [SerializeField] private Equipment originalEquipment;
->>>>>>> ab2bb7a9350fb735e856642b24695d7e79bcf020
         [SerializeField] private Equipment[] equipments;
      
         private TroopState _troopState = TroopState.Idle;
@@ -117,7 +105,6 @@ namespace Troops
         #endregion
 
         #region Death
-
         private void Death()
         {
             if (_troopState == TroopState.Death) return;
@@ -151,24 +138,14 @@ namespace Troops
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
-<<<<<<< HEAD
             
             GUILayout.Space(20);
             
-=======
-
-            GUILayout.Space(20);
-
->>>>>>> ab2bb7a9350fb735e856642b24695d7e79bcf020
             if (GUILayout.Button("Assign Components"))
             {
                 foreach (var t in targets)
                 {
-<<<<<<< HEAD
                     var eachTower = (Troop)t;
-=======
-                    var eachTower = (Troop) t;
->>>>>>> ab2bb7a9350fb735e856642b24695d7e79bcf020
                     eachTower.AssignComponents();
                     EditorUtility.SetDirty(eachTower);
                 }
@@ -178,11 +155,7 @@ namespace Troops
             {
                 foreach (var obj in targets)
                 {
-<<<<<<< HEAD
                     Troop eachTower = (Troop)obj;
-=======
-                    Troop eachTower = (Troop) obj;
->>>>>>> ab2bb7a9350fb735e856642b24695d7e79bcf020
                     SetupRigidbodyAndCollider(eachTower.gameObject);
                     EditorUtility.SetDirty(eachTower);
                 }
