@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
@@ -5,6 +6,7 @@ using Players;
 using DG.Tweening;
 using MoreMountains.Feedbacks;
 using Players;
+using UI;
 using UnityEditor;
 
 namespace Troops
@@ -33,6 +35,19 @@ namespace Troops
         private List<Link> _myLinks = new List<Link>();
         private bool _active;
         private bool _linkedToTroops;
+        private BuildingUI _buildingPanel;
+        public PlayerTeam GetTroopTeam() => _team;
+        public Rigidbody GetTroopRigidbody() => GetComponent<Rigidbody>();
+        protected Renderer[] GetRenderers() => renderers;
+
+
+        public void Start()
+        {
+            var buildingUI = Instantiate(UIManager.Instance.BuildingPanel, this.transform);
+            buildingUI.transform.localPosition = Vector3.zero;
+            buildingUI.InitializePanel(this.GetIcon(), this.GetLevel());
+            _buildingPanel = buildingUI;
+        }
 
         public void AssignComponents()
         {
@@ -52,13 +67,6 @@ namespace Troops
             r.isKinematic = true;
         }
 
-        #region Public Variables
-
-        public PlayerTeam GetTroopTeam() => _team;
-        public Rigidbody GetTroopRigidbody() => GetComponent<Rigidbody>();
-        protected Renderer[] GetRenderers() => renderers;
-
-        #endregion
 
         public void Set(PlayerTeam team)
         {
@@ -126,6 +134,7 @@ namespace Troops
         public void IncrementLevel()
         {
             level++;
+            _buildingPanel.UpdateLevelNumber(level);
         }
         
         public void Highlite()
