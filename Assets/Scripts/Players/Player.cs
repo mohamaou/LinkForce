@@ -7,6 +7,12 @@ using Troops;
 using UI;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using DG.Tweening;
+
+//-----------------------------------------------------//
+// TODO: Move link from source to target on merge
+// TODO: Change the building UI to be in one canvas
+//-----------------------------------------------------//
 
 namespace Players
 {
@@ -99,13 +105,13 @@ namespace Players
 
                 foreach (var availableBuilding in _buildingsOnBoard)
                     if (ValidateLink(availableBuilding, building) && availableBuilding != building)
-                        availableBuilding.Highlite();
+                        availableBuilding.Highlight();
 
                 yield return null;
             }
 
             _linking = false;
-            foreach (var availableBuilding in _buildingsOnBoard) availableBuilding.RemoveHighlite();
+            foreach (var availableBuilding in _buildingsOnBoard) availableBuilding.RemoveHighlight();
 
             if (Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition), out var b, Mathf.Infinity, buildingLayer))
             {
@@ -115,16 +121,29 @@ namespace Players
                 {
                     if (building.GetBuildingType() == targetBuilding.GetBuildingType())
                     {
-                        MergeBuildings(targetBuilding, building);
                         Destroy(link.gameObject);
+                        MergeBuildings(targetBuilding, building);
                     }
                     else
                     {
                         link.SetBuildings(building, targetBuilding);
                         targetBuilding.SetBuildingLink(link);
                         building.SetBuildingLink(link);
-                        AddPossibleLinks(targetBuilding, building);
                         _myLinks.Add(link);
+
+                        // Increment Weapon to Troops links number
+                        if (building.GetBuildingType() == BuildingType.Weapon &&
+                            targetBuilding.GetBuildingType() == BuildingType.Troops) building.IncrementLinksToTroops();
+                        else if (building.GetBuildingType() == BuildingType.Troops &&
+                                 targetBuilding.GetBuildingType() == BuildingType.Weapon)
+                            targetBuilding.IncrementLinksToTroops();
+
+                        // Increment Weapon to Buffs links number
+                        if (building.GetBuildingType() == BuildingType.Weapon &&
+                            targetBuilding.GetBuildingType() == BuildingType.Buff) building.IncrementLinksToBuffs();
+                        else if (building.GetBuildingType() == BuildingType.Buff &&
+                                 targetBuilding.GetBuildingType() == BuildingType.Weapon)
+                            targetBuilding.IncrementLinksToBuffs();
                     }
                 }
                 else
@@ -143,10 +162,14 @@ namespace Players
             if (building1 == building2) return false;
             var type1 = building1.GetBuildingType();
             var type2 = building2.GetBuildingType();
-            var possibleLinks1 = building1.GetPossibleLinks();
-            var possibleLinks2 = building2.GetPossibleLinks();
-            var currentLinks1 = building1.GetLinksCount();
-            var currentLinks2 = building2.GetLinksCount();
+            var availableLinksToBuffs1 = building1.GetLinksToTroops() == 0
+                ? 1 - building1.GetLinksToBuffs()
+                : building1.GetLinksToBuffs() - building1.GetLinksToTroops();
+            var availableLinksToBuffs2 = building2.GetLinksToTroops() == 0
+                ? 1 - building2.GetLinksToBuffs()
+                : building2.GetLinksToBuffs() - building2.GetLinksToTroops();
+            var linksCount1 = building1.GetLinksCount();
+            var linksCount2 = building2.GetLinksCount();
             var level1 = building1.GetLevel();
             var level2 = building2.GetLevel();
 
@@ -158,7 +181,14 @@ namespace Players
             var sameLevel = level1 == level2;
 
             var validTypes = !isTroopsBuff && !isTroopsTroops;
-            var canLink = currentLinks1 < possibleLinks1 || currentLinks2 < possibleLinks2 && !sameType;
+            var noLinksToBuff = (type1 == BuildingType.Weapon && type2 == BuildingType.Buff &&
+                                 availableLinksToBuffs1 == 0) || (type2 == BuildingType.Weapon &&
+                                                                  type1 == BuildingType.Buff &&
+                                                                  availableLinksToBuffs2 == 0);
+            var troopsAlreadyLinked = (type1 == BuildingType.Troops && linksCount1 > 0) ||
+                                      (type2 == BuildingType.Troops && linksCount2 > 0);
+
+            var canLink = !sameType && !noLinksToBuff && !troopsAlreadyLinked;
             var canMerge = sameId && sameLevel && sameType;
 
             return validTypes && (canLink || canMerge);
@@ -167,9 +197,13 @@ namespace Players
 
         private void MergeBuildings(Building target, Building source)
         {
-            Destroy(source.gameObject);
-            target.RunGFX();
-            target.IncrementLevel();
+            source.transform.DOMove(target.transform.position, .4f).OnComplete(() =>
+            {
+                target.RunGFX();
+                target.IncrementLevel();
+                _buildingsOnBoard.Remove(source);
+                Destroy(source.gameObject);
+            });
         }
 
         private IEnumerator CutLinks()
@@ -188,8 +222,73 @@ namespace Players
                             link.Cut();
                             _myLinks.Remove(link);
                             Destroy(link.gameObject);
-                            RemovePossibleLinks(link._building1, link._building2);
                             UpdateBuildingsAfterLinkCut();
+
+                            // Decrement Weapon to Buff links number
+                            if (link._building1.GetBuildingType() == BuildingType.Weapon &&
+                                link._building2.GetBuildingType() == BuildingType.Buff)
+                                link._building1.DecrementLinksToBuffs();
+                            else if (link._building1.GetBuildingType() == BuildingType.Buff &&
+                                     link._building2.GetBuildingType() == BuildingType.Weapon)
+                                link._building2.DecrementLinksToBuffs();
+
+                            // Decrement Weapon to Troops links number
+                            if (link._building1.GetBuildingType() == BuildingType.Weapon &&
+                                link._building2.GetBuildingType() == BuildingType.Troops)
+                            {
+                                link._building1.DecrementLinksToTroops();
+
+                                if (link._building1.GetLinksToBuffs() > 1 && link._building1.GetLinksToBuffs() >
+                                    link._building1.GetLinksToTroops())
+                                {
+                                    var weaponLinks = link._building1.GetMyLinks();
+                                    for (var i = weaponLinks.Count - 1; i >= 0; i--)
+                                    {
+                                        var item = weaponLinks[i];
+                                        if (item._building1.GetBuildingType() != BuildingType.Buff &&
+                                            item._building2.GetBuildingType() != BuildingType.Buff) continue;
+
+                                        item.Cut();
+                                        _myLinks.Remove(item);
+                                        Destroy(item.gameObject);
+                                        UpdateBuildingsAfterLinkCut();
+
+                                        if (item._building1.GetBuildingType() == BuildingType.Weapon)
+                                            item._building1.DecrementLinksToBuffs();
+                                        else item._building2.DecrementLinksToBuffs();
+
+                                        break;
+                                    }
+                                }
+                            }
+                            else if (link._building1.GetBuildingType() == BuildingType.Troops &&
+                                     link._building2.GetBuildingType() == BuildingType.Weapon)
+                            {
+                                link._building2.DecrementLinksToTroops();
+
+                                if (link._building2.GetLinksToBuffs() > 1 && link._building2.GetLinksToBuffs() >
+                                    link._building2.GetLinksToTroops())
+                                {
+                                    var weaponLinks = link._building2.GetMyLinks();
+                                    for (var i = weaponLinks.Count - 1; i >= 0; i--)
+                                    {
+                                        var item = weaponLinks[i];
+                                        if (item._building1.GetBuildingType() != BuildingType.Buff &&
+                                            item._building2.GetBuildingType() != BuildingType.Buff) continue;
+
+                                        item.Cut();
+                                        _myLinks.Remove(item);
+                                        Destroy(item.gameObject);
+                                        UpdateBuildingsAfterLinkCut();
+
+                                        if (item._building1.GetBuildingType() == BuildingType.Weapon)
+                                            item._building1.DecrementLinksToBuffs();
+                                        else item._building2.DecrementLinksToBuffs();
+
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -228,30 +327,6 @@ namespace Players
             foreach (var building in _buildingsOnBoard)
                 if (!reachableBuildings.Contains(building) && building.GetBuildingType() != BuildingType.Troops)
                     building.SetActive(false);
-        }
-
-        private void AddPossibleLinks(Building target, Building source)
-        {
-            if (target.GetBuildingType() == BuildingType.Troops && source.GetBuildingType() == BuildingType.Weapon)
-            {
-                source.IncrementPossibleLinks(2);
-            }
-            else if (target.GetBuildingType() == BuildingType.Weapon && source.GetBuildingType() == BuildingType.Troops)
-            {
-                target.IncrementPossibleLinks(2);
-            }
-        }
-
-        private void RemovePossibleLinks(Building target, Building source)
-        {
-            if (target.GetBuildingType() == BuildingType.Troops && source.GetBuildingType() == BuildingType.Weapon)
-            {
-                source.DecrementPossibleLinks(2);
-            }
-            else if (target.GetBuildingType() == BuildingType.Weapon && source.GetBuildingType() == BuildingType.Troops)
-            {
-                target.DecrementPossibleLinks(2);
-            }
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Troops;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,11 +17,15 @@ namespace UI
         [SerializeField] private Transform linkIcon;
         private List<GameObject> _linkIcons = new List<GameObject>();
 
-        public void InitializePanel(Sprite icon, int level)
+        public void InitializePanel(Sprite icon, int level, BuildingType buildingType)
         {
             buildingIcon.sprite = icon;
             buildingLevelText.text = level.ToString();
             buildingLevelIcon.sprite = levelsSprites[level - 1];
+            if (buildingType is BuildingType.Weapon)
+            {
+                Instantiate(linkIcon, availableLinksParent);
+            }
         }
 
         public void UpdateLevelNumber(int level)

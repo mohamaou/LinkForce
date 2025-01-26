@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
 using Players;
 using DG.Tweening;
-using MoreMountains.Feedbacks;
-using Players;
 using UI;
 using UnityEditor;
 
@@ -29,23 +26,39 @@ namespace Troops
         [SerializeField] private BuildingType buildingType;
         [SerializeField] private string id;
         [SerializeField] private Link link;
-        [SerializeField] private int possibleLinks = 0;
         [SerializeField] private int level = 1;
         [SerializeField] private Sprite icon;
-        private List<Link> _myLinks = new List<Link>();
+        [SerializeField] private List<Link> _myLinks = new List<Link>();
+        [SerializeField] private int _linksToTroops = 0;
+        [SerializeField] private int _linksToBuffs = 0;
         private bool _active;
         private bool _linkedToTroops;
         private BuildingUI _buildingPanel;
+
+        #region Public Variables
         public PlayerTeam GetTroopTeam() => _team;
         public Rigidbody GetTroopRigidbody() => GetComponent<Rigidbody>();
-        protected Renderer[] GetRenderers() => renderers;
+        public Renderer[] GetRenderers() => renderers;
+        public Link CreateLink() => Instantiate(link, transform);
+        public BuildingType GetBuildingType() => buildingType;
+        public List<Link> GetMyLinks() => _myLinks;
+        public string GetId() => id;
+        public bool IsActive() => _active;
+        public Sprite GetIcon() => icon;
+        public int GetLevel() => level;
+        public int GetLinksCount() => _myLinks.Count;
+        public int GetLinksToTroops() => _linksToTroops;
+        public int GetLinksToBuffs() => _linksToBuffs;
+        public void IncrementLinksToBuffs() => _linksToBuffs++;
+        public void DecrementLinksToBuffs() => _linksToBuffs--;
 
-
+        #endregion
+        
         public void Start()
         {
             var buildingUI = Instantiate(UIManager.Instance.BuildingPanel, this.transform);
             buildingUI.transform.localPosition = Vector3.zero;
-            buildingUI.InitializePanel(this.GetIcon(), this.GetLevel());
+            buildingUI.InitializePanel(this.GetIcon(), this.GetLevel(), buildingType);
             _buildingPanel = buildingUI;
         }
 
@@ -67,7 +80,6 @@ namespace Troops
             r.isKinematic = true;
         }
 
-
         public void Set(PlayerTeam team)
         {
             _team = team;
@@ -87,27 +99,11 @@ namespace Troops
             SetBuilding();
         }
 
-        protected void SetBuilding()
+        private void SetBuilding()
         {
             SetActive(buildingType == BuildingType.Troops);
         }
         
-        #region Public Variables
-        public Link CreateLink() => Instantiate(link, transform);
-        public BuildingType GetBuildingType() => buildingType;
-        public List<Link> GetMyLinks() => _myLinks;
-        public string GetId() => id;
-        public bool IsActive() => _active;
-        public Sprite GetIcon() => icon;
-        public int GetLevel() => level;
-        public int GetLinksCount() => _myLinks.Count;
-        public int GetPossibleLinks() => possibleLinks;
-        public void IncrementPossibleLinks(int nbr = 1) => possibleLinks += nbr;
-        public void DecrementPossibleLinks(int nbr = 1) => possibleLinks -= nbr;
-        #endregion
-        
-        #region Links
-
         public void SetBuildingLink(Link myLink)
         {
             _myLinks.Add(myLink);
@@ -127,25 +123,37 @@ namespace Troops
         {
             _myLinks.Remove(myLink);
         }
-        #endregion
-        
-        #region Visuals
 
         public void IncrementLevel()
         {
             level++;
             _buildingPanel.UpdateLevelNumber(level);
         }
+
+        public void IncrementLinksToTroops()
+        {
+            if (_linksToTroops != 0) _buildingPanel.AddLinkPoint();
+            _linksToTroops++;
+        }
+
+        public void DecrementLinksToTroops()
+        {
+            if (_linksToTroops > 1) _buildingPanel.RemoveLinkPoint();
+            _linksToTroops--;
+        }
         
-        public void Highlite()
+        #region Visuals
+
+        public void Highlight()
         {
             foreach (var r in GetRenderers())
             {
-                float highlightValue = (Mathf.Sin(Time.time * Mathf.PI) + 1) / 2;
+                var highlightValue = (Mathf.Sin(Time.time * Mathf.PI) + 1) / 2;
                 r.material.SetFloat("_Highlite", highlightValue);
             }
         }
-        public void RemoveHighlite()
+
+        public void RemoveHighlight()
         {
             foreach (var r in GetRenderers())
             {
