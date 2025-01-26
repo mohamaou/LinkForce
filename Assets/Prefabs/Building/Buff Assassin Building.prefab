@@ -110,6 +110,7 @@ MonoBehaviour:
   id: Human
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
   linksCount: 1
+  icon: {fileID: 21300000, guid: 88402480cb95047558203cbe393dce8f, type: 3}
 --- !u!1001 &2281341908830380913
 PrefabInstance:
   m_ObjectHideFlags: 0
