@@ -106,9 +106,10 @@ MonoBehaviour:
   player1: {fileID: 2100000, guid: 1b89025686215f642b974201fd3210fd, type: 2}
   player2: {fileID: 2100000, guid: 09784148e39a62d43950c290295d9382, type: 2}
   buildingType: 1
-  id: Sword
+  id: Ice
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
-  linksCount: 1
+  maxLinks: 0
+  level: 1
   icon: {fileID: 21300000, guid: 7e3ca31cf77764d3b95b5085cf1a95fd, type: 3}
 --- !u!1001 &118264186002449455
 PrefabInstance:

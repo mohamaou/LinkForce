@@ -105,9 +105,10 @@ MonoBehaviour:
   player1: {fileID: 2100000, guid: 4c22de145f89b41f5ab9fb6845a37bd4, type: 2}
   player2: {fileID: 2100000, guid: 4051aaece45de3941a24b52fc4dfce68, type: 2}
   buildingType: 2
-  id: Human
+  id: Berserker
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
-  linksCount: 1
+  availableLinks: 0
+  level: 1
   icon: {fileID: 21300000, guid: 88402480cb95047558203cbe393dce8f, type: 3}
 --- !u!1001 &6537155198714821519
 PrefabInstance:
