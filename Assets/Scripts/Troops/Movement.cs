@@ -11,10 +11,6 @@ namespace Troops
         
         private void Awake()
         {
-            troop.SetEvent(() =>
-            {
-               troop.GetAnimation().Move(false);
-            });
             troop.SetDeathEvent(() =>
             {
                 Destroy(this);

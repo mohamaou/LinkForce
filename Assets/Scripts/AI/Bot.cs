@@ -90,42 +90,6 @@ namespace AI
            // _movementPoint -= cost;
            yield return new WaitUntil(() => !troopMoving);
         }
-
-        private IEnumerator TroopAttacking(Troop troop)
-        {
-            if(_attackPoint == 0) yield break;
-            var attackFinished = false;
-            _attackPoint--;
-            troop.GetAnimation().Attack();
-            
-           /* if (targetTile.GetTroop() == null)
-            {
-                troop.transform.DORotate(new Vector3(0, 180, 0), 0.4f); 
-                
-                DOVirtual.DelayedCall(0.5f, () =>
-                {
-               
-                    attackFinished = true;
-                }, false);
-                yield return new WaitWhile(() => attackFinished);
-            }
-            else
-            {
-                var r = targetTile.GetTroop().transform.position - troop.transform.position;
-                troop.transform.DORotate(Quaternion.LookRotation(r).eulerAngles, 0.4f);
-                troop.transform.DORotate(new Vector3(0, 180, 0), 0.4f).SetDelay(0.5f); 
-                
-                DOVirtual.DelayedCall(0.5f, () =>
-                {
-                    targetTile.GetTroop().TakeDamage(troop.GetDamage());
-                    attackFinished = true;
-                }, false);
-            }*/
-            
-           
-
-            yield return new WaitWhile(() => attackFinished);
-        }
         
         #endregion
       

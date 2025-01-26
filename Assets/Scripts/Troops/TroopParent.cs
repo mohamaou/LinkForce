@@ -31,11 +31,19 @@ namespace Troops
 
         private void Reset()
         {
-            var box = gameObject.AddComponent<BoxCollider>();
-            box.center = new Vector3(0, 0.85f, 0);
-            box.size = new Vector3(2.4f, 1.7f, 2.4f);
-            var r = gameObject.AddComponent<Rigidbody>();
-            r.isKinematic = true;
+            var childScripts = GetComponentsInChildren<MonoBehaviour>();
+            
+            foreach (var script in childScripts)
+            {
+                if (script.GetType() == typeof(Building)) 
+                {
+                    var box = gameObject.AddComponent<BoxCollider>();
+                    box.center = new Vector3(0, 0.85f, 0);
+                    box.size = new Vector3(2.4f, 1.7f, 2.4f);
+                    var r = gameObject.AddComponent<Rigidbody>();
+                    r.isKinematic = true;
+                }
+            }
         }
 
         #region Public Variables
