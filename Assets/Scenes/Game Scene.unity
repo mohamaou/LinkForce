@@ -8683,19 +8683,7 @@ MonoBehaviour:
     summonButton: {fileID: 1379090399}
     battleButton: {fileID: 1416842568}
     spaceErrorText: {fileID: 580654868}
-  buildingPanel:
-    panel: {fileID: 1442922879}
-    buildingIcon: {fileID: 386915650}
-    buildingIcons: []
-    availableLinksParent: {fileID: 1516211245}
-    buildingLevelText: {fileID: 156109664}
-    buildingLevelIcon: {fileID: 1879682578}
-    levelsSprites:
-    - {fileID: 21300000, guid: 17e7f7c745260fa43b1991df1658e4ca, type: 3}
-    - {fileID: 21300000, guid: a8ca5937058505e42825d3358acd26bb, type: 3}
-    - {fileID: 21300000, guid: 6125a2ac58cab4842b7ec3b6c3d2dd5c, type: 3}
-    - {fileID: 21300000, guid: deae58b7ef3d6f24c9f733bd51cc0bdd, type: 3}
-    - {fileID: 21300000, guid: 918106fd95f82fc49814ff5683ed1f2a, type: 3}
+  BuildingPanel: {fileID: 2942095607848526115, guid: 556427d17215a334585aa37752216fcd, type: 3}
   startPanel: {fileID: 821670318}
   playPanelObject: {fileID: 487254795}
   gameStartFeedback: {fileID: 1541961599}
@@ -14236,7 +14224,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -433}
+  m_AnchoredPosition: {x: 0, y: -117.1}
   m_SizeDelta: {x: 194.5132, y: 212.6523}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1442922881
@@ -24223,6 +24211,7 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 1203891834}
   - {fileID: 410087041}
+  - {fileID: 1561933747}
   - {fileID: 832575519}
   - {fileID: 979288136}
   - {fileID: 1805509634}

@@ -60,6 +60,9 @@ namespace Players
                 if (summonPos != Vector3.zero)
                 {
                     var b = Instantiate(targetBuilding, summonPos, Quaternion.identity, transform);
+                    var buildingUI = Instantiate(UIManager.Instance.BuildingPanel, b.transform);
+                    buildingUI.transform.localPosition = Vector3.zero;
+                    buildingUI.InitializePanel(b.GetIcon(), b.GetLevel(), b.GetLinksCount(), b.GetBuildingType());
                     b.Set(PlayerTeam.Player1);
                     _buildingsOnBoard.Add(b);
                     return;

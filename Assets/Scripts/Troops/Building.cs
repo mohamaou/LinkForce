@@ -1,5 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using MoreMountains.Feedbacks;
+using Players;
+using DG.Tweening;
+using MoreMountains.Feedbacks;
+using Players;
+using UnityEditor;
 
 namespace Troops
 {
@@ -7,19 +13,73 @@ namespace Troops
     {
         Troops, Weapon, Buff
     }
-    
-    public class Building : TroopParent
+
+    public class Building : MonoBehaviour
     {
+        [Header("General")] [SerializeField] private new Collider collider;
+        [SerializeField] private new Rigidbody rigidbody;
+        [SerializeField] private Renderer[] renderers;
+        [SerializeField] private Transform gfx;
+        [SerializeField] private MMFeedbacks landFeedback;
+        [SerializeField] private Material player1, player2;
+        private PlayerTeam _team;
+        private Vector3 _localScale;
         [SerializeField] private BuildingType buildingType;
         [SerializeField] private string id;
         [SerializeField] private Link link;
         [SerializeField] private int linksCount = 1;
+        [SerializeField] private int level = 1;
+        [SerializeField] private Sprite icon;
         private List<Link> _myLinks = new List<Link>();
         private bool _active;
         private bool _linkedToTroops;
 
+        public void AssignComponents()
+        {
+            var r = GetComponentsInChildren<Renderer>();
+            renderers = r.Length > 0 ? r : null;
+            gfx = transform.childCount > 0 ? transform.GetChild(0) : null;
+            collider = GetComponent<Collider>();
+            rigidbody = GetComponent<Rigidbody>();
+        }
 
-        protected override void SetBuilding()
+        private void Reset()
+        {
+            var box = gameObject.AddComponent<BoxCollider>();
+            box.center = new Vector3(0, 0.85f, 0);
+            box.size = new Vector3(2.4f, 1.7f, 2.4f);
+            var r = gameObject.AddComponent<Rigidbody>();
+            r.isKinematic = true;
+        }
+
+        #region Public Variables
+
+        public PlayerTeam GetTroopTeam() => _team;
+        public Rigidbody GetTroopRigidbody() => GetComponent<Rigidbody>();
+        protected Renderer[] GetRenderers() => renderers;
+
+        #endregion
+
+        public void Set(PlayerTeam team)
+        {
+            _team = team;
+            gfx.localScale = new Vector3(0, 2, 0);
+            gfx.localPosition = new Vector3(0, 1, 0);
+            _localScale = Vector3.one;
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].material = team == PlayerTeam.Player1 ? player1 : player2;
+            }
+
+            GetComponent<Collider>().isTrigger = false;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            tag = team == PlayerTeam.Player1 ? "Player 1" : "Player 2";
+            gfx.DOScale(_localScale, 0.2f).OnComplete(() => landFeedback?.PlayFeedbacks()).SetEase(Ease.OutBack);
+            gfx.DOLocalMove(Vector3.zero, 0.2f);
+            SetBuilding();
+        }
+
+        protected void SetBuilding()
         {
             SetActive(buildingType == BuildingType.Troops);
         }
@@ -30,6 +90,9 @@ namespace Troops
         public List<Link> GetMyLinks() => _myLinks;
         public string GetId() => id;
         public bool IsActive() => _active;
+        public Sprite GetIcon() => icon;
+        public int GetLevel() => level;
+        public int GetLinksCount() => linksCount;
         #endregion
         
         #region Links
@@ -83,7 +146,26 @@ namespace Troops
             }
         }
         #endregion
-        
-        
     }
+
+#if UNITY_EDITOR
+    [CanEditMultipleObjects]
+    [CustomEditor(typeof(Building), true)]
+    public class BuildingEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+            if (GUILayout.Button("Assign Components"))
+            {
+                foreach (var t in targets)
+                {
+                    var eachTower = (Building) t;
+                    eachTower.AssignComponents();
+                    EditorUtility.SetDirty(eachTower);
+                }
+            }
+        }
+    }
+#endif
 }
