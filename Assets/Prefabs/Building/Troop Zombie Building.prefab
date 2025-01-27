@@ -107,9 +107,8 @@ MonoBehaviour:
   buildingType: 0
   id: Zombie
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
-  possibleLinks: 1
   level: 1
-  icon: {fileID: 21300000, guid: 10e8aba76c21240608c58e3f8c9deb71, type: 3}
+  icon: {fileID: 21300000, guid: 2edaa1c50921e89469f1c337ae9cb377, type: 3}
 --- !u!1001 &5553338673932934750
 PrefabInstance:
   m_ObjectHideFlags: 0

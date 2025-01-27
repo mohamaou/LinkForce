@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core;
 using UnityEngine;
 using MoreMountains.Feedbacks;
 using Players;
@@ -56,11 +57,14 @@ namespace Troops
         
         public void Start()
         {
-            var buildingUI = Instantiate(UIManager.Instance.BuildingPanel, this.transform);
-            buildingUI.transform.localPosition = Vector3.zero;
+            var buildingUI = Instantiate(UIManager.Instance.BuildingPanel, UIManager.Instance.transform);
             buildingUI.InitializePanel(this.GetIcon(), this.GetLevel(), buildingType);
             _buildingPanel = buildingUI;
+            var screenPosition = GameManager.Camera.WorldToScreenPoint(this.transform.position);
+            _buildingPanel.transform.position = screenPosition;
         }
+
+       
 
         public void AssignComponents()
         {
@@ -140,6 +144,21 @@ namespace Troops
         {
             if (_linksToTroops > 1) _buildingPanel.RemoveLinkPoint();
             _linksToTroops--;
+        }
+
+        public void SetLinksToTroops(int nbr)
+        {
+            _linksToTroops = nbr;
+        }
+
+        public void SetLinksToBuffs(int nbr)
+        {
+            _linksToBuffs = nbr;
+        }
+
+        private void OnDestroy()
+        {
+            if (_buildingPanel != null) Destroy(_buildingPanel.gameObject);
         }
         
         #region Visuals
