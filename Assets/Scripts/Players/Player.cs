@@ -9,11 +9,6 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
 
-//-----------------------------------------------------//
-// TODO: Move link from source to target on merge
-// TODO: Change the building UI to be in one canvas
-//-----------------------------------------------------//
-
 namespace Players
 {
     public enum PlayerTeam
@@ -28,7 +23,7 @@ namespace Players
         [SerializeField] private LayerMask buildingLayer, groundLayer;
         [SerializeField] private GameObject trail;
         private readonly List<Building> _buildingsOnBoard = new();
-        private readonly List<Link> _myLinks = new();
+        [SerializeField] private List<Link> _myLinks = new();
         private Camera _cam;
         private bool _linking;
         private List<Building> _selectedBuilding = new();
@@ -197,11 +192,34 @@ namespace Players
 
         private void MergeBuildings(Building target, Building source)
         {
-            source.transform.DOMove(target.transform.position, .4f).OnComplete(() =>
+            source.transform.DOMove(target.transform.position, .3f).OnComplete(() =>
             {
                 target.RunGFX();
                 target.IncrementLevel();
                 _buildingsOnBoard.Remove(source);
+
+                var sourceLinks = source.GetMyLinks();
+                foreach (var link in sourceLinks)
+                {
+                    var otherBuilding = link.GetLinkedBuilding(source);
+                    otherBuilding.RemoveLink(link);
+
+                    var newLink = otherBuilding.CreateLink();
+                    newLink.SetLink(PlayerTeam.Player1);
+
+                    newLink.SetBuildings(otherBuilding, target);
+                    target.SetBuildingLink(newLink);
+                    otherBuilding.SetBuildingLink(newLink);
+
+                    newLink.ShowLink(otherBuilding.transform.position, target.transform.position);
+
+                    _myLinks.Remove(link);
+                    _myLinks.Add(newLink);
+                    Destroy(link.gameObject);
+                }
+
+                target.SetLinksToTroops(target.GetLinksToTroops() + source.GetLinksToTroops());
+                target.SetLinksToBuffs(target.GetLinksToBuffs() + source.GetLinksToBuffs());
                 Destroy(source.gameObject);
             });
         }

@@ -108,9 +108,8 @@ MonoBehaviour:
   buildingType: 1
   id: Electro
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
-  possibleLinks: 1
   level: 1
-  icon: {fileID: 21300000, guid: 7e3ca31cf77764d3b95b5085cf1a95fd, type: 3}
+  icon: {fileID: 21300000, guid: a4f8da80a8537b64c9b13be3d9b12c00, type: 3}
 --- !u!1001 &1870793869294393044
 PrefabInstance:
   m_ObjectHideFlags: 0

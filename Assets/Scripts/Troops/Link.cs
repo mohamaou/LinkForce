@@ -100,7 +100,6 @@ namespace Troops
             var withinSegment = projectionLength >= 0 && projectionLength <= Vector3.Distance(point1, point2);
 
             return distanceToLine <= .5f && withinSegment;
-            print("test");
         }
         public void Cut()
         {
