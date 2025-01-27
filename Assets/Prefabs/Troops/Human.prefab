@@ -610,7 +610,7 @@ MonoBehaviour:
     m_Bits: 64
   deathFeedbacks: {fileID: 0}
   originalEquipment:
-    id: 'Default '
+    id: 0
     hideOriginalBody: 0
     changeAnimator: 0
     equipments:
@@ -621,7 +621,7 @@ MonoBehaviour:
     player1Material: {fileID: 2100000, guid: 0946c30b47df11b41b06931353b3622e, type: 2}
     player2Material: {fileID: 2100000, guid: 1c60872afe9f5444c9138b9cc05ec7d6, type: 2}
   equipments:
-  - id: Assassin
+  - id: 0
     hideOriginalBody: 1
     changeAnimator: 0
     equipments:
@@ -631,7 +631,7 @@ MonoBehaviour:
     controller: {fileID: 0}
     player1Material: {fileID: 2100000, guid: 0946c30b47df11b41b06931353b3622e, type: 2}
     player2Material: {fileID: 2100000, guid: 1c60872afe9f5444c9138b9cc05ec7d6, type: 2}
-  - id: Berserker
+  - id: 1
     hideOriginalBody: 0
     changeAnimator: 0
     equipments:
@@ -643,7 +643,7 @@ MonoBehaviour:
     controller: {fileID: 0}
     player1Material: {fileID: 2100000, guid: 65061012b19a7144087d1922cfa69980, type: 2}
     player2Material: {fileID: 2100000, guid: 0c64967f00e903144b3d392634ccc79f, type: 2}
-  - id: Ghost
+  - id: 2
     hideOriginalBody: 0
     changeAnimator: 0
     equipments:
@@ -656,7 +656,7 @@ MonoBehaviour:
     controller: {fileID: 0}
     player1Material: {fileID: 2100000, guid: 5687d1959fab28e4e83bfbcfa52748d5, type: 2}
     player2Material: {fileID: 2100000, guid: ac82f53d0f6410142945852176ca3aaf, type: 2}
-  - id: Rocket Bag
+  - id: 3
     hideOriginalBody: 0
     changeAnimator: 0
     equipments:
@@ -677,7 +677,7 @@ MonoBehaviour:
     controller: {fileID: 0}
     player1Material: {fileID: 2100000, guid: f43295e432480ac47b5870c5660b01cc, type: 2}
     player2Material: {fileID: 2100000, guid: b95c1f144c45e0b4393cb37fe8daefa3, type: 2}
-  - id: Armor
+  - id: 4
     hideOriginalBody: 1
     changeAnimator: 0
     equipments:
@@ -687,7 +687,7 @@ MonoBehaviour:
     controller: {fileID: 0}
     player1Material: {fileID: 2100000, guid: 0946c30b47df11b41b06931353b3622e, type: 2}
     player2Material: {fileID: 2100000, guid: 1c60872afe9f5444c9138b9cc05ec7d6, type: 2}
-  - id: Shield
+  - id: 5
     hideOriginalBody: 0
     changeAnimator: 0
     equipments:
@@ -699,7 +699,7 @@ MonoBehaviour:
     controller: {fileID: 0}
     player1Material: {fileID: 2100000, guid: fe918c2de7bc5594da80a7594269b75c, type: 2}
     player2Material: {fileID: 2100000, guid: 95a26277f1b47d145875dacaf144f713, type: 2}
-  - id: Axe
+  - id: 6
     hideOriginalBody: 0
     changeAnimator: 1
     equipments:
@@ -709,7 +709,7 @@ MonoBehaviour:
     controller: {fileID: 9100000, guid: a6b2e91757cd97d43b2de612c1c7e0c8, type: 2}
     player1Material: {fileID: 2100000, guid: 65061012b19a7144087d1922cfa69980, type: 2}
     player2Material: {fileID: 2100000, guid: 0c64967f00e903144b3d392634ccc79f, type: 2}
-  - id: Bow
+  - id: 7
     hideOriginalBody: 0
     changeAnimator: 1
     equipments:
@@ -719,7 +719,7 @@ MonoBehaviour:
     controller: {fileID: 9100000, guid: e3325c9edfe92084c921953028b3c14c, type: 2}
     player1Material: {fileID: 2100000, guid: 65061012b19a7144087d1922cfa69980, type: 2}
     player2Material: {fileID: 2100000, guid: 0c64967f00e903144b3d392634ccc79f, type: 2}
-  - id: Electro
+  - id: 8
     hideOriginalBody: 0
     changeAnimator: 1
     equipments:
@@ -729,7 +729,7 @@ MonoBehaviour:
     controller: {fileID: 9100000, guid: 5dc0b878bc2e91b43bb646b85cb37a8c, type: 2}
     player1Material: {fileID: 2100000, guid: 65061012b19a7144087d1922cfa69980, type: 2}
     player2Material: {fileID: 2100000, guid: 0c64967f00e903144b3d392634ccc79f, type: 2}
-  - id: Ice
+  - id: 9
     hideOriginalBody: 0
     changeAnimator: 1
     equipments:
@@ -739,7 +739,7 @@ MonoBehaviour:
     controller: {fileID: 9100000, guid: 5dc0b878bc2e91b43bb646b85cb37a8c, type: 2}
     player1Material: {fileID: 2100000, guid: 65061012b19a7144087d1922cfa69980, type: 2}
     player2Material: {fileID: 2100000, guid: 0c64967f00e903144b3d392634ccc79f, type: 2}
-  - id: Sword
+  - id: 10
     hideOriginalBody: 0
     changeAnimator: 1
     equipments:
@@ -749,7 +749,7 @@ MonoBehaviour:
     controller: {fileID: 9100000, guid: 5dc0b878bc2e91b43bb646b85cb37a8c, type: 2}
     player1Material: {fileID: 2100000, guid: 060181342022ebd4aa71cd06727204e2, type: 2}
     player2Material: {fileID: 2100000, guid: 993521beb359c09459e3249f0618fa8a, type: 2}
-  - id: Posion
+  - id: 11
     hideOriginalBody: 0
     changeAnimator: 1
     equipments:

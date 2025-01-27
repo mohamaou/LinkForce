@@ -16,10 +16,26 @@ namespace Troops
         Death
     }
 
+    public enum TroopType
+    {
+        Assassin //HIde the troops for 2 secand
+        ,Berserker // Buff the damage and health
+        , Ghost //4 ghost attack enemies
+        ,Rocket //shoot rockets to enemies
+        ,Armor //damage negation
+        ,Shield //take damage 
+        ,Axe // attack muliple enmies
+        ,Bow // Range Attack
+        ,Electric //stunn enemies for a short amount of time
+        ,Ice // Slow Down the enemies
+        ,Poison // take damage over time
+        ,Sword //Melee Attack
+        
+    }
     [Serializable]
     public class Equipment
     {
-        [SerializeField] private string id;
+        [SerializeField] private TroopType id;
         [SerializeField] private bool hideOriginalBody, changeAnimator;
         [SerializeField] private GameObject[] equipments;
         [SerializeField] private Renderer[] renderers;
