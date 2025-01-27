@@ -811,6 +811,16 @@ MonoBehaviour:
   cardLevelText: {fileID: 2911384873518426380}
   troopLevelText: {fileID: 2911384873518426380}
   troopNameText: {fileID: 8848093286422287567}
+  troopsColor: {r: 0.7761011, g: 0, b: 1, a: 1}
+  weaponColor: {r: 0, g: 1, b: 0.06773472, a: 1}
+  buffColor: {r: 0.9811321, g: 0, b: 0, a: 1}
+  images:
+  - {fileID: 6479659548869721410}
+  - {fileID: 6318645585173974378}
+  - {fileID: 5645713482056227309}
+  - {fileID: 685250985726144080}
+  - {fileID: 1973968604462002124}
+  - {fileID: 6161624615125887160}
 --- !u!114 &6183858661012449372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1630,6 +1640,7 @@ GameObject:
   - component: {fileID: 2004024624996913531}
   - component: {fileID: 200569055094493394}
   - component: {fileID: 6318645585173974378}
+  - component: {fileID: 6242014533578377448}
   m_Layer: 0
   m_Name: Name
   m_TagString: Untagged
@@ -1678,7 +1689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.8235294, b: 0.12941177, a: 1}
+  m_Color: {r: 0, g: 0.7372549, b: 0.9921569, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1695,6 +1706,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 8.72
+--- !u!114 &6242014533578377448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4066077852142445721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &4905269565315730629
 GameObject:
   m_ObjectHideFlags: 0
@@ -2535,7 +2561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.7372549, b: 0.99215686, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

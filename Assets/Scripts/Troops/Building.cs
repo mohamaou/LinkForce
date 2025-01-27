@@ -25,7 +25,7 @@ namespace Troops
         private PlayerTeam _team;
         private Vector3 _localScale;
         [SerializeField] private BuildingType buildingType;
-        [SerializeField] private string id;
+        [SerializeField] private string id; 
         [SerializeField] private Link link;
         [SerializeField] private int level = 1;
         [SerializeField] private Sprite icon;

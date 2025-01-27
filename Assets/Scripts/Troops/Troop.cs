@@ -30,7 +30,10 @@ namespace Troops
         ,Ice // Slow Down the enemies
         ,Poison // take damage over time
         ,Sword //Melee Attack
-        
+        ,Zombie
+        ,Human
+        ,Skeleton
+        ,Goblin
     }
     [Serializable]
     public class Equipment

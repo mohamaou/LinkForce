@@ -13,9 +13,34 @@ MonoBehaviour:
   m_Name: Armor
   m_EditorClassIdentifier: 
   name: Armor
+  buildingType: 2
+  troopType: 4
   cardSprite: {fileID: 21300000, guid: b0612f2ab72b9714fa875ac1817ed82f, type: 3}
-  troop: {fileID: 818590543884623240, guid: 6870b24ff2761a64da3bb0adc61e36d2, type: 3}
+  building: {fileID: 2832940480316813797, guid: 06f38ee3663194b498e4013a7fb59204, type: 3}
   defaultTroop: 1
-  troopLevel: 3
-  damage: 10
-  health: 7
+  description: 
+  melee:
+    damage: []
+  range:
+    damage: []
+    range: 0
+  berserker:
+    damageIncreased: []
+    healthIncreased: []
+  ghost:
+    ghostDamage: []
+  rocket:
+    rocketDamage: []
+    shootTime: 0
+  shield:
+    shieldCount: 
+  armor:
+    damageNegation:
+    - 0
+  assassin:
+    hideTime: []
+    coolDownTime: []
+  troop:
+    damage: 
+    health: 
+    speed: 0

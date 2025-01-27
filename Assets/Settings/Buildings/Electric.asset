@@ -13,9 +13,33 @@ MonoBehaviour:
   m_Name: Electric
   m_EditorClassIdentifier: 
   name: Electric
+  buildingType: 1
+  troopType: 8
   cardSprite: {fileID: 21300000, guid: c5f5b396afbdcf741b98551ff5be3261, type: 3}
-  troop: {fileID: 818590543884623240, guid: 6870b24ff2761a64da3bb0adc61e36d2, type: 3}
-  defaultTroop: 1
-  troopLevel: 3
-  damage: 10
-  health: 7
+  building: {fileID: 2832940480316813797, guid: ddb3802676c0e0742b363ac7d1efd4c5, type: 3}
+  defaultTroop: 0
+  description: 
+  melee:
+    damage: []
+  range:
+    damage: []
+    range: 0
+  berserker:
+    damageIncreased: []
+    healthIncreased: []
+  ghost:
+    ghostDamage: []
+  rocket:
+    rocketDamage: []
+    shootTime: 0
+  shield:
+    shieldCount: 
+  armor:
+    damageNegation: []
+  assassin:
+    hideTime: []
+    coolDownTime: []
+  troop:
+    damage: 
+    health: 
+    speed: 0

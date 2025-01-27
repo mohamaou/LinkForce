@@ -12,10 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f51e36877284476396b9b02ea7afb47, type: 3}
   m_Name: Skeleton
   m_EditorClassIdentifier: 
-  name: Apoc Bomber
+  name: Skeleton
+  buildingType: 0
+  troopType: 14
   cardSprite: {fileID: 21300000, guid: ee2562ee0a55d3a41b2d8819621015d3, type: 3}
-  troop: {fileID: 818590543884623240, guid: 6870b24ff2761a64da3bb0adc61e36d2, type: 3}
-  defaultTroop: 1
-  troopLevel: 3
-  damage: 10
-  health: 7
+  building: {fileID: 2832940480316813797, guid: 1b409a52541ec074e9224995f16c06f1, type: 3}
+  defaultTroop: 0
+  description: 
+  melee:
+    damage: []
+  range:
+    damage: []
+    range: 0
+  berserker:
+    damageIncreased: []
+    healthIncreased: []
+  ghost:
+    ghostDamage: []
+  rocket:
+    rocketDamage: []
+    shootTime: 0
+  shield:
+    shieldCount: 
+  armor:
+    damageNegation: []
+  assassin:
+    hideTime: []
+    coolDownTime: []
+  troop:
+    damage: 
+    health: 
+    speed: 0

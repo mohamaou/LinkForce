@@ -13,9 +13,34 @@ MonoBehaviour:
   m_Name: Ice
   m_EditorClassIdentifier: 
   name: Ice
+  buildingType: 1
+  troopType: 9
   cardSprite: {fileID: 21300000, guid: 85011e7e5fffa74498f615fdf5b65a23, type: 3}
-  troop: {fileID: 818590543884623240, guid: 6870b24ff2761a64da3bb0adc61e36d2, type: 3}
-  defaultTroop: 1
-  troopLevel: 3
-  damage: 10
-  health: 7
+  building: {fileID: 2832940480316813797, guid: 6b17878f42d5f134a9b7719bb1dc1d09, type: 3}
+  defaultTroop: 0
+  description: 
+  melee:
+    damage: []
+  range:
+    damage:
+    - 1
+    range: 0
+  berserker:
+    damageIncreased: []
+    healthIncreased: []
+  ghost:
+    ghostDamage: []
+  rocket:
+    rocketDamage: []
+    shootTime: 0
+  shield:
+    shieldCount: 
+  armor:
+    damageNegation: []
+  assassin:
+    hideTime: []
+    coolDownTime: []
+  troop:
+    damage: 
+    health: 
+    speed: 0

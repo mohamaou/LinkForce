@@ -13,9 +13,33 @@ MonoBehaviour:
   m_Name: Poison
   m_EditorClassIdentifier: 
   name: Poison
+  buildingType: 1
+  troopType: 10
   cardSprite: {fileID: 21300000, guid: d2c4efd457069364abee40db606278d9, type: 3}
-  troop: {fileID: 818590543884623240, guid: 6870b24ff2761a64da3bb0adc61e36d2, type: 3}
-  defaultTroop: 1
-  troopLevel: 3
-  damage: 10
-  health: 7
+  building: {fileID: 2832940480316813797, guid: af5f1b32275d5004ab5325e22af7e06d, type: 3}
+  defaultTroop: 0
+  description: 
+  melee:
+    damage: []
+  range:
+    damage: []
+    range: 0
+  berserker:
+    damageIncreased: []
+    healthIncreased: []
+  ghost:
+    ghostDamage: []
+  rocket:
+    rocketDamage: []
+    shootTime: 0
+  shield:
+    shieldCount: 
+  armor:
+    damageNegation: []
+  assassin:
+    hideTime: []
+    coolDownTime: []
+  troop:
+    damage: 
+    health: 
+    speed: 0

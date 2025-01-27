@@ -9,7 +9,7 @@ namespace UI
         [SerializeField] private CardUI[] cardsUI;
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private Transform towersParent;
-        private TroopCard[] _selectedCard; 
+        private BuildingCard[] _selectedCard; 
 
 
         private void Awake()
@@ -18,7 +18,7 @@ namespace UI
         }
 
 
-        public void SetUpCards(TroopCard[] cards)
+        public void SetUpCards(BuildingCard[] cards)
         {
             _selectedCard = cards;
             for (int i = 0; i < cardsUI.Length; i++)

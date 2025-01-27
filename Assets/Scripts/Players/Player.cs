@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cards;
 using Core;
 using Level;
 using Troops;
@@ -19,14 +20,14 @@ namespace Players
 
     public class Player : MonoBehaviour
     {
-        [SerializeField] private Building[] buildings;
+        [SerializeField] private BuildingCard[] buildingsCards;
         [SerializeField] private LayerMask buildingLayer, groundLayer;
         [SerializeField] private GameObject trail;
         private readonly List<Building> _buildingsOnBoard = new();
         [SerializeField] private List<Link> _myLinks = new();
         private Camera _cam;
         private bool _linking;
-        private List<Building> _selectedBuilding = new();
+        private List<BuildingCard> _selectedBuilding = new();
         public static Player Instance { get; private set; }
 
         private void Awake()
@@ -37,6 +38,10 @@ namespace Players
 
         private IEnumerator Start()
         {
+            foreach (var card in buildingsCards)
+            {
+                if(card.IsSelected()) _selectedBuilding.Add(card);
+            }
             yield return new WaitUntil(() => GameManager.State == GameState.Play);
             UIManager.Instance.playPanel.GetSummonButton().onClick.AddListener(SummonButtonClicked);
             StartCoroutine(SelectBuilding());
@@ -52,9 +57,9 @@ namespace Players
 
         private void SummonButtonClicked()
         {
-            for (var i = 0; i < buildings.Length; i++)
+            for (var i = 0; i < _selectedBuilding.Count; i++)
             {
-                var targetBuilding = buildings[(Random.Range(0, buildings.Length) + i) % buildings.Length];
+                var targetBuilding = _selectedBuilding[(Random.Range(0, _selectedBuilding.Count) + i) % _selectedBuilding.Count].GetBuilding();
                 var summonPos =
                     Board.Instance.GetRandomBoardPoint(PlayerTeam.Player1, targetBuilding.GetBuildingType());
 

@@ -16,7 +16,7 @@ namespace Start_UI
         [SerializeField] private TextMeshProUGUI cardAmount;
         [SerializeField] private Image towerImage;
         [SerializeField] private GameObject frontFace, backFace, goldImage;
-        [SerializeField] private TroopCard[] towerCards;
+        [SerializeField] private BuildingCard[] towerCards;
         private bool _animationDone;
 
         private void Start()
@@ -51,7 +51,7 @@ namespace Start_UI
             return false;
         }
         
-        private TroopCard GetRandomTroop() => towerCards[UnityEngine.Random.Range(0, towerCards.Length)];
+        private BuildingCard GetRandomTroop() => towerCards[UnityEngine.Random.Range(0, towerCards.Length)];
 
         public void SetReward(int rewardAmount, bool isGold)
         {

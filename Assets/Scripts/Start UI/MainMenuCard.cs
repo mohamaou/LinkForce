@@ -2,6 +2,7 @@ using Cards;
 using Core;
 using DG.Tweening;
 using TMPro;
+using Troops;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,27 +15,31 @@ namespace Start_UI
         [SerializeField] private Image towerImage, upgradeArrow;
         [SerializeField] private Slider towerSlider;
         [SerializeField] private TextMeshProUGUI progressSliderText, upgradeCostText, cardLevelText, troopLevelText, troopNameText;
+        [Header("Building Type")]
+        [SerializeField] private Color troopsColor;
+        [SerializeField] private Color weaponColor, buffColor;
+        [SerializeField] private Image[] images;
         private bool _selected;
-        private TroopCard _troop;
+        private BuildingCard _troop;
 
         private void Start()
         {
             upgradeButton.onClick.AddListener(ShowInfoPanel);
         }
 
-        public void SetCard(TroopCard towerCard)
+        public void SetCard(BuildingCard buildingCard)
         {
-            _troop = towerCard;
+            _troop = buildingCard;
             _selected = false; 
-            var isLocked = towerCard.IsLocked();
+            var isLocked = buildingCard.IsLocked();
             levelHolder.SetActive(!isLocked);
             lockPanel.SetActive(isLocked);
             towerSlider.gameObject.SetActive(!isLocked);
             selectPanel.SetActive(false);
             troopLevelText.gameObject.SetActive(!isLocked);
             useButton.gameObject.SetActive(false);
-            cardLevelText.text = towerCard.GetCardLevel().ToString();
-            towerImage.sprite = towerCard.GetSprite();
+            cardLevelText.text = buildingCard.GetCardLevel().ToString();
+            towerImage.sprite = buildingCard.GetSprite();
             cardAvailable.SetActive(UpgradeAvailable());
             cardNotAvailable.SetActive(!UpgradeAvailable());
             selectButton.onClick.AddListener(()=>
@@ -43,15 +48,15 @@ namespace Start_UI
                 SelectToUse();
             });
             useButton.onClick.AddListener(UseCard);
-            towerCard.SetCardChangedEvent(() =>
+            buildingCard.SetCardChangedEvent(() =>
             {
-                progressSliderText.text = $"{towerCard.AvailableCard()} / {RequiredCardToLevelUp(towerCard.GetCardLevel())}";
-                towerSlider.value = towerCard.AvailableCard()/(float) RequiredCardToLevelUp(towerCard.GetCardLevel());
-                var locked = towerCard.IsLocked(); 
+                progressSliderText.text = $"{buildingCard.AvailableCard()} / {RequiredCardToLevelUp(buildingCard.GetCardLevel())}";
+                towerSlider.value = buildingCard.AvailableCard()/(float) RequiredCardToLevelUp(buildingCard.GetCardLevel());
+                var locked = buildingCard.IsLocked(); 
                 if(lockPanel!= null) lockPanel.SetActive(locked);
                 if(towerSlider!= null)towerSlider.gameObject.SetActive(!locked);
                 if(troopLevelText!= null) troopLevelText.gameObject.SetActive(!locked);
-                SetCardStats(towerCard);
+                SetCardStats(buildingCard);
             });
             if (UpgradeAvailable())
             {
@@ -59,15 +64,25 @@ namespace Start_UI
             }
             Currencies.Instance.SetCoinsChangeEvent(() =>
             {
-                upgradeCostText.color = Currencies.Instance.IsEnoughCoins(GetUpgradeCost(towerCard.GetCardLevel()))
+                upgradeCostText.color = Currencies.Instance.IsEnoughCoins(GetUpgradeCost(buildingCard.GetCardLevel()))
                     ? Color.white
                     : Color.red;
             });
-            SetCardStats(towerCard);
+            SetCardStats(buildingCard);
+            foreach (var image in images)
+            {
+                image.color = buildingCard.GetBuildingType() switch
+                {
+                    BuildingType.Troops => troopsColor,
+                    BuildingType.Weapon => weaponColor,
+                    BuildingType.Buff => buffColor,
+                    _ => Color.white
+                };
+            }
         }
 
         
-        private void SetCardStats(TroopCard towerCard)
+        private void SetCardStats(BuildingCard towerCard)
         {
             if(upgradeArrow != null) upgradeArrow.color = UpgradeAvailable() ? Color.green : Color.white;
             troopNameText.text = towerCard.GetTroopName();
@@ -107,7 +122,7 @@ namespace Start_UI
         }
         private void ShowInfoPanel()
         {
-            TroopStatsPanel.Instance.SetTroop(_troop);
+            BuildingStatsPanel.Instance.SetTroop(_troop);
         }
         #endregion
         

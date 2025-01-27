@@ -1,22 +1,27 @@
-using System;
 using Cards;
 using Core;
 using TMPro;
+using Troops;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Start_UI
 {
-    public class TroopStatsPanel : MonoBehaviour
+    public class BuildingStatsPanel : MonoBehaviour
     {
-        public static TroopStatsPanel Instance{get; private set;}
-        [SerializeField] private TextMeshProUGUI troopNameText, healthText, damageText, upgradeCostText, cardCollectionText, diceLevelText, cardLevelText;
+        public static BuildingStatsPanel Instance{get; private set;}
+        [SerializeField] private TextMeshProUGUI troopNameText, healthText, damageText, upgradeCostText, cardCollectionText, descriptionText, cardLevelText;
+        [SerializeField] private TextMeshProUGUI buildingTypeText;
         [SerializeField] private Slider progressSlider;
         [SerializeField] private PopupPanel popupPanel;
         [SerializeField] private Button upgradeButton;
         [SerializeField] private Image troopImage;
-        private TroopCard _troop;
+        [Header("Building Type")]
+        [SerializeField] private Color troopsColor;
+        [SerializeField] private Color weaponColor, buffColor;
+        [SerializeField] private Image[] images;
+        private BuildingCard _troop;
 
         private void Awake()
         {
@@ -38,20 +43,35 @@ namespace Start_UI
             UpdateStats();
         }
 
-        public void SetTroop(TroopCard troop)
+        public void SetTroop(BuildingCard building)
         {
             popupPanel.Open();
-            troopNameText.text = troop.GetTroopName();
-            diceLevelText.text = troop.GetTroopLevel().ToString();
-            troopImage.sprite = troop.GetSprite();
-            _troop = troop;
+            troopNameText.text = building.GetTroopName();
+            descriptionText.text = building.GetDescription();
+            troopImage.sprite = building.GetSprite();
+            _troop = building;
+            buildingTypeText.text = building.GetBuildingType() switch
+            {
+                BuildingType.Troops=> "Spawner",
+                BuildingType.Buff => "Buff",
+                BuildingType.Weapon => "Weapon"
+            };
+            foreach (Image image in images)
+            {
+                image.color = building.GetBuildingType() switch
+                {
+                    BuildingType.Troops => troopsColor,
+                    BuildingType.Buff => buffColor,
+                    BuildingType.Weapon => weaponColor
+                };
+            }
             UpdateStats();
         }
 
         private void UpdateStats()
         {
-            healthText.text = $"{_troop.GetHealth() + _troop.GetCardLevel()}";
-            damageText.text = $"{_troop.GetDamage() + _troop.GetCardLevel()}";
+           // healthText.text = $"{_troop.GetHealth() + _troop.GetCardLevel()}";
+           // damageText.text = $"{_troop.GetDamage() + _troop.GetCardLevel()}";
             upgradeCostText.text = GetUpgradeCost(_troop.GetCardLevel()).ToString();
             upgradeCostText.color = Currencies.Instance.IsEnoughCoins(GetUpgradeCost(_troop.GetCardLevel())) ? Color.white : Color.red;
             cardLevelText.text = $"Level {_troop.GetCardLevel()}";

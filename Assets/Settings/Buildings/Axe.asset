@@ -13,9 +13,33 @@ MonoBehaviour:
   m_Name: Axe
   m_EditorClassIdentifier: 
   name: Axe
+  buildingType: 1
+  troopType: 6
   cardSprite: {fileID: 21300000, guid: 89d4c59c7867e5a49a35b264809d7cd9, type: 3}
-  troop: {fileID: 818590543884623240, guid: 6870b24ff2761a64da3bb0adc61e36d2, type: 3}
-  defaultTroop: 1
-  troopLevel: 3
-  damage: 10
-  health: 7
+  building: {fileID: 2832940480316813797, guid: 7806c095813115e44bfcec545fa00162, type: 3}
+  defaultTroop: 0
+  description: 
+  melee:
+    damage: []
+  range:
+    damage: []
+    range: 0
+  berserker:
+    damageIncreased: []
+    healthIncreased: []
+  ghost:
+    ghostDamage: []
+  rocket:
+    rocketDamage: []
+    shootTime: 0
+  shield:
+    shieldCount: 
+  armor:
+    damageNegation: []
+  assassin:
+    hideTime: []
+    coolDownTime: []
+  troop:
+    damage: 
+    health: 
+    speed: 0

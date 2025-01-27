@@ -13,10 +13,10 @@ namespace AI
     {
         private string _difficultyKey = "Difficulty";
         public static Bot Instance { get; private set; }
-        [SerializeField] private TroopCard[] troops;
+        [SerializeField] private BuildingCard[] troops;
       
         [SerializeField] private Transform player2Base;
-        private readonly List<TroopCard> _troops= new List<TroopCard>();
+        private readonly List<BuildingCard> _troops= new List<BuildingCard>();
         private List<Troop> _myTroopsOnBoard = new List<Troop>();
         private Troop _selectedTroop;
         private int _attackPoint, _movementPoint, _health = 3;
@@ -39,7 +39,7 @@ namespace AI
             _troops.Clear();
             int selectionCount = Mathf.Min(15, troops.Length);
 
-            var tempTroops = new List<TroopCard>(troops);
+            var tempTroops = new List<BuildingCard>(troops);
         
             for (int i = 0; i < selectionCount; i++)
             {
@@ -56,14 +56,14 @@ namespace AI
         
         public void DrawDice()
         {
-            var selectedDices = new List<TroopCard>();
+            var selectedDices = new List<BuildingCard>();
             if (_troops.Count < 3)
             {
                 selectedDices.AddRange(_troops);
             }
             else
             {
-                var tempList = new List<TroopCard>(_troops);
+                var tempList = new List<BuildingCard>(_troops);
                 for (int i = 0; i < 3; i++)
                 {
                     var randomIndex = Random.Range(0, tempList.Count);

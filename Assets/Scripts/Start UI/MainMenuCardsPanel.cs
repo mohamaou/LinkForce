@@ -12,7 +12,7 @@ namespace Start_UI
     public class MainMenuCardsPanel : MonoBehaviour
     { 
         public static MainMenuCardsPanel Instance {get; private set;}
-        [SerializeField] private TroopCard[] troopCards;
+        [SerializeField] private BuildingCard[] troopCards;
         [SerializeField] private MainMenuCard card;
         [SerializeField] private Transform[] selectedCardsContainers;
         [SerializeField] private Transform cardsContainer;
