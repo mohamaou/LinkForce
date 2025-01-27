@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Cards;
 using Core;
 using DG.Tweening;
-using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -15,7 +14,7 @@ namespace Start_UI
         public static MainMenuCardsPanel Instance {get; private set;}
         [SerializeField] private TroopCard[] troopCards;
         [SerializeField] private MainMenuCard card;
-        [SerializeField] private Transform []selectedCardsContainers;
+        [SerializeField] private Transform[] selectedCardsContainers;
         [SerializeField] private Transform cardsContainer;
         [SerializeField] private TextMeshProUGUI coinsText;
         
@@ -48,8 +47,7 @@ namespace Start_UI
                     carSelected = false;
                 }
 
-                _troopCards[i].transform
-                    .SetParent(carSelected ? selectedCardsContainers[containerIndex] : cardsContainer);
+                _troopCards[i].transform.SetParent(carSelected ? selectedCardsContainers[containerIndex] : cardsContainer);
                 _troopCards[i].transform.localScale = Vector3.one;
                 _troopCards[i].transform.localPosition = Vector3.zero;
                 if (carSelected) containerIndex++;
@@ -71,7 +69,7 @@ namespace Start_UI
             cardInUse.transform.SetParent(transform);
             var pos = new Vector2(Screen.width / 2f, Screen.height / 2f);
             cardInUse.transform.DOMove(pos, .2f);
-            cardInUse.transform.DOScale(Vector3.one * 1.2f, duration: .2f);
+            cardInUse.transform.DOScale(Vector3.one, duration: .2f);
             _currentSelectedCard = cardInUse;
         }
 

@@ -13,7 +13,7 @@ namespace Start_UI
         [SerializeField] private GameObject lockPanel, selectPanel, levelHolder, cardAvailable, cardNotAvailable;
         [SerializeField] private Image towerImage, upgradeArrow;
         [SerializeField] private Slider towerSlider;
-        [SerializeField] private TextMeshProUGUI progressSliderText, upgradeCostText, cardLevelText, troopCostText, troopLevelText, troopNameText;
+        [SerializeField] private TextMeshProUGUI progressSliderText, upgradeCostText, cardLevelText, troopLevelText, troopNameText;
         private bool _selected;
         private TroopCard _troop;
 
@@ -33,7 +33,6 @@ namespace Start_UI
             selectPanel.SetActive(false);
             troopLevelText.gameObject.SetActive(!isLocked);
             useButton.gameObject.SetActive(false);
-            troopCostText.text = towerCard.GetTroopLevel().ToString();
             cardLevelText.text = towerCard.GetCardLevel().ToString();
             towerImage.sprite = towerCard.GetSprite();
             cardAvailable.SetActive(UpgradeAvailable());
