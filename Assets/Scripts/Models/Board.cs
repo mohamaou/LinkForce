@@ -7,14 +7,14 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-namespace Level
+namespace Models
 {
     public class Board : MonoBehaviour
     {
-        public static Board Instance{ get; private set; }
+        public static Board Instance { get; private set; }
         [SerializeField] private Transform[] player1BoardPoints, player2BoardPoints;
         private List<Tile> _player1Tiles = new List<Tile>(), _player2Tiles = new List<Tile>();
-        
+
         private void Awake()
         {
             Instance = this;
@@ -117,7 +117,6 @@ namespace Level
             Gizmos.color = Color.black;
             Gizmos.DrawWireSphere(tile.Position, 0.5f); // Draw a wireframe around it for clarity
         }
-
 
 
         private class Tile

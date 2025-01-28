@@ -126,7 +126,9 @@ namespace UI
         [SerializeField] private TextMeshProUGUI timerText, costToSummon, availableGold;
         [SerializeField] private Button summonButton, battleButton;
         [SerializeField] private TextMeshProUGUI spaceErrorText;
-
+        [SerializeField] public GameObject summonPanel;
+        [SerializeField] public GameObject battlePanel;
+        
         public void Start()
         {
             spaceErrorText.gameObject.SetActive(false);
@@ -187,7 +189,7 @@ namespace UI
             var isStartUIComplete = false;
             GameManager.State = GameState.Start;
             startUI.Start(() => isStartUIComplete = true);
-            yield return new WaitUntil(() => isStartUIComplete || !GameManager.Instance.showPlayerPorofile);
+            yield return new WaitUntil(() => isStartUIComplete || !GameManager.Instance.showPlayerProfile);
             
             gameStartFeedback?.PlayFeedbacks();
             playPanel.Start();
@@ -195,8 +197,12 @@ namespace UI
             playPanelObject.SetActive(true);
             GameManager.State = GameState.Play;
         }
-        
-        
+
+        public void ShowBattleUI()
+        {
+            playPanel.summonPanel.SetActive(false);
+            playPanel.battlePanel.SetActive(false);
+        }
         
         public void GameEnd(bool win)
         {

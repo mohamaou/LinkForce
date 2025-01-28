@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AI;
 using DG.Tweening;
 using Players;
@@ -46,13 +47,15 @@ namespace Core
         public static GameResult Result;
         public static Camera Camera;
         public static int Level;
-        public bool fastGame, tutorialLevel, showPlayerPorofile, flipCoin;
+        public List<Level> levels = new List<Level>();
+        public bool fastGame, tutorialLevel, showPlayerProfile;
         private float _timer;
-        private float _fpsTimer = 0.0f; 
-        private int _fpsCount = 0; 
+        private float _fpsTimer = 0.0f;
+        private int _fpsCount = 0;  
         private int _fpsDisplay = 0;
-        private bool _player1NotEnoughSpace, _player2NotEnoughSpace; 
-        
+        private bool _player1NotEnoughSpace, _player2NotEnoughSpace;
+        public float timeRemaining = 0;
+
         
         private void Awake()
         {
@@ -62,6 +65,7 @@ namespace Core
             Application.targetFrameRate = 120;
             Time.timeScale = fastGame ? 4f : 1f;
             Level = PlayerPrefs.GetInt("Level", 1);
+            timeRemaining = GameManager.Instance.levels[Level - 1].summonTime;
         }
 
         private void Start()
@@ -69,14 +73,35 @@ namespace Core
             TinySauce.OnGameStarted(levelNumber:Level);
         }
 
-        
-
         private void Update()
         {
             Keyboard();
-            Timer();
+            if (State == GameState.Play && TurnsManager.Instance.playState == PlayState.Summon) CountDown();
         }
 
+        private void CountDown()
+        {
+            if (timeRemaining <= 0)
+            {
+                StartBattle();
+                return;
+            }
+
+            timeRemaining -= Time.deltaTime;
+
+            var minutes = Mathf.FloorToInt(timeRemaining / 60);
+            var seconds = Mathf.FloorToInt(timeRemaining % 60);
+            if (minutes < 0 && seconds < 0) return;
+            UIManager.Instance.playPanel.GetTimerText().text = $"{minutes}:{seconds:00}";
+        }
+
+        public void StartBattle()
+        {
+            TurnsManager.Instance.playState = PlayState.Battle;
+            UIManager.Instance.ShowBattleUI();
+            print("Start Fight");
+        }
+        
         private void Keyboard()
         {
             if (Input.GetKeyDown(KeyCode.S)) Time.timeScale = Time.timeScale == 1 ? 0.2f : 1;
@@ -87,26 +112,7 @@ namespace Core
             if (Input.GetKeyDown(KeyCode.N)) GameEnd(GameResult.Win);
             if(Input.GetKeyDown(KeyCode.G)) CheckIfGameEnds(PlayerTeam.Player2);
         }
-        
-        private void Timer()
-        {
-            if (State != GameState.Play) return;
-            
-            // Update the timer
-            _timer += Time.deltaTime;
-
-            // Update FPS timer and frame count
-            _fpsTimer += Time.deltaTime;
-            _fpsCount++;
-
-            // Update displayed FPS every second
-            if (_fpsTimer >= 1.0f)
-            {
-                _fpsDisplay = _fpsCount; // Set the FPS value to display
-                _fpsCount = 0; // Reset frame count
-                _fpsTimer = 0.0f; // Reset timer
-            }
-        }
+  
         private void OnGUI()
         {
             return;
@@ -151,7 +157,6 @@ namespace Core
             Time.timeScale = 1;
             SceneManager.LoadScene(0);
         }
-
 
         public void NotEnoughSpace(PlayerTeam team)
         {

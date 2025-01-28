@@ -82,8 +82,9 @@ namespace Core
             {
                 panel.SetActive(false);
             }
-            yield return new WaitUntil(() => TurnsManager.TurnStats == TurnStats.TroopSelection); 
-            
+
+            // yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Battle); 
+            //
             hintsPanels[0].SetActive(true);
             yield return new WaitUntil(() => _cardSelected); 
             
@@ -190,7 +191,7 @@ namespace Core
             
             hand.gameObject.SetActive(false);
             hintsPanels[2].SetActive(false);
-            yield return new WaitUntil(()=> TurnsManager.Instance.IsPlayerTurn(PlayerTeam.Player1) && TurnsManager.TurnStats == TurnStats.TroopPlay);
+           
             
             toopSelected = false;
           //  myTroops = Player.Instance.GetTroopsOnBoard().ToList();

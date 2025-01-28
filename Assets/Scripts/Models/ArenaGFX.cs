@@ -4,7 +4,7 @@ using Players;
 using UnityEditor;
 using UnityEngine;
 
-namespace Level
+namespace Models
 {
     public class ArenaGfx : MonoBehaviour
     {
@@ -12,16 +12,15 @@ namespace Level
         private static readonly int Player2Lerp = Shader.PropertyToID("_Player_2_Lerp");
         private static readonly int Player1Reverse = Shader.PropertyToID("_Player_1_Reverse");
         private static readonly int Player2Reverse = Shader.PropertyToID("_Player_2_Reverse");
-        
+
         [SerializeField] private Age age;
         [SerializeField] private GameObject gfx;
         [SerializeField] private Renderer[] renders;
         private bool _player1Active, _player2Active;
-        
 
 
         public Age GetAge() => age;
-        
+
         public void SetComponents()
         {
             gfx = transform.GetChild(0).gameObject;
@@ -36,8 +35,9 @@ namespace Level
                 if (player == PlayerTeam.Player1 && !_player1Active && !active) return;
                 if (player == PlayerTeam.Player2 && !_player2Active && !active) return;
             }
-            if(player == PlayerTeam.Player1) _player1Active = active;
-            if(player == PlayerTeam.Player2) _player2Active = active;
+
+            if (player == PlayerTeam.Player1) _player1Active = active;
+            if (player == PlayerTeam.Player2) _player2Active = active;
             for (int i = 0; i < renders.Length; i++)
             {
                 var mat = renders[i].material;
@@ -46,35 +46,34 @@ namespace Level
                 var startValue = mat.GetFloat(player == PlayerTeam.Player1 ? Player1Lerp : Player2Lerp);
                 var endValue = 30f;
                 var duration = transition ? 1f : 0;
-                DOTween.To(() => startValue, x =>
+                DOTween.To(() => startValue,
+                    x => { mat.SetFloat(player == PlayerTeam.Player1 ? Player1Lerp : Player2Lerp, x); }, endValue,
+                    duration).SetEase(Ease.Linear).OnComplete(() =>
                 {
-                    mat.SetFloat(player == PlayerTeam.Player1 ? Player1Lerp : Player2Lerp, x);
-                }, endValue, duration).SetEase(Ease.Linear).OnComplete(() =>
-                {
-                    if(!_player1Active && !_player2Active)gfx.SetActive(false);
+                    if (!_player1Active && !_player2Active) gfx.SetActive(false);
                 });
             }
         }
     }
-    
-    #if UNITY_EDITOR
-[CanEditMultipleObjects] 
-[CustomEditor(typeof(ArenaGfx), true)]
-public class TowerEditor : Editor
-{
-    public override void OnInspectorGUI()
+
+#if UNITY_EDITOR
+    [CanEditMultipleObjects]
+    [CustomEditor(typeof(ArenaGfx), true)]
+    public class TowerEditor : Editor
     {
-        DrawDefaultInspector();
-        if (GUILayout.Button("Assign Components"))
+        public override void OnInspectorGUI()
         {
-            foreach (var t in targets)
+            DrawDefaultInspector();
+            if (GUILayout.Button("Assign Components"))
             {
-                var eachTower = (ArenaGfx)t;
-                eachTower.SetComponents();
-                EditorUtility.SetDirty(eachTower);
+                foreach (var t in targets)
+                {
+                    var eachTower = (ArenaGfx) t;
+                    eachTower.SetComponents();
+                    EditorUtility.SetDirty(eachTower);
+                }
             }
         }
     }
-}
 #endif
 }

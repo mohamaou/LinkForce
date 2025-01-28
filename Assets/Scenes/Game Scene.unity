@@ -8333,6 +8333,7 @@ GameObject:
   - component: {fileID: 976142741}
   - component: {fileID: 976142743}
   - component: {fileID: 976142744}
+  - component: {fileID: 976142745}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -8352,10 +8353,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891306d1b531b4fe68de17a1e772a35f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levels:
+  - {fileID: 11400000, guid: 2a50bc8da0d6ed847b9e29ad516a1f65, type: 2}
+  - {fileID: 11400000, guid: 52c621e7ecffd9e47be358c8fed5e26a, type: 2}
+  - {fileID: 11400000, guid: d829ed16fe9592f42a0f72d285b98976, type: 2}
+  - {fileID: 11400000, guid: c17f2b0dd76853a449a750dc41828535, type: 2}
+  - {fileID: 11400000, guid: 0eb3035feeab1774aac8870b3e0c1117, type: 2}
   fastGame: 0
   tutorialLevel: 0
-  showPlayerPorofile: 1
-  flipCoin: 0
+  showPlayerProfile: 0
+  timeRemaining: 0
 --- !u!4 &976142742
 Transform:
   m_ObjectHideFlags: 0
@@ -8438,6 +8445,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4cdd57563ed1a5e4bb707e4e686597c7, type: 2}
   - {fileID: 11400000, guid: f237b300e8f0603409b67e95bc4aad0a, type: 2}
   minimumTroopBuildings: 1
+--- !u!114 &976142745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976142740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5770f686352b24cbbce3d1611f47dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playState: 0
 --- !u!1 &979288132
 GameObject:
   m_ObjectHideFlags: 0
