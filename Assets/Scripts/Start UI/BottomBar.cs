@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Start_UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -114,6 +115,7 @@ namespace MainMenu
 
         private void ButtonClicked(int index)
         {
+            if (MainMenuCardsPanel.Instance.IsCardSelected()) return;
             for (int i = 0; i < buttons.Length; i++)
             {
                 if(i == index) 

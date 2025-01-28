@@ -21,12 +21,15 @@ namespace Start_UI
         [SerializeField] private Image[] images;
         private bool _selected;
         private BuildingCard _troop;
+        private BuildingType _buildingType;
 
         private void Start()
         {
             upgradeButton.onClick.AddListener(ShowInfoPanel);
         }
 
+        public BuildingType GetBuildingType() => _buildingType;
+        
         public void SetCard(BuildingCard buildingCard)
         {
             _troop = buildingCard;
@@ -68,6 +71,7 @@ namespace Start_UI
                     ? Color.white
                     : Color.red;
             });
+            _buildingType = buildingCard.GetBuildingType();
             SetCardStats(buildingCard);
             foreach (var image in images)
             {
@@ -122,6 +126,7 @@ namespace Start_UI
         }
         private void ShowInfoPanel()
         {
+            if(MainMenuCardsPanel.Instance.IsCardSelected()) return;
             BuildingStatsPanel.Instance.SetTroop(_troop);
         }
         #endregion

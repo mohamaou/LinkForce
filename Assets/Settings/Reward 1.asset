@@ -15,4 +15,8 @@ MonoBehaviour:
   id: 1
   full: 0
   debugging: 0
-  rewards: []
+  rewards:
+  - Amount: 10
+    IsGold: 0
+  - Amount: 10
+    IsGold: 0

@@ -178,7 +178,7 @@ namespace Core
             if (State != GameState.Play) return;
             Result = result;
             State = GameState.GameOver;
-            Bot.Instance.AdjustDifficulty(result == GameResult.Win);
+            //Bot.Instance.AdjustDifficulty(result == GameResult.Win);
             if (result == GameResult.Win)
             {
                 PlayerPrefs.SetInt("Level", Level++);

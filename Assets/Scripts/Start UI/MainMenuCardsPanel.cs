@@ -4,6 +4,7 @@ using Cards;
 using Core;
 using DG.Tweening;
 using TMPro;
+using Troops;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,11 +20,21 @@ namespace Start_UI
         [SerializeField] private TextMeshProUGUI coinsText;
         
         private MainMenuCard  _currentSelectedCard;
-        private List<MainMenuCard> _troopCards = new List<MainMenuCard>(); 
+        private List<MainMenuCard> _troopCards = new List<MainMenuCard>();
+        private bool _cardSelected;
         
         private void Awake()
         {
             Instance = this;
+        }
+        public bool IsCardSelected()
+        {
+            if (_cardSelected)
+            {
+                _cardSelected = false;
+                CancelCardSelected();
+            }
+            return false;
         }
 
         private IEnumerator Start()
@@ -56,26 +67,31 @@ namespace Start_UI
 
         public void CardSelected(MainMenuCard cardInUse)
         {
-            for (int i = 0; i < selectedCardsContainers.Length; i++)
+            _currentSelectedCard = cardInUse;
+            foreach (var c in selectedCardsContainers)
             {
-                selectedCardsContainers[i].DOShakeRotation(
-                    duration: .2f, 
-                    strength: new Vector3(0, 0, 4f), 
-                    vibrato: 10, 
-                    randomness: 90,
-                    true
-                ).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear).SetDelay(Random.Range(0f, 0.1f));
+                if (!OnlyOneTroop() || c.GetComponentInChildren<MainMenuCard>().GetBuildingType() != BuildingType.Troops)
+                {
+                    c.DOShakeRotation(
+                        duration: .2f, 
+                        strength: new Vector3(0, 0, 4f), 
+                        vibrato: 10, 
+                        randomness: 90,
+                        true
+                    ).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear).SetDelay(Random.Range(0f, 0.1f));
+                }
             }
             cardInUse.transform.SetParent(transform);
             var pos = new Vector2(Screen.width / 2f, Screen.height / 2f);
             cardInUse.transform.DOMove(pos, .2f);
             cardInUse.transform.DOScale(Vector3.one, duration: .2f);
-            _currentSelectedCard = cardInUse;
+            _cardSelected = true;
         }
 
         public void CancelCardSelected()
         {
             if (_currentSelectedCard == null) return;
+            _cardSelected = false;
             _currentSelectedCard.transform.SetParent(cardsContainer);
             _currentSelectedCard.transform.DOLocalRotate(Vector3.zero, 0.2f);
             _currentSelectedCard.transform.DOScale(Vector3.one, 0.2f);
@@ -89,9 +105,23 @@ namespace Start_UI
             }
         }
 
+        private bool OnlyOneTroop()
+        {
+            if(_currentSelectedCard != null && _currentSelectedCard.GetBuildingType() == BuildingType.Troops) return false;
+            var troopsCount = 0;
+            foreach (var c in selectedCardsContainers)
+            {
+                if (c.GetComponentInChildren<MainMenuCard>().GetBuildingType() == BuildingType.Troops) 
+                    troopsCount++;
+            }
+            return troopsCount <= 1;
+        }
         public void SelectACard(MainMenuCard cardToRemove)
         {
+            if (OnlyOneTroop() && cardToRemove.GetBuildingType() == BuildingType.Troops) return;
+            
             if (_currentSelectedCard == null) return;
+            _cardSelected = false;
             for (int i = 0; i < selectedCardsContainers.Length; i++)
             {
                 var card = selectedCardsContainers[i];

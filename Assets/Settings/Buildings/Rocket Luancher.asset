@@ -30,7 +30,12 @@ MonoBehaviour:
   ghost:
     ghostDamage: []
   rocket:
-    rocketDamage: []
+    rocketDamage:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
     shootTime: 0
   shield:
     shieldCount: 

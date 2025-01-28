@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cards;
 using Core;
 using DG.Tweening;
 using MoreMountains.Feedbacks;
@@ -61,6 +62,22 @@ namespace UI
             sequence.Join(background.DOColor(Color.clear, 0.4f));
             sequence.OnComplete(() => onFinished?.Invoke());
 
+        }
+
+        public void SetPlayer1Card(BuildingCard[] buildingCards)
+        {
+            for (int i = 0; i < buildingCards.Length; i++)
+            {
+                player1Cards[i].SetCard(buildingCards[i]);
+            }
+        }
+
+        public void SetPlayer2Card(BuildingCard[] buildingCards)
+        {
+            for (int i = 0; i < buildingCards.Length; i++)
+            {
+                player2Cards[i].SetCard(buildingCards[i]);
+            }
         }
     }
 

@@ -41,7 +41,7 @@ namespace Core
        private void DrawDice()
        {
           // if(_playerTurn == PlayerTeam.Player1) Player.Instance.DrawDice();
-           if(_playerTurn == PlayerTeam.Player2) Bot.Instance.DrawDice();
+           //if(_playerTurn == PlayerTeam.Player2) Bot.Instance.DrawDice();
            TurnStats = TurnStats.Rolling;
        }
 
@@ -66,7 +66,7 @@ namespace Core
            TurnStats = TurnStats.Draw;
           // UIManager.Instance.turnUI.EndTurnButtonSetActive(false);
            DOVirtual.DelayedCall(1.5f, DrawDice,false);
-           Bot.Instance.TurnEnd();
+          // Bot.Instance.TurnEnd();
           // Player.Instance.TurnEnd();
           // UIManager.Instance.turnUI.TurnEnds(_playerTurn);
        }

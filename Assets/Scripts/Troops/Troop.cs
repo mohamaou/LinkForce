@@ -59,6 +59,10 @@ namespace Troops
         [Header("Equipment")]
         [SerializeField] private Equipment originalEquipment;
         [SerializeField] private Equipment[] equipments;
+        
+        [Header("Damage Effects")]
+        [SerializeField] private GameObject electrocutedEffect;
+        [SerializeField] private GameObject poisonedEffect, freezeEffect;
      
         private TroopState _troopState = TroopState.Idle;
         private Action _onTroopSet, _onDeath;
@@ -66,6 +70,13 @@ namespace Troops
         private Vector3 _healthOffset;
         private PlayerTeam _team;
 
+
+        private void Start()
+        {
+            poisonedEffect.SetActive(false);
+            freezeEffect.SetActive(false);
+            electrocutedEffect.SetActive(false);
+        }
 
         #region Editor Code
 
@@ -104,7 +115,6 @@ namespace Troops
         #endregion
 
         #region Fighting
-
         public void TakeDamage(float damage)
         {
             if (_troopState == TroopState.Death) return;
@@ -132,7 +142,7 @@ namespace Troops
             // if(_team == PlayerTeam.Player1) Bot.Instance.RemoveEnemyTroop(this);
             Destroy(healthBar.gameObject);
             GetComponent<Collider>().enabled = false;
-            if (_team == PlayerTeam.Player2) Bot.Instance.RemoveTroop(this);
+           // if (_team == PlayerTeam.Player2) Bot.Instance.RemoveTroop(this);
             _troopState = TroopState.Death;
             GetComponent<Rigidbody>().isKinematic = true;
             GameManager.Instance.CheckIfGameEnds(_team);

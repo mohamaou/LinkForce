@@ -42,7 +42,10 @@ namespace Players
             {
                 if(card.IsSelected()) _selectedBuilding.Add(card);
             }
+            UIManager.Instance.startUI.SetPlayer1Card(_selectedBuilding.ToArray());
+            
             yield return new WaitUntil(() => GameManager.State == GameState.Play);
+            
             UIManager.Instance.playPanel.GetSummonButton().onClick.AddListener(SummonButtonClicked);
             StartCoroutine(SelectBuilding());
             StartCoroutine(CutLinks());
