@@ -6627,7 +6627,6 @@ RectTransform:
   - {fileID: 1187087460}
   - {fileID: 1711366744}
   - {fileID: 463920037}
-  - {fileID: 1529804565}
   m_Father: {fileID: 487254796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -8704,6 +8703,8 @@ MonoBehaviour:
     summonButton: {fileID: 1379090399}
     battleButton: {fileID: 1416842568}
     spaceErrorText: {fileID: 580654868}
+    summonPanel: {fileID: 1174951991}
+    battlePanel: {fileID: 316583749}
   BuildingPanel: {fileID: 6282130088315262113, guid: f73bc186ab0ccf74abf285cdc645f40e, type: 3}
   startPanel: {fileID: 821670318}
   playPanelObject: {fileID: 487254795}
@@ -13478,6 +13479,7 @@ RectTransform:
   - {fileID: 179026901}
   - {fileID: 195854010}
   - {fileID: 1876449089}
+  - {fileID: 1529804565}
   m_Father: {fileID: 1174951992}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
@@ -14073,7 +14075,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1416842569}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 976142741}
+        m_TargetAssemblyTypeName: Core.GameManager, Assembly-CSharp
+        m_MethodName: StartBattle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1416842569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15475,17 +15489,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529804564}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 428247852}
-  m_Father: {fileID: 751221060}
+  m_Father: {fileID: 1379090398}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000014067, y: -50.921}
+  m_AnchoredPosition: {x: -0.100070395, y: 1625.8535}
   m_SizeDelta: {x: 195.6192, y: 72.246}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1529804566
