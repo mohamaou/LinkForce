@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AI;
 using DG.Tweening;
@@ -54,7 +55,9 @@ namespace Core
         private int _fpsCount = 0;  
         private int _fpsDisplay = 0;
         private bool _player1NotEnoughSpace, _player2NotEnoughSpace;
-        public float timeRemaining = 0;
+        private float timeRemaining = 0;
+        public float costToSummon = 3;
+        public float coins = 0;
 
         
         private void Awake()
@@ -65,6 +68,7 @@ namespace Core
             Application.targetFrameRate = 120;
             Time.timeScale = fastGame ? 4f : 1f;
             Level = PlayerPrefs.GetInt("Level", 1);
+            coins = PlayerPrefs.GetInt("coins", 10);
             timeRemaining = GameManager.Instance.levels[Level - 1].summonTime;
         }
 
@@ -93,6 +97,21 @@ namespace Core
             var seconds = Mathf.FloorToInt(timeRemaining % 60);
             if (minutes < 0 && seconds < 0) return;
             UIManager.Instance.playPanel.GetTimerText().text = $"{minutes}:{seconds:00}";
+        }
+
+        public void CutSummonCost(){
+            coins -= costToSummon;
+            UIManager.Instance.playPanel.UpdateAvailableCoins();
+        }
+
+        public void AddEndTurnReward(){
+            coins += levels[Level-1].pointsToAddOnTurn;
+            UIManager.Instance.playPanel.UpdateAvailableCoins();
+        }
+
+        public void AddMergeReward(){
+            coins += levels[Level-1].pointsToAddOnMerge;
+            UIManager.Instance.playPanel.UpdateAvailableCoins();
         }
 
         public void StartBattle()
