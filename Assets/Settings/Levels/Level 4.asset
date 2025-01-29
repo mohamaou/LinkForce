@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Level 4
   m_EditorClassIdentifier: 
   summonTime: 90
+  pointsToAddOnTurn: 1
+  pointsToAddOnMerge: 1
