@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cards;
 using Core;
 using DG.Tweening;
+using fbg;
 using MoreMountains.Feedbacks;
 using Start_UI;
 using TMPro;
@@ -128,6 +129,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI spaceErrorText;
         [SerializeField] public GameObject summonPanel;
         [SerializeField] public GameObject battlePanel;
+        [SerializeField] public DOTweenAnimation CoinsParent;
         
         public void Start()
         {
@@ -140,6 +142,7 @@ namespace UI
         }
         
         public TextMeshProUGUI GetTimerText() => timerText;
+        public TextMeshProUGUI GetAvailableGold() => availableGold;
         public Button GetSummonButton() => summonButton;
         public Button GetBattleButton() => battleButton;
 
@@ -155,6 +158,18 @@ namespace UI
             sequence.Append(errorTextCopy.rectTransform.DOAnchorPos(targetPosition, 1f).SetEase(Ease.OutQuad));
             sequence.Join(errorTextCopy.DOFade(0, 1f));
             sequence.OnComplete(() => Object.Destroy(errorTextCopy.gameObject));
+        }
+
+        public void UpdateAvailableCoins(){
+            availableGold.text = GameManager.Instance.coins.ToString();
+
+            if(GameManager.Instance.costToSummon > GameManager.Instance.coins)
+                availableGold.color = Color.red;
+        }
+
+        public void ShowNotEnoughGoldEffect()
+        {
+           CoinsParent.DORestart();
         }
     }
 
@@ -196,6 +211,7 @@ namespace UI
             startPanel.SetActive(false);
             playPanelObject.SetActive(true);
             GameManager.State = GameState.Play;
+            playPanel.GetAvailableGold().text = GameManager.Instance.coins.ToString();
         }
 
         public void ShowBattleUI()
@@ -203,7 +219,7 @@ namespace UI
             playPanel.summonPanel.SetActive(false);
             playPanel.battlePanel.SetActive(false);
         }
-        
+
         public void GameEnd(bool win)
         {
             playPanelObject.SetActive(false);

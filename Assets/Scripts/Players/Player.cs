@@ -66,6 +66,11 @@ namespace Players
 
         private void SummonButtonClicked()
         {
+            if(GameManager.Instance.costToSummon > GameManager.Instance.coins){
+                UIManager.Instance.playPanel.ShowNotEnoughGoldEffect();
+                return;
+            }
+
             for (var i = 0; i < _selectedBuilding.Count; i++)
             {
                 var targetBuilding = _selectedBuilding[(Random.Range(0, _selectedBuilding.Count) + i) % _selectedBuilding.Count].GetBuilding();
@@ -77,6 +82,8 @@ namespace Players
                     var b = Instantiate(targetBuilding, summonPos, Quaternion.identity, transform);
                     b.Set(PlayerTeam.Player1);
                     _buildingsOnBoard.Add(b);
+                    GameManager.Instance.CutSummonCost();
+                   
                     return;
                 }
             }
@@ -235,6 +242,7 @@ namespace Players
                 target.SetLinksToTroops(target.GetLinksToTroops() + source.GetLinksToTroops());
                 target.SetLinksToBuffs(target.GetLinksToBuffs() + source.GetLinksToBuffs());
                 Destroy(source.gameObject);
+                GameManager.Instance.AddMergeReward();
             });
         }
 
