@@ -21,6 +21,7 @@ MonoBehaviour:
   description: 
   melee:
     damage: []
+    range: 0
   range:
     damage: []
     range: 0
@@ -29,17 +30,30 @@ MonoBehaviour:
     healthIncreased: []
   ghost:
     ghostDamage: []
+    ghostRange: 0
   rocket:
     rocketDamage: []
     shootTime: 0
+    range: 0
   shield:
     shieldCount: 
   armor:
     damageNegation: []
   assassin:
-    hideTime: []
-    coolDownTime: []
+    hideTime:
+    - 10
+    - 10
+    - 10
+    - 10
+    - 10
+    coolDownTime:
+    - 5
+    - 5
+    - 5
+    - 5
+    - 5
   troop:
-    damage: 
-    health: 
+    damage: []
+    health: []
+    range: 1
     speed: 0

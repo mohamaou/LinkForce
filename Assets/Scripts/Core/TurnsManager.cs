@@ -14,14 +14,14 @@ namespace Core
     }
     public class TurnsManager : MonoBehaviour
     {
-        public static TurnsManager Instance{get; private set;}
-        public PlayState playState;
+        public static TurnsManager Instance {get; private set;}
+        public static PlayState PlayState;
         private PlayerTeam _playerTurn;
 
         private void Awake()
         {
             Instance = this;
-            playState = PlayState.Summon;
+            PlayState = PlayState.Summon;
         }
 
         private IEnumerator Start()

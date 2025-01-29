@@ -21,17 +21,28 @@ MonoBehaviour:
   description: 
   melee:
     damage: []
-  range:
-    damage: []
     range: 0
+  range:
+    damage:
+    - damage: 4
+      damageType: 1
+    - damage: 4
+      damageType: 1
+    - damage: 4
+      damageType: 1
+    - damage: 4
+      damageType: 1
+    range: 8
   berserker:
     damageIncreased: []
     healthIncreased: []
   ghost:
     ghostDamage: []
+    ghostRange: 0
   rocket:
     rocketDamage: []
     shootTime: 0
+    range: 0
   shield:
     shieldCount: 
   armor:
@@ -40,6 +51,7 @@ MonoBehaviour:
     hideTime: []
     coolDownTime: []
   troop:
-    damage: 
-    health: 
+    damage: []
+    health: []
+    range: 1
     speed: 0

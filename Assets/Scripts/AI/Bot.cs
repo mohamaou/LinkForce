@@ -14,6 +14,7 @@ namespace AI
         [SerializeField] private BuildingCard[] building;
         [SerializeField] [Range(1,5)] private int minimumTroopBuildings = 1;
         private readonly List<BuildingCard> _buildings= new List<BuildingCard>();
+        private readonly List<Troop> _myTroops = new List<Troop>();
         
 
         private void Awake()
@@ -62,5 +63,10 @@ namespace AI
                 }
             }
         }
+
+
+
+        public void AddTroop(Troop troop) => _myTroops.Add(troop);
+        public List<Troop> GetTroops() => _myTroops;
     }
 }
