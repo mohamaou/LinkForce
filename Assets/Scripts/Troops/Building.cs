@@ -42,6 +42,8 @@ namespace Troops
         public Renderer[] GetRenderers() => renderers;
         public Link CreateLink() => Instantiate(link, transform);
         public BuildingType GetBuildingType() => buildingType;
+        public BuildingUI GetBuildingPanel() => _buildingPanel;
+        public MMFeedbacks GetLandFeedback() => landFeedback;
         public List<Link> GetMyLinks() => _myLinks;
         public string GetId() => id;
         public bool IsActive() => _active;
@@ -57,7 +59,8 @@ namespace Troops
         
         public void Start()
         {
-            var buildingUI = Instantiate(UIManager.Instance.BuildingPanel, UIManager.Instance.transform);
+            var buildingUI = Instantiate(UIManager.Instance.BuildingPanel,
+                UIManager.Instance.playPanel.summonPanel.transform);
             buildingUI.InitializePanel(this.GetIcon(), this.GetLevel(), buildingType);
             _buildingPanel = buildingUI;
             var screenPosition = GameManager.Camera.WorldToScreenPoint(this.transform.position);
