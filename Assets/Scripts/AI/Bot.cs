@@ -66,7 +66,12 @@ namespace AI
 
 
 
-        public void AddTroop(Troop troop) => _myTroops.Add(troop);
+        public void AddTroop(Troop troop)
+        {
+            _myTroops.Add(troop);
+            troop.SetDeathEvent(()=>_myTroops.Remove(troop));
+        }
+
         public List<Troop> GetTroops() => _myTroops;
     }
 }

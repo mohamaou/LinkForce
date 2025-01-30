@@ -32,5 +32,10 @@ namespace Troops
         {
             _attack?.Invoke();
         }
+
+        public void Death()
+        {
+           animator.SetTrigger("Death");
+        }
     }
 }

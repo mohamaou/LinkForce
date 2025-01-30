@@ -36,12 +36,11 @@ MonoBehaviour:
     shootTime: 0
     range: 0
   shield:
-    shieldCount: 02000000
+    shieldCount: 0500000002000000020000000200000002000000
   armor:
     damageNegation: []
   assassin:
     hideTime: []
-    coolDownTime: []
   troop:
     damage: []
     health: []

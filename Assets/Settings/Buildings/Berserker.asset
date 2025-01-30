@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f51e36877284476396b9b02ea7afb47, type: 3}
-  m_Name: Rage
+  m_Name: Berserker
   m_EditorClassIdentifier: 
   name: Rage
   buildingType: 1
@@ -26,8 +26,18 @@ MonoBehaviour:
     damage: []
     range: 0
   berserker:
-    damageIncreased: []
-    healthIncreased: []
+    damageIncreased:
+    - 17.6
+    - 30.4
+    - 53.1
+    - 79.3
+    - 100
+    healthIncreased:
+    - 22.1
+    - 42.3
+    - 63.9
+    - 80.3
+    - 100
   ghost:
     ghostDamage: []
     ghostRange: 0
@@ -41,7 +51,6 @@ MonoBehaviour:
     damageNegation: []
   assassin:
     hideTime: []
-    coolDownTime: []
   troop:
     damage: []
     health: []

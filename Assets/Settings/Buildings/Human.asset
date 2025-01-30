@@ -41,7 +41,6 @@ MonoBehaviour:
     damageNegation: []
   assassin:
     hideTime: []
-    coolDownTime: []
   troop:
     damage:
     - 10

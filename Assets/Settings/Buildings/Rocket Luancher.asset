@@ -33,7 +33,7 @@ MonoBehaviour:
     ghostRange: 0
   rocket:
     rocketDamage:
-    - 0
+    - 100
     - 0
     - 0
     - 0
@@ -46,7 +46,6 @@ MonoBehaviour:
     damageNegation: []
   assassin:
     hideTime: []
-    coolDownTime: []
   troop:
     damage: []
     health: []

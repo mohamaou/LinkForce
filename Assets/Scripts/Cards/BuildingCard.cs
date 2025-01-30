@@ -30,7 +30,7 @@ namespace Cards
     [Serializable]
     public class Berserker
     {
-        [SerializeField] private float[] damageIncreased, healthIncreased;
+        [SerializeField] [Range(0, 100)] private float[] damageIncreased, healthIncreased;
         public float GetDamageIncreased(int level) => damageIncreased[level];
         public float GetHealthIncreased(int level) => healthIncreased[level];
     }
@@ -81,9 +81,11 @@ namespace Cards
     public class Assassin
     {
         [SerializeField] private float[] hideTime;
-        [SerializeField] private float[] coolDownTime;
-        public float GetHideTime(int level) => hideTime[level];
-        public float GetCoolDownTime(int level) => coolDownTime[level];
+        
+        public float GetHideTime(int level)
+        {
+            return hideTime[level];
+        }
     }
 
     [Serializable]
@@ -93,6 +95,7 @@ namespace Cards
         [SerializeField] private float range = 1f,speed;
         
         public Damage GetDamage(int level) => new Damage(damage[level], DamageType.Physical);
+        public float GetHealth(int level) => health[level];
         public float GetRange() => range;
     }
     
@@ -137,6 +140,9 @@ namespace Cards
         public string GetDescription() => description;
         public Building GetBuilding() => building;
         public BuildingType GetBuildingType() => buildingType;
+        public float GetAssassinHideTime(int level) => assassin.GetHideTime(level);
+        public Damage GetRocketDamage(int level) => rocket.GetDamage(level);
+        public float GetArmorDamageNegation(int level) => armor.GetDamageNegation(level);
         #endregion
 
         #region Card Level
@@ -198,11 +204,18 @@ namespace Cards
                 _ => new Damage(0,DamageType.Physical)
             };
         }
-        
+
+        public float GetHealth(int level) => troop.GetHealth(level);
+
+        public int GetShieldsCount(int level) => shield.GetShieldCount(level);
+        public Damage GetGhostDamage(int level) => ghost.GetDamage(level);
+        public float GetBerserkerDamageIncrease(int level) => berserker.GetDamageIncreased(level);  
+        public float GetBerserkerHealthIncrease(int level) => berserker.GetHealthIncreased(level);  
         #endregion
         
         public void Select() => PlayerPrefs.SetInt($"IsSelected_{name}", 1);
         public void Deselect() => PlayerPrefs.SetInt($"IsSelected_{name}", 0);
+        
     }
     
 #if UNITY_EDITOR
