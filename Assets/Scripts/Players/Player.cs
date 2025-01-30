@@ -10,6 +10,9 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
 
+//---------------------------------------
+// TODO: Remove link to one of Buffs/Troops on merge when two of them are already linked
+//---------------------------------------
 namespace Players
 {
     public enum PlayerTeam
@@ -219,7 +222,7 @@ namespace Players
             var canLink = !sameType && !noLinksToBuff && !troopsAlreadyLinked;
             var canMerge = sameId && sameLevel && sameType;
 
-            return validTypes && (canLink || canMerge);
+            return (validTypes && canLink) || canMerge;
         }
 
 
