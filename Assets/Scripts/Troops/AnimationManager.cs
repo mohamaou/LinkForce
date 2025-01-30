@@ -37,5 +37,10 @@ namespace Troops
         {
            animator.SetTrigger("Death");
         }
+
+        public void Move(bool move)
+        {
+            animator.SetBool("Idle", !move);
+        }
     }
 }

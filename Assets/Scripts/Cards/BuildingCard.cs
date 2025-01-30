@@ -92,7 +92,7 @@ namespace Cards
     public class TroopStat
     {
         [SerializeField] private float[] damage, health;
-        [SerializeField] private float range = 1f,speed;
+        [SerializeField] private float range = 1f;
         
         public Damage GetDamage(int level) => new Damage(damage[level], DamageType.Physical);
         public float GetHealth(int level) => health[level];
