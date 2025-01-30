@@ -49,14 +49,14 @@ namespace Core
         public static Camera Camera;
         public static int Level;
         public List<Level> levels = new List<Level>();
-        public bool fastGame, tutorialLevel, showPlayerProfile;
+        public Level currentLevel;
+        public bool fastGame, showPlayerProfile;
         private float _timer;
         private float _fpsTimer = 0.0f;
         private int _fpsCount = 0;  
         private int _fpsDisplay = 0;
         private bool _player1NotEnoughSpace, _player2NotEnoughSpace;
         private float timeRemaining = 0;
-        public float costToSummon = 3;
         public float coins = 0;
 
         
@@ -68,8 +68,9 @@ namespace Core
             Application.targetFrameRate = 120;
             Time.timeScale = fastGame ? 4f : 1f;
             Level = PlayerPrefs.GetInt("Level", 1);
-            coins = PlayerPrefs.GetInt("coins", 10);
-            timeRemaining = GameManager.Instance.levels[Level - 1].summonTime;
+            coins = PlayerPrefs.GetInt("coins", 99);
+            currentLevel = levels[Level - 1];
+            timeRemaining = currentLevel.summonTime;
         }
 
         private void Start()
@@ -100,17 +101,17 @@ namespace Core
         }
 
         public void CutSummonCost(){
-            coins -= costToSummon;
+            coins -= currentLevel.coinsPerSpawn;
             UIManager.Instance.playPanel.UpdateAvailableCoins();
         }
 
         public void AddEndTurnReward(){
-            coins += levels[Level-1].pointsToAddOnTurn;
+            coins += currentLevel.coinsToAddOnTurn;
             UIManager.Instance.playPanel.UpdateAvailableCoins();
         }
 
         public void AddMergeReward(){
-            coins += levels[Level-1].pointsToAddOnMerge;
+            coins += currentLevel.coinsToAddOnMerge;
             UIManager.Instance.playPanel.UpdateAvailableCoins();
         }
 

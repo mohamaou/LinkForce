@@ -163,7 +163,7 @@ namespace UI
         public void UpdateAvailableCoins(){
             availableGold.text = GameManager.Instance.coins.ToString();
 
-            if(GameManager.Instance.costToSummon > GameManager.Instance.coins)
+            if (GameManager.Instance.currentLevel.coinsPerSpawn > GameManager.Instance.coins)
                 availableGold.color = Color.red;
         }
 

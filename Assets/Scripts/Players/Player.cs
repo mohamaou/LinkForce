@@ -23,13 +23,16 @@ namespace Players
         [SerializeField] private BuildingCard[] buildingsCards;
         [SerializeField] private LayerMask buildingLayer, groundLayer;
         [SerializeField] private GameObject trail;
-        private readonly List<Building> _buildingsOnBoard = new();
+        [SerializeField] private Sprite hammer;
+        [SerializeField] private GameObject hammerCursor;
         [SerializeField] private List<Link> _myLinks = new();
+        private readonly List<Building> _buildingsOnBoard = new();
         private Camera _cam;
         private bool _linking;
         private List<BuildingCard> _selectedBuilding = new();
         private List<Troop> _myTroops = new();
         public static Player Instance { get; private set; }
+        public bool isDestroyEnabled = false;
 
         private void Awake()
         {
@@ -70,11 +73,20 @@ namespace Players
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space)) SummonButtonClicked();
+
+            if (isDestroyEnabled)
+            {
+                CheckCursorOverBuilding();
+                DestroyBuilding();
+                if (hammerCursor.activeSelf) UpdateHammerCursorPosition();
+            }
+
         }
 
         private void SummonButtonClicked()
         {
-            if(GameManager.Instance.costToSummon > GameManager.Instance.coins){
+            if (GameManager.Instance.currentLevel.coinsPerSpawn > GameManager.Instance.coins)
+            {
                 UIManager.Instance.playPanel.ShowNotEnoughGoldEffect();
                 return;
             }
@@ -101,7 +113,7 @@ namespace Players
 
         private IEnumerator SelectBuilding()
         {
-            while (GameManager.State == GameState.Play)
+            while (GameManager.State == GameState.Play && !isDestroyEnabled)
             {
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -256,7 +268,7 @@ namespace Players
 
         private IEnumerator CutLinks()
         {
-            while (GameManager.State == GameState.Play)
+            while (GameManager.State == GameState.Play && !isDestroyEnabled)
             {
                 trail.SetActive(Input.GetMouseButton(0) && !_linking);
                 if (Input.GetMouseButton(0) && !_linking)
@@ -267,76 +279,7 @@ namespace Players
                         trail.transform.position = hit.point + Vector3.up * 0.15f;
                         foreach (var link in _myLinks.ToList().Where(link => link.IsBeenCut(hit.point)))
                         {
-                            link.Cut();
-                            _myLinks.Remove(link);
-                            Destroy(link.gameObject);
-                            UpdateBuildingsAfterLinkCut();
-
-                            // Decrement Weapon to Buff links number
-                            if (link._building1.GetBuildingType() == BuildingType.Weapon &&
-                                link._building2.GetBuildingType() == BuildingType.Buff)
-                                link._building1.DecrementLinksToBuffs();
-                            else if (link._building1.GetBuildingType() == BuildingType.Buff &&
-                                     link._building2.GetBuildingType() == BuildingType.Weapon)
-                                link._building2.DecrementLinksToBuffs();
-
-                            // Decrement Weapon to Troops links number
-                            if (link._building1.GetBuildingType() == BuildingType.Weapon &&
-                                link._building2.GetBuildingType() == BuildingType.Troops)
-                            {
-                                link._building1.DecrementLinksToTroops();
-
-                                if (link._building1.GetLinksToBuffs() > 1 && link._building1.GetLinksToBuffs() >
-                                    link._building1.GetLinksToTroops())
-                                {
-                                    var weaponLinks = link._building1.GetMyLinks();
-                                    for (var i = weaponLinks.Count - 1; i >= 0; i--)
-                                    {
-                                        var item = weaponLinks[i];
-                                        if (item._building1.GetBuildingType() != BuildingType.Buff &&
-                                            item._building2.GetBuildingType() != BuildingType.Buff) continue;
-
-                                        item.Cut();
-                                        _myLinks.Remove(item);
-                                        Destroy(item.gameObject);
-                                        UpdateBuildingsAfterLinkCut();
-
-                                        if (item._building1.GetBuildingType() == BuildingType.Weapon)
-                                            item._building1.DecrementLinksToBuffs();
-                                        else item._building2.DecrementLinksToBuffs();
-
-                                        break;
-                                    }
-                                }
-                            }
-                            else if (link._building1.GetBuildingType() == BuildingType.Troops &&
-                                     link._building2.GetBuildingType() == BuildingType.Weapon)
-                            {
-                                link._building2.DecrementLinksToTroops();
-
-                                if (link._building2.GetLinksToBuffs() > 1 && link._building2.GetLinksToBuffs() >
-                                    link._building2.GetLinksToTroops())
-                                {
-                                    var weaponLinks = link._building2.GetMyLinks();
-                                    for (var i = weaponLinks.Count - 1; i >= 0; i--)
-                                    {
-                                        var item = weaponLinks[i];
-                                        if (item._building1.GetBuildingType() != BuildingType.Buff &&
-                                            item._building2.GetBuildingType() != BuildingType.Buff) continue;
-
-                                        item.Cut();
-                                        _myLinks.Remove(item);
-                                        Destroy(item.gameObject);
-                                        UpdateBuildingsAfterLinkCut();
-
-                                        if (item._building1.GetBuildingType() == BuildingType.Weapon)
-                                            item._building1.DecrementLinksToBuffs();
-                                        else item._building2.DecrementLinksToBuffs();
-
-                                        break;
-                                    }
-                                }
-                            }
+                            UpdateBuildingsLinksCountAfterLinkCut(link);
                         }
                     }
                 }
@@ -344,8 +287,82 @@ namespace Players
                 yield return null;
             }
         }
-        
-        private void UpdateBuildingsAfterLinkCut()
+
+        private void UpdateBuildingsLinksCountAfterLinkCut(Link link)
+        {
+            link.Cut();
+            _myLinks.Remove(link);
+            Destroy(link.gameObject);
+            UpdateBuildingsVisualAfterLinkCut();
+
+            // Decrement Weapon to Buff links number
+            if (link._building1.GetBuildingType() == BuildingType.Weapon &&
+                link._building2.GetBuildingType() == BuildingType.Buff)
+                link._building1.DecrementLinksToBuffs();
+            else if (link._building1.GetBuildingType() == BuildingType.Buff &&
+                     link._building2.GetBuildingType() == BuildingType.Weapon)
+                link._building2.DecrementLinksToBuffs();
+
+            // Decrement Weapon to Troops links number
+            if (link._building1.GetBuildingType() == BuildingType.Weapon &&
+                link._building2.GetBuildingType() == BuildingType.Troops)
+            {
+                link._building1.DecrementLinksToTroops();
+
+                if (link._building1.GetLinksToBuffs() > 1 && link._building1.GetLinksToBuffs() >
+                    link._building1.GetLinksToTroops())
+                {
+                    var weaponLinks = link._building1.GetMyLinks();
+                    for (var i = weaponLinks.Count - 1; i >= 0; i--)
+                    {
+                        var item = weaponLinks[i];
+                        if (item._building1.GetBuildingType() != BuildingType.Buff &&
+                            item._building2.GetBuildingType() != BuildingType.Buff) continue;
+
+                        item.Cut();
+                        _myLinks.Remove(item);
+                        Destroy(item.gameObject);
+                        UpdateBuildingsVisualAfterLinkCut();
+
+                        if (item._building1.GetBuildingType() == BuildingType.Weapon)
+                            item._building1.DecrementLinksToBuffs();
+                        else item._building2.DecrementLinksToBuffs();
+
+                        break;
+                    }
+                }
+            }
+            else if (link._building1.GetBuildingType() == BuildingType.Troops &&
+                     link._building2.GetBuildingType() == BuildingType.Weapon)
+            {
+                link._building2.DecrementLinksToTroops();
+
+                if (link._building2.GetLinksToBuffs() > 1 && link._building2.GetLinksToBuffs() >
+                    link._building2.GetLinksToTroops())
+                {
+                    var weaponLinks = link._building2.GetMyLinks();
+                    for (var i = weaponLinks.Count - 1; i >= 0; i--)
+                    {
+                        var item = weaponLinks[i];
+                        if (item._building1.GetBuildingType() != BuildingType.Buff &&
+                            item._building2.GetBuildingType() != BuildingType.Buff) continue;
+
+                        item.Cut();
+                        _myLinks.Remove(item);
+                        Destroy(item.gameObject);
+                        UpdateBuildingsVisualAfterLinkCut();
+
+                        if (item._building1.GetBuildingType() == BuildingType.Weapon)
+                            item._building1.DecrementLinksToBuffs();
+                        else item._building2.DecrementLinksToBuffs();
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void UpdateBuildingsVisualAfterLinkCut()
         {
             var reachableBuildings = new HashSet<Building>();
             var troopsBuildings = _buildingsOnBoard
@@ -375,6 +392,77 @@ namespace Players
             foreach (var building in _buildingsOnBoard)
                 if (!reachableBuildings.Contains(building) && building.GetBuildingType() != BuildingType.Troops)
                     building.SetActive(false);
+        }
+
+        public void SetDestroyEnabled()
+        {
+            isDestroyEnabled = !isDestroyEnabled;
+
+            if (isDestroyEnabled)
+            {
+                foreach (var building in _buildingsOnBoard)
+                    building.Highlight();
+            }
+            else
+            {
+                StartCoroutine(SelectBuilding());
+                StartCoroutine(CutLinks());
+                foreach (var building in _buildingsOnBoard)
+                    building.RemoveHighlight();
+            }
+        }
+
+        private void DestroyBuilding()
+        {
+            if (!isDestroyEnabled) return;
+
+
+            if (!Input.GetMouseButtonDown(0)) return;
+
+            var ray = _cam.ScreenPointToRay(Input.mousePosition);
+            if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, buildingLayer)) return;
+
+            var buildingToDestroy = _buildingsOnBoard.FirstOrDefault(b => b.transform == hit.transform);
+
+            if (buildingToDestroy == null) return;
+
+            foreach (var link in buildingToDestroy.GetMyLinks().ToList())
+            {
+                UpdateBuildingsLinksCountAfterLinkCut(link);
+            }
+
+            _buildingsOnBoard.Remove(buildingToDestroy);
+            buildingToDestroy.GetLandFeedback().PlayFeedbacks();
+            buildingToDestroy.GetBuildingPanel().gameObject.SetActive(false);
+            var renderers = buildingToDestroy.GetRenderers();
+            foreach (var r in renderers)
+                r.gameObject.SetActive(false);
+
+            Destroy(buildingToDestroy.gameObject, 0.75f);
+            UpdateBuildingsVisualAfterLinkCut();
+        }
+
+
+        private void CheckCursorOverBuilding()
+        {
+            var ray = _cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, buildingLayer))
+            {
+                Cursor.visible = false;
+                hammerCursor.SetActive(true);
+            }
+            else
+            {
+                Cursor.visible = true;
+                hammerCursor.SetActive(false);
+            }
+        }
+
+        private void UpdateHammerCursorPosition()
+        {
+            var mousePosition = Input.mousePosition;
+            mousePosition.z = 0f;
+            hammerCursor.transform.position = mousePosition;
         }
     }
 }

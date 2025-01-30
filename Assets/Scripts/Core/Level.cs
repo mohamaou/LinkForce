@@ -6,7 +6,9 @@ namespace Core
     public class Level : ScriptableObject
     {
         public int summonTime;
-        public int pointsToAddOnTurn;
-        public int pointsToAddOnMerge;
+        public int coinsToAddOnTurn;
+        public int coinsToAddOnMerge;
+        public int coinsPerSpawn;
+        public int coinsPerRefund;
     }
 }

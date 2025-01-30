@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Level 4
   m_EditorClassIdentifier: 
   summonTime: 90
-  pointsToAddOnTurn: 1
-  pointsToAddOnMerge: 1
+  coinsToAddOnTurn: 1
+  coinsToAddOnMerge: 1
+  coinsPerSpawn: 3
+  coinsPerRefund: 2
