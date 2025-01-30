@@ -33,7 +33,7 @@ MonoBehaviour:
     ghostRange: 0
   rocket:
     rocketDamage:
-    - 100
+    - 10
     - 0
     - 0
     - 0
@@ -50,4 +50,3 @@ MonoBehaviour:
     damage: []
     health: []
     range: 1
-    speed: 0

@@ -490,6 +490,7 @@ GameObject:
   - component: {fileID: 4125705987927791625}
   - component: {fileID: 8416415230660011760}
   - component: {fileID: 2551166701284768134}
+  - component: {fileID: 8532911726122266648}
   m_Layer: 6
   m_Name: Goblin
   m_TagString: Untagged
@@ -819,6 +820,20 @@ MonoBehaviour:
   freezeEffect: {fileID: 5168188384324480140}
   test: 0
   equipmentsTest: 
+--- !u!114 &8532911726122266648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2390742140144270087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61a961c591af1543a042b93cc6d7e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  troop: {fileID: 2551166701284768134}
+  speed: 2
 --- !u!1 &5509137982305344937
 GameObject:
   m_ObjectHideFlags: 0

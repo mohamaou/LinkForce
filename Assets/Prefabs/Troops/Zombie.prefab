@@ -1077,6 +1077,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   troop: {fileID: 2984738832747905978}
+  speed: 2
 --- !u!1 &6285827685660900074
 GameObject:
   m_ObjectHideFlags: 0

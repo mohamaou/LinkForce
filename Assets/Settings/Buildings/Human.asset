@@ -49,10 +49,9 @@ MonoBehaviour:
     - 10
     - 10
     health:
-    - 10
+    - 100
     - 10
     - 10
     - 10
     - 10
     range: 1
-    speed: 0

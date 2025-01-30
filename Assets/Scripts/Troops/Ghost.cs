@@ -79,5 +79,11 @@ namespace Troops
 
             return closestEnemy;
         }
+
+        public void Stop()
+        {
+            StopAllCoroutines();
+            enabled = false;
+        }
     }
 }

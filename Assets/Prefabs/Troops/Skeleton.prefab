@@ -920,6 +920,7 @@ GameObject:
   - component: {fileID: -1017605484087852521}
   - component: {fileID: 1953051576125819899}
   - component: {fileID: -4396117857146195542}
+  - component: {fileID: 8575255319196525763}
   m_Layer: 6
   m_Name: Skeleton
   m_TagString: Untagged
@@ -1249,6 +1250,20 @@ MonoBehaviour:
   freezeEffect: {fileID: 9055382633425718273}
   test: 0
   equipmentsTest: 
+--- !u!114 &8575255319196525763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938940086763763908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61a961c591af1543a042b93cc6d7e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  troop: {fileID: -4396117857146195542}
+  speed: 3
 --- !u!1 &9218742892800150159
 GameObject:
   m_ObjectHideFlags: 0
