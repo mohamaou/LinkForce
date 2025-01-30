@@ -14,19 +14,19 @@ namespace Core
     }
     public class TurnsManager : MonoBehaviour
     {
-       public static TurnsManager Instance{get; private set;}
-       public PlayState playState;
-       private PlayerTeam _playerTurn;
+        public static TurnsManager Instance {get; private set;}
+        public static PlayState PlayState;
+        private PlayerTeam _playerTurn;
 
-       private void Awake()
-       {
-           Instance = this;
-           playState = PlayState.Summon;
-       }
+        private void Awake()
+        {
+            Instance = this;
+            PlayState = PlayState.Summon;
+        }
 
-       private IEnumerator Start()
-       {
-           yield return new WaitUntil(() => GameManager.State == GameState.Play);
-       }
+        private IEnumerator Start()
+        {
+            yield return new WaitUntil(() => GameManager.State == GameState.Play);
+        }
     }
 }

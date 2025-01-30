@@ -51,6 +51,8 @@ namespace Troops
 
             // Animate the slider value using DOTween
             healthBar.DOValue(_currentHealth, 0.5f).SetEase(Ease.OutQuad);
+            SetImagesVisible(true);
+            StopAllCoroutines(); 
         }
 
         public void TakeDamage(float damage)
@@ -74,7 +76,7 @@ namespace Troops
         }
         private void SetImagesVisible(bool visible)
         {
-            if (_permanentHide) return;
+            if (_permanentHide || !enabled) return;
             for (int i = 0; i < images.Length; i++)
             {
                 images[i].enabled = visible;

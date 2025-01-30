@@ -81,7 +81,7 @@ namespace Core
         private void Update()
         {
             Keyboard();
-            if (State == GameState.Play && TurnsManager.Instance.playState == PlayState.Summon) CountDown();
+            if (State == GameState.Play && TurnsManager.PlayState == PlayState.Summon) CountDown();
         }
 
         private void CountDown()
@@ -117,7 +117,7 @@ namespace Core
 
         public void StartBattle()
         {
-            TurnsManager.Instance.playState = PlayState.Battle;
+            TurnsManager.PlayState = PlayState.Battle;
             UIManager.Instance.ShowBattleUI();
             print("Start Fight");
         }

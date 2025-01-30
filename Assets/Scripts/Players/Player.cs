@@ -30,6 +30,7 @@ namespace Players
         private Camera _cam;
         private bool _linking;
         private List<BuildingCard> _selectedBuilding = new();
+        private List<Troop> _myTroops = new();
         public static Player Instance { get; private set; }
         public bool isDestroyEnabled = false;
 
@@ -39,6 +40,7 @@ namespace Players
             _cam = Camera.main;
         }
 
+        
         private IEnumerator Start()
         {
             foreach (var card in buildingsCards)
@@ -55,6 +57,10 @@ namespace Players
             var t = trail;
             trail = Instantiate(t, transform);
         }
+        
+        public void AddTroop(Troop troop) => _myTroops.Add(troop);
+        public List<Troop> GetTroops() => _myTroops;
+        
 
         private void Update()
         {

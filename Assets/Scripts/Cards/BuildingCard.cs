@@ -10,23 +10,27 @@ namespace Cards
     public class Melee
     {
         [SerializeField] private float[] damage;
+        [SerializeField] private float range;
 
-        public float GetDamage(int level) => damage[level];
+        public Damage GetDamage(int level) => new Damage(damage[level],DamageType.Physical);
+        public float GetRange() => range;
     }
 
     [Serializable]
     public class Range
     {
-        [SerializeField] private float[] damage;
+        [SerializeField] private Damage[] damage;
         [SerializeField] private float range;
         
-        public float GetDamage(int level) => damage[level];
+        public Damage GetDamage(int level) => damage[level];
+  
+
         public float GetRange() => range;
     }
     [Serializable]
     public class Berserker
     {
-        [SerializeField] private float[] damageIncreased, healthIncreased;
+        [SerializeField] [Range(0, 100)] private float[] damageIncreased, healthIncreased;
         public float GetDamageIncreased(int level) => damageIncreased[level];
         public float GetHealthIncreased(int level) => healthIncreased[level];
     }
@@ -35,16 +39,27 @@ namespace Cards
     public class Ghost
     {
         [SerializeField] private float[] ghostDamage;
-        public float GetDamage(int level) => ghostDamage[level];
+        [SerializeField] private float ghostRange;
+        public Damage GetDamage(int level)
+        {
+            return new Damage(ghostDamage[level], DamageType.Physical);
+        }
+        public float GetRange() => ghostRange;
     }
 
     [Serializable]
     public class Rocket
     {
         [SerializeField] private float[] rocketDamage;
-        [SerializeField] private float shootTime;
-        public float GetDamage(int level) => rocketDamage[level];
-        public float GetRange() => shootTime;
+        [SerializeField] private float shootTime, range;
+        public Damage GetDamage(int level)
+        {
+            return new Damage(rocketDamage[level],DamageType.Physical);
+        }
+
+        public float GetShootTime() => shootTime;
+        
+        public float GetRange() => range;
     }
 
     [Serializable]
@@ -66,16 +81,22 @@ namespace Cards
     public class Assassin
     {
         [SerializeField] private float[] hideTime;
-        [SerializeField] private float[] coolDownTime;
-        public float GetHideTime(int level) => hideTime[level];
-        public float GetCoolDownTime(int level) => coolDownTime[level];
+        
+        public float GetHideTime(int level)
+        {
+            return hideTime[level];
+        }
     }
 
     [Serializable]
     public class TroopStat
     {
-        [SerializeField] private int[] damage, health;
-        [SerializeField] private float speed;
+        [SerializeField] private float[] damage, health;
+        [SerializeField] private float range = 1f,speed;
+        
+        public Damage GetDamage(int level) => new Damage(damage[level], DamageType.Physical);
+        public float GetHealth(int level) => health[level];
+        public float GetRange() => range;
     }
     
     
@@ -101,9 +122,8 @@ namespace Cards
         public Assassin assassin;
         public TroopStat troop;
         private Action _onCardAddedEvent;
-
-
-
+        
+        #region Stats
         public TroopType GetTroopType() => troopType;
         public Sprite GetSprite() => cardSprite;
         public string GetTroopName() => name;
@@ -120,8 +140,10 @@ namespace Cards
         public string GetDescription() => description;
         public Building GetBuilding() => building;
         public BuildingType GetBuildingType() => buildingType;
-        
-        
+        public float GetAssassinHideTime(int level) => assassin.GetHideTime(level);
+        public Damage GetRocketDamage(int level) => rocket.GetDamage(level);
+        public float GetArmorDamageNegation(int level) => armor.GetDamageNegation(level);
+        #endregion
 
         #region Card Level
         public void SetCardChangedEvent(System.Action evento) => _onCardAddedEvent += evento;
@@ -157,11 +179,45 @@ namespace Cards
         }
         #endregion
 
+        #region Equipments Stats
+        public float GetRange()
+        {
+            return troopType switch
+            {
+                TroopType.Ghost => ghost.GetRange(),
+                TroopType.Rocket => rocket.GetRange(),
+                TroopType.Axe or TroopType.Sword => melee.GetRange(),
+                TroopType.Bow or TroopType.Electric or TroopType.Ice or TroopType.Poison => range.GetRange(),
+                TroopType.Zombie or TroopType.Human or TroopType.Skeleton or TroopType.Goblin => troop.GetRange(),
+                _ => 0,
+            };
+        }
+        public Damage GetDamage(int level)
+        {
+            return troopType switch
+            {
+                TroopType.Ghost => ghost.GetDamage(level),
+                TroopType.Rocket => rocket.GetDamage(level),
+                TroopType.Axe or TroopType.Sword => melee.GetDamage(level),
+                TroopType.Zombie or TroopType.Human or TroopType.Skeleton or TroopType.Goblin => troop.GetDamage(level),
+                TroopType.Electric or TroopType.Ice or TroopType.Poison or TroopType.Bow => range.GetDamage(level),
+                _ => new Damage(0,DamageType.Physical)
+            };
+        }
+
+        public float GetHealth(int level) => troop.GetHealth(level);
+
+        public int GetShieldsCount(int level) => shield.GetShieldCount(level);
+        public Damage GetGhostDamage(int level) => ghost.GetDamage(level);
+        public float GetBerserkerDamageIncrease(int level) => berserker.GetDamageIncreased(level);  
+        public float GetBerserkerHealthIncrease(int level) => berserker.GetHealthIncreased(level);  
+        #endregion
+        
         public void Select() => PlayerPrefs.SetInt($"IsSelected_{name}", 1);
         public void Deselect() => PlayerPrefs.SetInt($"IsSelected_{name}", 0);
+        
     }
     
-
 #if UNITY_EDITOR
 [CustomEditor(typeof(BuildingCard))]
 public class BuildingCardEditor : Editor
@@ -265,6 +321,4 @@ public class BuildingCardEditor : Editor
     }
 }
 #endif
-
-
 }

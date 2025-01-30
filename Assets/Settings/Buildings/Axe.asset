@@ -20,7 +20,13 @@ MonoBehaviour:
   defaultTroop: 0
   description: 
   melee:
-    damage: []
+    damage:
+    - 10
+    - 10
+    - 10
+    - 10
+    - 10
+    range: 1.5
   range:
     damage: []
     range: 0
@@ -29,17 +35,19 @@ MonoBehaviour:
     healthIncreased: []
   ghost:
     ghostDamage: []
+    ghostRange: 0
   rocket:
     rocketDamage: []
     shootTime: 0
+    range: 0
   shield:
     shieldCount: 
   armor:
     damageNegation: []
   assassin:
     hideTime: []
-    coolDownTime: []
   troop:
-    damage: 
-    health: 
+    damage: []
+    health: []
+    range: 1
     speed: 0
