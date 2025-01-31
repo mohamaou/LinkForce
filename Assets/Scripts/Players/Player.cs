@@ -242,28 +242,46 @@ namespace Players
                 target.IncrementLevel();
                 _buildingsOnBoard.Remove(source);
 
-                var sourceLinks = source.GetMyLinks();
-                foreach (var link in sourceLinks)
+                if (source.GetBuildingType() == BuildingType.Troops && source.GetMyLinks().Count > 0 &&
+                    target.GetMyLinks().Count > 0)
                 {
-                    var otherBuilding = link.GetLinkedBuilding(source);
-                    otherBuilding.RemoveLink(link);
+                    var sourceLinks = source.GetMyLinks();
+                    foreach (var link in sourceLinks)
+                    {
+                        var otherBuilding = link.GetLinkedBuilding(source);
+                        otherBuilding.RemoveLink(link);
+                        otherBuilding.SetActive(false);
+                        otherBuilding.SetLinksToTroops(otherBuilding.GetLinksToTroops() - 1);
+                        _myLinks.Remove(link);
+                        Destroy(link.gameObject);
+                    }
+                }
+                else
+                {
+                    var sourceLinks = source.GetMyLinks();
+                    foreach (var link in sourceLinks)
+                    {
+                        var otherBuilding = link.GetLinkedBuilding(source);
+                        otherBuilding.RemoveLink(link);
 
-                    var newLink = otherBuilding.CreateLink();
-                    newLink.SetLink(PlayerTeam.Player1);
+                        var newLink = otherBuilding.CreateLink();
+                        newLink.SetLink(PlayerTeam.Player1);
 
-                    newLink.SetBuildings(otherBuilding, target);
-                    target.SetBuildingLink(newLink);
-                    otherBuilding.SetBuildingLink(newLink);
+                        newLink.SetBuildings(otherBuilding, target);
+                        target.SetBuildingLink(newLink);
+                        otherBuilding.SetBuildingLink(newLink);
 
-                    newLink.ShowLink(otherBuilding.transform.position, target.transform.position);
+                        newLink.ShowLink(otherBuilding.transform.position, target.transform.position);
 
-                    _myLinks.Remove(link);
-                    _myLinks.Add(newLink);
-                    Destroy(link.gameObject);
+                        _myLinks.Remove(link);
+                        _myLinks.Add(newLink);
+                        Destroy(link.gameObject);
+                    }
+
+                    target.SetLinksToTroops(target.GetLinksToTroops() + source.GetLinksToTroops());
+                    target.SetLinksToBuffs(target.GetLinksToBuffs() + source.GetLinksToBuffs());
                 }
 
-                target.SetLinksToTroops(target.GetLinksToTroops() + source.GetLinksToTroops());
-                target.SetLinksToBuffs(target.GetLinksToBuffs() + source.GetLinksToBuffs());
                 Destroy(source.gameObject);
                 GameManager.Instance.AddMergeReward();
             });
