@@ -76,6 +76,7 @@ namespace Players
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space)) SummonButtonClicked();
+            if(Input.GetKeyDown(KeyCode.B)) GameManager.Instance.StartBattle();
 
             if (isDestroyEnabled)
             {
@@ -88,7 +89,7 @@ namespace Players
 
         private void SummonButtonClicked()
         {
-            if (GameManager.Instance.currentLevel.coinsPerSpawn > GameManager.Instance.coins)
+            if (GameManager.Instance.currentLevel.coinsPerSpawn > CoinsManager.Instance.GetCoinsAmount(PlayerTeam.Player1))
             {
                 UIManager.Instance.playPanel.ShowNotEnoughGoldEffect();
                 return;
@@ -105,8 +106,7 @@ namespace Players
                     var b = Instantiate(targetBuilding, summonPos, Quaternion.identity, transform);
                     b.Set(PlayerTeam.Player1);
                     _buildingsOnBoard.Add(b);
-                    GameManager.Instance.CutSummonCost();
-                   
+                    CoinsManager.Instance.UseCoins(GameManager.Instance.currentLevel.coinsPerSpawn, PlayerTeam.Player1);
                     return;
                 }
             }
@@ -196,7 +196,7 @@ namespace Players
             }
         }
 
-        private static bool ValidateLink(Building building1, Building building2)
+        public static bool ValidateLink(Building building1, Building building2)
         {
             if (building1 == building2) return false;
             var type1 = building1.GetBuildingType();
@@ -265,7 +265,7 @@ namespace Players
                 target.SetLinksToTroops(target.GetLinksToTroops() + source.GetLinksToTroops());
                 target.SetLinksToBuffs(target.GetLinksToBuffs() + source.GetLinksToBuffs());
                 Destroy(source.gameObject);
-                GameManager.Instance.AddMergeReward();
+                CoinsManager.Instance.AddMergeReward(PlayerTeam.Player1);
             });
         }
 
@@ -273,6 +273,11 @@ namespace Players
         {
             while (GameManager.State == GameState.Play && !isDestroyEnabled)
             {
+                if (TurnsManager.PlayState != PlayState.Summon)
+                {
+                    yield return null;
+                    continue;
+                }
                 trail.SetActive(Input.GetMouseButton(0) && !_linking);
                 if (Input.GetMouseButton(0) && !_linking)
                 {

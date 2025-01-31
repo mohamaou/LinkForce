@@ -10,6 +10,7 @@ namespace Core
     public enum PlayState
     {
         Summon,
+        Wait,
         Battle
     }
     public class TurnsManager : MonoBehaviour
