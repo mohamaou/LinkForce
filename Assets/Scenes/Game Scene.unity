@@ -8616,10 +8616,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072649f2dcc9c4312af68bc95b8a57ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingsCards:
+  buildingCards:
   - {fileID: 11400000, guid: defcb5543ddcf814bb578a007372319d, type: 2}
   - {fileID: 11400000, guid: a434d79731ac5964b96fc944cca982a3, type: 2}
   - {fileID: 11400000, guid: 4566cd0e49a8fef4083f6d9e127ad53d, type: 2}
+  - {fileID: 11400000, guid: 9c33709a370d29d42a0984dfd03b0759, type: 2}
   - {fileID: 11400000, guid: c40b470ac9f9113459a2880a3c99ac7a, type: 2}
   - {fileID: 11400000, guid: f558c8695a2affb449f8487608329c1c, type: 2}
   - {fileID: 11400000, guid: 9e26a27afdad4ae499c07133c2a65034, type: 2}
@@ -8627,12 +8628,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a2ce2a1f4095dc944afc4a1d58baac6f, type: 2}
   - {fileID: 11400000, guid: 95930298985bb1d44aa55589672d1da1, type: 2}
   - {fileID: 11400000, guid: fc70bb3a262225040a712d2def48cb06, type: 2}
-  - {fileID: 11400000, guid: 9c33709a370d29d42a0984dfd03b0759, type: 2}
   - {fileID: 11400000, guid: 8bab4ee036f32634997ef9e6373b36e5, type: 2}
   - {fileID: 11400000, guid: 7ceb2dc8f9bcdc34c8b0836265f2d74e, type: 2}
   - {fileID: 11400000, guid: f35ae8041597e43458255df4df777426, type: 2}
   - {fileID: 11400000, guid: 4cdd57563ed1a5e4bb707e4e686597c7, type: 2}
   - {fileID: 11400000, guid: f237b300e8f0603409b67e95bc4aad0a, type: 2}
+  team: 0
   buildingLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -8642,7 +8643,6 @@ MonoBehaviour:
   trail: {fileID: 2738585136317140410, guid: 51229b8e203e9ed4a83e58faf1d68824, type: 3}
   hammer: {fileID: 21300000, guid: 85a27e0e5dfa74cef97c2de8c7edc70c, type: 3}
   hammerCursor: {fileID: 783234108}
-  _myLinks: []
   isDestroyEnabled: 0
 --- !u!114 &976142744
 MonoBehaviour:
@@ -8673,7 +8673,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f35ae8041597e43458255df4df777426, type: 2}
   - {fileID: 11400000, guid: 4cdd57563ed1a5e4bb707e4e686597c7, type: 2}
   - {fileID: 11400000, guid: f237b300e8f0603409b67e95bc4aad0a, type: 2}
-  minimumTroopBuildings: 1
+  team: 1
+  _myLinks: []
 --- !u!114 &976142745
 MonoBehaviour:
   m_ObjectHideFlags: 0

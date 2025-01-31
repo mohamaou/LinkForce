@@ -130,7 +130,15 @@ namespace Troops
         {
             _myLinks.Remove(myLink);
         }
-
+        public List<Link> GetAllLinks()=> _myLinks;
+        public void RemoveAllLinks()
+        {
+            foreach (var l in _myLinks)
+            {
+                Destroy(l.gameObject);
+            }
+            _myLinks.Clear();
+        }
         public void IncrementLevel()
         {
             level++;
