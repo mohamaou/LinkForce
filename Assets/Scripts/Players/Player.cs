@@ -69,6 +69,7 @@ namespace Players
                 UIManager.Instance.playPanel.ShowNotEnoughGoldEffect();
                 return;
             }
+            CoinsManager.Instance.UseCoins(GameManager.Instance.currentLevel.coinsPerSpawn, PlayerTeam.Player1);
             if(!SummonRandomBuilding()) UIManager.Instance.playPanel.ShowSpaceErrorText();
         }
 
