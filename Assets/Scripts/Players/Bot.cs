@@ -74,12 +74,22 @@ namespace Players
                 .Where(b => b.GetBuildingType() == BuildingType.Buff)
                 .OrderBy(b => random.Next())
                 .ToList();
+            
             foreach (var troopBuilding in troopBuildings)
             {
                 foreach (var weaponBuilding in weaponBuildings)
                 {
-                    if (TryToLinkBuildings(troopBuilding, weaponBuilding))
-                        yield return new WaitForSeconds(1f);
+                    var l = troopBuilding.CreateLink();
+                    l.SetLink(PlayerTeam.Player2);
+                    l.ShowLink(troopBuilding.transform.position, weaponBuilding.transform.position);
+                    l.SetBuildings(troopBuilding, weaponBuilding);
+
+                    if (ValidateLink(troopBuilding, weaponBuilding))
+                        LinkBuildings(troopBuilding, weaponBuilding, l);
+                    else
+                        Destroy(l.gameObject);
+
+                    yield return new WaitForSeconds(1f);
                 }
             }
 
@@ -87,8 +97,15 @@ namespace Players
             {
                 foreach (var buffBuilding in buffBuildings)
                 {
-                    if (TryToLinkBuildings(weaponBuilding, buffBuilding))
-                        yield return new WaitForSeconds(1f);
+                    var l = weaponBuilding.CreateLink();
+                    l.SetLink(PlayerTeam.Player2);
+                    l.ShowLink(weaponBuilding.transform.position, buffBuilding.transform.position);
+                    l.SetBuildings(weaponBuilding, buffBuilding);
+
+                    if (ValidateLink(weaponBuilding, buffBuilding))
+                        LinkBuildings(weaponBuilding, buffBuilding, l);
+                    else
+                        Destroy(l.gameObject);
                 }
             }
         }
@@ -117,8 +134,10 @@ namespace Players
                         continue;
 
                     var mergeDone = false;
-                    if (TryMergeBuildings(b, building, () => mergeDone = true))
+
+                    if (ValidateMerge(b, building))
                     {
+                        MergeBuildings(b, building, () => mergeDone = true);
                         yield return new WaitUntil(() => mergeDone);
                         yield return new WaitForSeconds(1f);
                     }

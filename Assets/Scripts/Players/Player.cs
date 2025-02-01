@@ -101,7 +101,8 @@ namespace Players
                     link.ShowLink(building.transform.position, hit.point);
 
                 foreach (var availableBuilding in BuildingsOnBoard)
-                    if (ValidateLink(availableBuilding, building) && availableBuilding != building)
+                    if ((ValidateLink(availableBuilding, building) || ValidateMerge(availableBuilding, building)) &&
+                        availableBuilding != building)
                         availableBuilding.Highlight();
 
                 yield return null;
@@ -112,11 +113,28 @@ namespace Players
 
             if (Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition), out var b, Mathf.Infinity, buildingLayer))
             {
+                link.ShowLink(building.transform.position, b.transform.position);
                 var targetBuilding = b.transform.gameObject.GetComponent<Building>();
-                TryToLinkBuildings(building, targetBuilding);
-                TryMergeBuildings(building, targetBuilding, () => { });
+                var sameType = building.GetBuildingType() == targetBuilding.GetBuildingType();
+
+                if (sameType && ValidateMerge(targetBuilding, building))
+                {
+                    Destroy(link.gameObject);
+                    MergeBuildings(targetBuilding, building, () => { });
+                }
+                else if (!sameType && ValidateLink(targetBuilding, building))
+                {
+                    LinkBuildings(building, targetBuilding, link);
+                }
+                else
+                {
+                    Destroy(link.gameObject);
+                }
             }
-            Destroy(link.gameObject);
+            else
+            {
+                Destroy(link.gameObject);
+            }
         }
         
         private IEnumerator CutLinks()
@@ -265,6 +283,7 @@ namespace Players
             {
                 Cursor.visible = true;
                 hammerCursor.SetActive(false);
+                UIManager.Instance.playPanel.SetDestroyRewardPanel(false);
                 foreach (var building in BuildingsOnBoard)
                     building.RemoveHighlight();
                 StartCoroutine(SelectBuilding());
@@ -312,11 +331,14 @@ namespace Players
             {
                 Cursor.visible = false;
                 hammerCursor.SetActive(true);
+                UIManager.Instance.playPanel.SetDestroyRewardPanel(true,
+                    hit.transform.position + new Vector3(0, 4f, 0));
             }
             else
             {
                 Cursor.visible = true;
                 hammerCursor.SetActive(false);
+                UIManager.Instance.playPanel.SetDestroyRewardPanel(false);
             }
         }
 

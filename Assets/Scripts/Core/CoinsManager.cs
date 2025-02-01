@@ -29,6 +29,7 @@ namespace Core
             coinsPerMerge = level.coinsPerMerge;
             coinsPerSpawn = level.coinsPerSpawn;
             coinsPerRefund = level.coinsPerRefund;
+            UIManager.Instance.playPanel.UpdateDestroyRewardText(coinsPerRefund);
         }
 
         public bool HasCoinsToSummon(PlayerTeam player)

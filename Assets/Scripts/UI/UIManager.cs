@@ -128,6 +128,8 @@ namespace UI
         [SerializeField] private TextMeshProUGUI spaceErrorText;
         [SerializeField] public GameObject summonPanel, waitePanel, battlePanel, buildingsPanel;
         [SerializeField] public DOTweenAnimation CoinsParent;
+        [SerializeField] public GameObject destroyRewardPanel;
+        [SerializeField] public TextMeshProUGUI destroyRewardPanelText;
         
         public void Start()
         {
@@ -164,6 +166,19 @@ namespace UI
         {
             availableGold.text = coinAmount.ToString();
             availableGold.color = turnToRed ? Color.red : Color.white;
+        }
+
+        public void SetDestroyRewardPanel(bool state, Vector3 position = new Vector3())
+        {
+            destroyRewardPanel.SetActive(state);
+            if (!state) return;
+            var screenPosition = GameManager.Camera.WorldToScreenPoint(position);
+            destroyRewardPanel.transform.position = screenPosition;
+        }
+
+        public void UpdateDestroyRewardText(int coins)
+        {
+            destroyRewardPanelText.text = "+" + coins;
         }
 
         public void ShowNotEnoughGoldEffect()
