@@ -96,13 +96,28 @@ namespace Players
 
         private IEnumerator TryToMerge()
         {
-            if (BuildingsOnBoard.Count == 0) yield break;
-            foreach (var building in BuildingsOnBoard.ToList())
+            if (BuildingsOnBoard.Count == 0) 
+                yield break;
+            
+            var outerSnapshot = new List<Building>(BuildingsOnBoard);
+
+            foreach (var building in outerSnapshot)
             {
-                foreach (var b in BuildingsOnBoard.ToList())
+                if (!BuildingsOnBoard.Contains(building))
+                    continue;
+                
+                var innerSnapshot = new List<Building>(BuildingsOnBoard);
+
+                foreach (var b in innerSnapshot)
                 {
+                    if (!BuildingsOnBoard.Contains(b))
+                        continue;
+
+                    if (b == building)
+                        continue;
+
                     var mergeDone = false;
-                    if (b != building && TryMergeBuildings(b, building, () => { mergeDone = true; }))
+                    if (TryMergeBuildings(b, building, () => mergeDone = true))
                     {
                         yield return new WaitUntil(() => mergeDone);
                         yield return new WaitForSeconds(1f);
@@ -110,5 +125,6 @@ namespace Players
                 }
             }
         }
+
     }
 }
