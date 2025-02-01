@@ -118,7 +118,7 @@ namespace UI
         }
     }
 
-    [Serializable]
+    [Serializable]  
     public class PlayPanel
     {
         [SerializeField] private TextMeshProUGUI player1Name, player2Name;
@@ -126,7 +126,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI timerText, costToSummon, availableGold;
         [SerializeField] private Button summonButton, battleButton, destroyButton;
         [SerializeField] private TextMeshProUGUI spaceErrorText;
-        [SerializeField] public GameObject summonPanel, waitePanel, battlePanel;
+        [SerializeField] public GameObject summonPanel, waitePanel, battlePanel, buildingsPanel;
         [SerializeField] public DOTweenAnimation CoinsParent;
         
         public void Start()

@@ -157,12 +157,12 @@ namespace Players
             var canMerge = sameId && sameLevel && sameType;
             return (validTypes && canLink) || canMerge;
         }
+        
         protected bool TryMergeBuildings(Building building1, Building  building2, System.Action mergeDone)
         {
             if (building2.GetId() != building1.GetId() || building2.GetLevel() != building1.GetLevel())
-            {
                 return false;
-            }
+            
             building1.transform.DOMove(building2.transform.position, .3f).OnComplete(() =>
             {
                 building2.RunGFX();
@@ -209,12 +209,14 @@ namespace Players
                     building2.SetLinksToTroops(building2.GetLinksToTroops() + building1.GetLinksToTroops());
                     building2.SetLinksToBuffs(building2.GetLinksToBuffs() + building1.GetLinksToBuffs());
                 }
+
                 Destroy(building1.gameObject);
                 CoinsManager.Instance.AddMergeReward(team);
                 mergeDone?.Invoke();
             });
             return true;
         }
+        
         protected bool TryToLinkBuildings(Building building1, Building building2)
         {
             if (!ValidateLink(building1, building2)) return false;

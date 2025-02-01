@@ -17,11 +17,12 @@ namespace UI
         [SerializeField] private Transform linkIcon;
         private List<GameObject> _linkIcons = new List<GameObject>();
 
-        public void InitializePanel(Sprite icon, int level, BuildingType buildingType)
+        public void InitializePanel(Sprite icon, int level, BuildingType buildingType, Color color)
         {
             buildingIcon.sprite = icon;
             buildingLevelText.text = level.ToString();
             buildingLevelIcon.sprite = levelsSprites[level - 1];
+            buildingLevelIcon.color = color;
             if (buildingType is BuildingType.Weapon)
             {
                 Instantiate(linkIcon, availableLinksParent);

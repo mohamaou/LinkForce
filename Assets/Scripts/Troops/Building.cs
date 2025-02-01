@@ -63,8 +63,9 @@ namespace Troops
         public void Start()
         {
             var buildingUI = Instantiate(UIManager.Instance.BuildingPanel,
-                UIManager.Instance.playPanel.summonPanel.transform);
-            buildingUI.InitializePanel(this.GetIcon(), this.GetLevel(), buildingType);
+                UIManager.Instance.playPanel.buildingsPanel.transform);
+            buildingUI.InitializePanel(icon, level, buildingType,
+                _team == PlayerTeam.Player1 ? GameManager.Instance.player1Color : GameManager.Instance.player2Color);
             _buildingPanel = buildingUI;
             var screenPosition = GameManager.Camera.WorldToScreenPoint(this.transform.position);
             _buildingPanel.transform.position = screenPosition;
