@@ -5173,6 +5173,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 751221060}
+  - {fileID: 2000588281}
   - {fileID: 1174951992}
   - {fileID: 2082417740}
   - {fileID: 783234111}
@@ -8586,9 +8587,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d829ed16fe9592f42a0f72d285b98976, type: 2}
   - {fileID: 11400000, guid: c17f2b0dd76853a449a750dc41828535, type: 2}
   - {fileID: 11400000, guid: 0eb3035feeab1774aac8870b3e0c1117, type: 2}
+  player1Color: {r: 0, g: 0.8039216, b: 1, a: 1}
+  player2Color: {r: 0.8773585, g: 0.053800307, b: 0.053800307, a: 1}
   fastGame: 0
   showPlayerProfile: 1
-  currentTurn: 0
 --- !u!4 &976142742
 Transform:
   m_ObjectHideFlags: 0
@@ -8643,8 +8645,6 @@ MonoBehaviour:
   trail: {fileID: 2738585136317140410, guid: 51229b8e203e9ed4a83e58faf1d68824, type: 3}
   hammer: {fileID: 21300000, guid: 85a27e0e5dfa74cef97c2de8c7edc70c, type: 3}
   hammerCursor: {fileID: 783234108}
-  _myLinks: []
-  _buildingsOnBoard: []
   isDestroyEnabled: 0
 --- !u!114 &976142744
 MonoBehaviour:
@@ -8898,6 +8898,7 @@ MonoBehaviour:
     summonPanel: {fileID: 1174951991}
     waitePanel: {fileID: 2082417739}
     battlePanel: {fileID: 316583749}
+    buildingsPanel: {fileID: 2000588280}
     CoinsParent: {fileID: 1501061639}
   BuildingPanel: {fileID: 6282130088315262113, guid: f73bc186ab0ccf74abf285cdc645f40e, type: 3}
   startPanel: {fileID: 821670318}
@@ -21304,6 +21305,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee9b938bdd574a7480883394c76cad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2000588280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2000588281}
+  m_Layer: 5
+  m_Name: Buildings Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2000588281
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000588280}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 487254796}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2009865495
 GameObject:
   m_ObjectHideFlags: 0

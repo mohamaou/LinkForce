@@ -48,7 +48,7 @@ namespace Core
 
             // playerCoins = rest from turn + win/loss award + turn fixed amount
             _player1coins = _player1coins + player1Award + coinsPerTurn;
-            _player2coins = _player2coins + player2Award + coinsPerTurn;
+            _player2coins = _player2coins + player2Award + coinsPerTurn + 100;
 
             UIManager.Instance.playPanel.UpdateAvailableCoins(_player1coins);
             _turnIndex++;

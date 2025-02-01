@@ -1,4 +1,5 @@
 using System;
+using Core;
 using Players;
 using UnityEngine;
 
@@ -10,13 +11,13 @@ namespace Troops
         [SerializeField] private new Renderer renderer;
         [SerializeField] private float lineWidth = 0.1f;
         [SerializeField] private float uvScale = 1f;
-        [SerializeField] private Color player1Color, player2Color;
         public Building _building1, _building2;
         private int random;
 
         public void SetLink(PlayerTeam team)
         {
-            renderer.material.SetColor("_Line_Color", team == PlayerTeam.Player1 ? player1Color : player2Color);
+            renderer.material.SetColor("_Line_Color",
+                team == PlayerTeam.Player1 ? GameManager.Instance.player1Color : GameManager.Instance.player2Color);
         }
         public void ShowLink(Vector3 startPos, Vector3 endPos)
         {

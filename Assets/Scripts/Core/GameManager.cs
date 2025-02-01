@@ -50,6 +50,7 @@ namespace Core
         public static Camera Camera;
         public static int Level;
         public List<Level> levels = new List<Level>();
+        public Color player1Color, player2Color;
         public bool fastGame, showPlayerProfile;
         private float _timer;
         private float _fpsTimer = 0.0f;

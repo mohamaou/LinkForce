@@ -89,8 +89,6 @@ namespace Players
         #region Summon Building
         protected bool SummonRandomBuilding()
         {
-            if (_selectedBuilding.Count == 0) return true;
-            
             for (int i = 0; i < _selectedBuilding.Count; i++)
             {
                 var index = (Random.Range(0, _selectedBuilding.Count) + i) % _selectedBuilding.Count;
@@ -157,12 +155,11 @@ namespace Players
             var canMerge = sameId && sameLevel && sameType;
             return (validTypes && canLink) || canMerge;
         }
+        
         protected bool TryMergeBuildings(Building building1, Building  building2)
         {
             if (building2.GetId() != building1.GetId() || building2.GetLevel() != building1.GetLevel())
-            {
                 return false;
-            }
 
             building1.transform.DOMove(building2.transform.position, .3f).OnComplete(() =>
             {
@@ -209,11 +206,13 @@ namespace Players
                     building2.SetLinksToTroops(building2.GetLinksToTroops() + building1.GetLinksToTroops());
                     building2.SetLinksToBuffs(building2.GetLinksToBuffs() + building1.GetLinksToBuffs());
                 }
+
                 Destroy(building1.gameObject);
                 CoinsManager.Instance.AddMergeReward(team);
             });
             return true;
         }
+        
         protected bool TryToLinkBuildings(Building building1, Building building2)
         {
             if (!ValidateLink(building1, building2)) return false;
