@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Core;
-using DG.Tweening;
-using Models;
 using Troops;
 using UI;
 using UnityEngine;
@@ -14,8 +12,6 @@ namespace Players
     {
         private string _difficultyKey = "Difficulty";
         public static Bot Instance { get; private set; }
-       
-        [SerializeField] private List<Link> _myLinks = new();
         private bool _ready;
 
         private void Awake()
@@ -26,12 +22,11 @@ namespace Players
         private void Start()
         {
             SetDeck();
-            UIManager.Instance.startUI.SetPlayer2Card(GetSelectedBuildingCards() .ToArray());
+            UIManager.Instance.startUI.SetPlayer2Card(GetSelectedBuildingCards().ToArray());
             StartCoroutine(AIPlay());
         }
-        
-        
-       
+
+
         public bool IsReady() => _ready;
 
 
@@ -39,7 +34,7 @@ namespace Players
         {
             yield return new WaitUntil(() => GameManager.State == GameState.Play);
             yield return new WaitForSeconds(Random.Range(0.5f, 2f));
-            while (GameManager.State  == GameState.Play)
+            while (GameManager.State == GameState.Play)
             {
                 if (CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player2))
                 {
@@ -53,6 +48,7 @@ namespace Players
                     yield return TryLinkBuildings();
                     _ready = true;
                 }
+
                 yield return new WaitForSeconds(Random.Range(0.2f, 1f));
             }
         }
@@ -78,7 +74,6 @@ namespace Players
                 .Where(b => b.GetBuildingType() == BuildingType.Buff)
                 .OrderBy(b => random.Next())
                 .ToList();
-
             foreach (var troopBuilding in troopBuildings)
             {
                 foreach (var weaponBuilding in weaponBuildings)
@@ -106,9 +101,12 @@ namespace Players
             {
                 foreach (var b in BuildingsOnBoard.ToList())
                 {
-                    if (b != building)
-                        if (TryMergeBuildings(b, building))
-                            yield return new WaitForSeconds(1f);
+                    var mergeDone = false;
+                    if (b != building && TryMergeBuildings(b, building, () => { mergeDone = true; }))
+                    {
+                        yield return new WaitUntil(() => mergeDone);
+                        yield return new WaitForSeconds(1f);
+                    }
                 }
             }
         }

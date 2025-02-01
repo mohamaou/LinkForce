@@ -32,10 +32,10 @@ namespace Troops
         [SerializeField] private int numberOfTroops = 4;
         [SerializeField] private int level = 1;
         [SerializeField] private Sprite icon;
-        [SerializeField] private List<Link> _myLinks = new List<Link>();
         [SerializeField] private int _linksToTroops = 0;
         [SerializeField] private int _linksToBuffs = 0;
         private bool _active;
+        private readonly List<Link> _myLinks = new ();
         private bool _linkedToTroops;
         private BuildingUI _buildingPanel;
 
@@ -69,8 +69,7 @@ namespace Troops
             _buildingPanel = buildingUI;
             var screenPosition = GameManager.Camera.WorldToScreenPoint(this.transform.position);
             _buildingPanel.transform.position = screenPosition;
-
-            StartCoroutine(SpawnTroops());
+            if(buildingType == BuildingType.Troops) StartCoroutine(SpawnTroops());
         }
 
         private IEnumerator SpawnTroops()

@@ -114,7 +114,7 @@ namespace Players
             {
                 var targetBuilding = b.transform.gameObject.GetComponent<Building>();
                 TryToLinkBuildings(building, targetBuilding);
-                TryMergeBuildings(building, targetBuilding);
+                TryMergeBuildings(building, targetBuilding, () => { });
             }
             Destroy(link.gameObject);
         }
