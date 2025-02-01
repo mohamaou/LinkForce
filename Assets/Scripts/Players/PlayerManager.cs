@@ -19,8 +19,8 @@ namespace Players
     {
         [SerializeField] private BuildingCard[] buildingCards;
         [SerializeField] private PlayerTeam team;
-        private readonly List<BuildingCard> _selectedBuilding = new();
-        [SerializeField] private List<Building> _buildingsOnBoard = new();
+        private readonly List<BuildingCard> _selectedBuilding = new(); 
+        private readonly List<Building> _buildingsOnBoard = new();
         private readonly List<Troop> _myTroops = new ();
         private List<Link> _myLinks = new();
         
@@ -89,24 +89,24 @@ namespace Players
         #region Summon Building
         protected bool SummonRandomBuilding()
         {
-            if (_selectedBuilding.Count == 0) return true;
-            for (int i = 0; i < _selectedBuilding.Count; i++)
+            System.Random random = new System.Random();
+            var selectedBuilding = _selectedBuilding.OrderBy(b => random.Next()).ToList();
+            if (!TroopBuildingAvailable())
             {
-                var index = (Random.Range(0, _selectedBuilding.Count) + i) % _selectedBuilding.Count;
-                var targetBuilding = _selectedBuilding[index].GetBuilding();
-
-                if (!TroopBuildingAvailable() && targetBuilding.GetBuildingType() != BuildingType.Troops)
-                    continue;
-
-                var summonPos = Board.Instance.GetRandomBoardPoint(team, targetBuilding.GetBuildingType());
-                if (summonPos == Vector3.zero) 
-                    continue;
-
-                var b = Instantiate(targetBuilding, summonPos, 
-                    team == PlayerTeam.Player1?Quaternion.identity: Quaternion.Euler(0,180,0), transform);
-                b.Set(team);
-                _buildingsOnBoard.Add(b);
-                return true;
+                var troopBuildingListList = _selectedBuilding.Where(b => b.GetBuildingType() == BuildingType.Troops).OrderBy(b=> random.Next()).ToList();
+                if(troopBuildingListList.Count > 0) selectedBuilding = troopBuildingListList;
+            }
+            foreach (var building in selectedBuilding)
+            {
+                var summonPos = Board.Instance.GetRandomBoardPoint(team, building.GetBuildingType());
+                var summonRot = team == PlayerTeam.Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
+                if (summonPos != Vector3.zero)
+                {
+                    var b = Instantiate(building.GetBuilding(), summonPos,summonRot , transform);
+                    b.Set(team);
+                    _buildingsOnBoard.Add(b);
+                    return true;
+                }
             }
             return false;
         }

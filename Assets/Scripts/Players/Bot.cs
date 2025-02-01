@@ -33,24 +33,28 @@ namespace Players
         private IEnumerator AIPlay()
         {
             yield return new WaitUntil(() => GameManager.State == GameState.Play);
-            yield return new WaitForSeconds(Random.Range(0.5f, 2f));
-            var summonsTry = 0;
             while (GameManager.State == GameState.Play)
             {
-                if (CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player2) && summonsTry <= 2)
+                _ready = false;   
+                yield return new WaitForSeconds(Random.Range(0.5f, 1f));
+                yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Summon);
+                while (!_ready)
                 {
-                    CoinsManager.Instance.UseCoins(PlayerTeam.Player2);
-                    if (!SummonRandomBuilding()) summonsTry++;
-                    yield return new WaitForSeconds(Random.Range(0.2f, .5f));
-                }
-                else
-                {
+                    var summonsTry = 0;
+                    while (CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player2) && summonsTry <= 2)
+                    {
+                        CoinsManager.Instance.UseCoins(PlayerTeam.Player2);
+                        if (!SummonRandomBuilding()) summonsTry++;
+                        yield return new WaitForSeconds(Random.Range(0.2f, 0.7f));
+                    }
+
                     yield return TryToMerge();
                     yield return TryLinkBuildings();
-                    _ready = true;
+                
+                    if(!CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player2) || summonsTry > 2) _ready = true;
+                    yield return new WaitForSeconds(Random.Range(0.2f, .5f));
                 }
-
-                yield return new WaitForSeconds(Random.Range(0.2f, 1f));
+                yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Battle);
             }
         }
 
@@ -65,19 +69,13 @@ namespace Players
                 .Where(b => b.GetBuildingType() == BuildingType.Troops)
                 .OrderBy(b => random.Next())
                 .ToList();
-
-            var weaponBuildings = BuildingsOnBoard
-                .Where(b => b.GetBuildingType() == BuildingType.Weapon)
-                .OrderBy(b => random.Next())
-                .ToList();
-
-            var buffBuildings = BuildingsOnBoard
-                .Where(b => b.GetBuildingType() == BuildingType.Buff)
-                .OrderBy(b => random.Next())
-                .ToList();
             
             foreach (var troopBuilding in troopBuildings)
             {
+                var weaponBuildings = BuildingsOnBoard
+                    .Where(b => b.GetBuildingType() == BuildingType.Weapon)
+                    .OrderBy(b => random.Next())
+                    .ToList();
                 foreach (var weaponBuilding in weaponBuildings)
                 {
                     if (ValidateLink(troopBuilding, weaponBuilding))
@@ -87,13 +85,17 @@ namespace Players
                         l.ShowLink(troopBuilding.transform.position, weaponBuilding.transform.position);
                         l.SetBuildings(troopBuilding, weaponBuilding);
                         LinkBuildings(troopBuilding, weaponBuilding, l);
-                        yield return new WaitForSeconds(1f);
+                        yield return new WaitForSeconds(.3f);
                     }
                 }
             }
-
-            foreach (var weaponBuilding in weaponBuildings)
+            
+            foreach (var weaponBuilding in BuildingsOnBoard.Where(b => b.GetBuildingType() == BuildingType.Weapon))
             {
+                var buffBuildings = BuildingsOnBoard
+                    .Where(b => b.GetBuildingType() == BuildingType.Buff)
+                    .OrderBy(b => random.Next())
+                    .ToList();
                 foreach (var buffBuilding in buffBuildings)
                 {
                     if (ValidateLink(weaponBuilding, buffBuilding))
@@ -137,7 +139,7 @@ namespace Players
                     {
                         MergeBuildings(b, building, () => mergeDone = true);
                         yield return new WaitUntil(() => mergeDone);
-                        yield return new WaitForSeconds(1f);
+                        yield return new WaitForSeconds(.5f);
                     }
                 }
             }
