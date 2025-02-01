@@ -34,12 +34,13 @@ namespace Players
         {
             yield return new WaitUntil(() => GameManager.State == GameState.Play);
             yield return new WaitForSeconds(Random.Range(0.5f, 2f));
+            var summonsTry = 0;
             while (GameManager.State == GameState.Play)
             {
-                if (CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player2))
+                if (CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player2) && summonsTry <= 2)
                 {
                     CoinsManager.Instance.UseCoins(PlayerTeam.Player2);
-                    SummonRandomBuilding();
+                    if (!SummonRandomBuilding()) summonsTry++;
                     yield return new WaitForSeconds(Random.Range(0.2f, .5f));
                 }
                 else
