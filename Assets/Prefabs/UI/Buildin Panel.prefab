@@ -313,7 +313,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: deae58b7ef3d6f24c9f733bd51cc0bdd, type: 3}
   - {fileID: 21300000, guid: 918106fd95f82fc49814ff5683ed1f2a, type: 3}
   availableLinksParent: {fileID: 9116421042273066045}
-  linkIcon: {fileID: 2170411600414026065, guid: b62af8ffd0d27064ca2b9ea800ddc73d, type: 3}
+  linkIcon: {fileID: 5459067926805410643, guid: b62af8ffd0d27064ca2b9ea800ddc73d, type: 3}
 --- !u!1 &5817295421107748314
 GameObject:
   m_ObjectHideFlags: 0

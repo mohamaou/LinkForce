@@ -14,7 +14,7 @@ namespace UI
         [SerializeField] private Image buildingLevelIcon;
         [SerializeField] private Sprite[] levelsSprites;
         [SerializeField] private Transform availableLinksParent;
-        [SerializeField] private Transform linkIcon;
+        [SerializeField] private Image linkIcon;
         private List<GameObject> _linkIcons = new List<GameObject>();
 
         public void InitializePanel(Sprite icon, int level, BuildingType buildingType, Color color)
@@ -23,19 +23,23 @@ namespace UI
             buildingLevelText.text = level.ToString();
             buildingLevelIcon.sprite = levelsSprites[level - 1];
             buildingLevelIcon.color = color;
+            
             if (buildingType is BuildingType.Weapon)
             {
-                Instantiate(linkIcon, availableLinksParent);
+                linkIcon.color = color;
+                var i = Instantiate(linkIcon, availableLinksParent);
             }
         }
 
         public void UpdateLevelNumber(int level)
         {
             buildingLevelText.text = level.ToString();
+            buildingLevelIcon.sprite = levelsSprites[level - 1];
         }
 
-        public void AddLinkPoint()
+        public void AddLinkPoint(Color color)
         {
+            linkIcon.color = color;
             var obj = Instantiate(linkIcon, availableLinksParent).gameObject;
             _linkIcons.Add(obj);
         }

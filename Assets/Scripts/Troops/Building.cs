@@ -167,7 +167,10 @@ namespace Troops
 
         public void IncrementLinksToTroops()
         {
-            if (_linksToTroops != 0) _buildingPanel.AddLinkPoint();
+            if (_linksToTroops != 0)
+                _buildingPanel.AddLinkPoint(_team == PlayerTeam.Player1
+                    ? GameManager.Instance.player1Color
+                    : GameManager.Instance.player2Color);
             _linksToTroops++;
         }
 
