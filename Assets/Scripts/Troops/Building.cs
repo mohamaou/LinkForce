@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using Core;
 using UnityEngine;
 using MoreMountains.Feedbacks;
@@ -58,7 +59,7 @@ namespace Troops
         public void DecrementLinksToBuffs() => _linksToBuffs--;
 
         #endregion
-        
+
         public void Start()
         {
             var buildingUI = Instantiate(UIManager.Instance.BuildingPanel,
@@ -67,18 +68,27 @@ namespace Troops
             _buildingPanel = buildingUI;
             var screenPosition = GameManager.Camera.WorldToScreenPoint(this.transform.position);
             _buildingPanel.transform.position = screenPosition;
+
+            StartCoroutine(SpawnTroops());
         }
 
-        public void SpawnTroops()
+        private IEnumerator SpawnTroops()
         {
+            yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Battle);
+
             for (var i = 0; i < numberOfTroops; i++)
             {
                 var troop = Instantiate(troopPrefab,
                     transform.position + new Vector3(i % 2 == 0 ? (-i / 3f - 0.2f) : (i / 3f + 0.2f), 0f, 1.5f),
                     Quaternion.identity);
                 troop.SetTroop(PlayerTeam.Player1);
+                yield return new WaitForSeconds(0.25f);
             }
+
+            yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Summon);
+            StartCoroutine(SpawnTroops());
         }
+        
         public void AssignComponents()
         {
             var r = GetComponentsInChildren<Renderer>();

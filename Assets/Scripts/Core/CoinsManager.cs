@@ -8,7 +8,7 @@ namespace Core
     public class CoinsManager : MonoBehaviour
     {
         public static CoinsManager Instance {get; private set;}
-        private static int _player1coins, _player2coins, _turnIndex;
+        private int _player1coins, _player2coins, _turnIndex;
         private static int coinsPerTurn;
         private static int coinsPerTurnWin;
         private static int coinsPerTurnLoss;
@@ -21,11 +21,6 @@ namespace Core
             Instance = this;
         }
 
-        private void Start()
-        {
-            TurnStart();
-        }
-
         public void Initialize(Level level)
         {
             coinsPerTurn = level.coinsPerTurn;
@@ -36,7 +31,7 @@ namespace Core
             coinsPerRefund = level.coinsPerRefund;
         }
 
-        public static bool HasCoinsToSummon(PlayerTeam player)
+        public bool HasCoinsToSummon(PlayerTeam player)
         {
             if (player == PlayerTeam.Player1)
                 return _player1coins >= coinsPerSpawn;
@@ -44,13 +39,12 @@ namespace Core
             return _player2coins >= coinsPerSpawn;
         }
 
-        private void TurnStart()
+        public void InitializeTurnCoins(PlayerTeam lastTurnWinner, bool isFirstTurn = false)
         {
-            var lastTurnWinner = TurnsManager.Instance.GetLastTurnWinner();
-            var player1Award = lastTurnWinner == PlayerTeam.Player1 ? coinsPerTurnWin :
-                lastTurnWinner == PlayerTeam.Player2 ? coinsPerTurnLoss : 0;
-            var player2Award = lastTurnWinner == PlayerTeam.Player2 ? coinsPerTurnWin :
-                lastTurnWinner == PlayerTeam.Player1 ? coinsPerTurnLoss : 0;
+            var player1Award = isFirstTurn ? 0 :
+                lastTurnWinner == PlayerTeam.Player1 ? coinsPerTurnWin : coinsPerTurnLoss;
+            var player2Award = isFirstTurn ? 0 :
+                lastTurnWinner == PlayerTeam.Player2 ? coinsPerTurnWin : coinsPerTurnLoss;
 
             // playerCoins = rest from turn + win/loss award + turn fixed amount
             _player1coins = _player1coins + player1Award + coinsPerTurn;
