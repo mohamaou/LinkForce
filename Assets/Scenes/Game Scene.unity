@@ -8492,6 +8492,7 @@ MonoBehaviour:
   hammer: {fileID: 21300000, guid: 85a27e0e5dfa74cef97c2de8c7edc70c, type: 3}
   hammerCursor: {fileID: 783234108}
   _myLinks: []
+  _buildingsOnBoard: []
   isDestroyEnabled: 0
 --- !u!114 &976142744
 MonoBehaviour:

@@ -105,11 +105,16 @@ MonoBehaviour:
   landFeedback: {fileID: 3154667304981306446}
   player1: {fileID: 2100000, guid: fe918c2de7bc5594da80a7594269b75c, type: 2}
   player2: {fileID: 2100000, guid: 95a26277f1b47d145875dacaf144f713, type: 2}
+  troopPrefab: {fileID: -4396117857146195542, guid: 227f6f7aa1630b24dbc9f47960246c28, type: 3}
   buildingType: 0
   id: Skeleton
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
+  numberOfTroops: 4
   level: 1
   icon: {fileID: 21300000, guid: d4516595f6114a449b04e11fe8a31e87, type: 3}
+  _myLinks: []
+  _linksToTroops: 0
+  _linksToBuffs: 0
 --- !u!1001 &1661463011075529631
 PrefabInstance:
   m_ObjectHideFlags: 0

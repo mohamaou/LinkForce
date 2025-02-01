@@ -29,13 +29,15 @@ namespace Players
         [SerializeField] private Sprite hammer;
         [SerializeField] private GameObject hammerCursor;
         [SerializeField] private List<Link> _myLinks = new();
-        private readonly List<Building> _buildingsOnBoard = new();
+        [SerializeField] private List<Building> _buildingsOnBoard = new();
         private Camera _cam;
         private bool _linking;
         private List<BuildingCard> _selectedBuilding = new();
         private List<Troop> _myTroops = new();
         public static Player Instance { get; private set; }
         public bool isDestroyEnabled = false;
+        public List<Troop> GetTroops() => _myTroops;
+        public List<Building> GetBuildingsOnBoard() => _buildingsOnBoard;
 
         private void Awake()
         {
@@ -69,9 +71,6 @@ namespace Players
                 _myTroops.Remove(troop);
             });
         }
-
-        public List<Troop> GetTroops() => _myTroops;
-        
 
         private void Update()
         {

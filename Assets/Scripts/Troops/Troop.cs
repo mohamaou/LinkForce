@@ -236,13 +236,13 @@ namespace Troops
             StartCoroutine(Fight());
             
             //This is Only For Testing
-            if (test == PlayerTeam.Player1) Player.Instance.AddTroop(this);
-            else Bot.Instance.AddTroop(this);
-            SetTroop(test);
-            foreach (var e in equipmentsTest)
-            {
-                SetEquipment(e);
-            }
+            // if (test == PlayerTeam.Player1) Player.Instance.AddTroop(this);
+            // else Bot.Instance.AddTroop(this);
+            // SetTroop(test);
+            // foreach (var e in equipmentsTest)
+            // {
+            //     SetEquipment(e);
+            // }
             GoToBattle();
         }
         public void SetDeathEvent(Action onDeath) => _onDeath += onDeath;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AI;
 using DG.Tweening;
 using Players;
+using Troops;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -58,7 +59,6 @@ namespace Core
         private bool _player1NotEnoughSpace, _player2NotEnoughSpace;
         private float timeRemaining = 0;
         public float coins = 0;
-
         
         private void Awake()
         {
@@ -120,6 +120,13 @@ namespace Core
             TurnsManager.PlayState = PlayState.Battle;
             UIManager.Instance.ShowBattleUI();
             print("Start Fight");
+            foreach (var building in Player.Instance.GetBuildingsOnBoard())
+            {
+                if (building.GetBuildingType() == BuildingType.Troops)
+                {
+                    building.SpawnTroops();
+                }
+            }
         }
         
         private void Keyboard()

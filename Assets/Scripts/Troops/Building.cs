@@ -24,9 +24,11 @@ namespace Troops
         [SerializeField] private Material player1, player2;
         private PlayerTeam _team;
         private Vector3 _localScale;
+        [SerializeField] private Troop troopPrefab;
         [SerializeField] private BuildingType buildingType;
         [SerializeField] private string id; 
         [SerializeField] private Link link;
+        [SerializeField] private int numberOfTroops = 4;
         [SerializeField] private int level = 1;
         [SerializeField] private Sprite icon;
         [SerializeField] private List<Link> _myLinks = new List<Link>();
@@ -67,8 +69,16 @@ namespace Troops
             _buildingPanel.transform.position = screenPosition;
         }
 
-       
-
+        public void SpawnTroops()
+        {
+            for (var i = 0; i < numberOfTroops; i++)
+            {
+                var troop = Instantiate(troopPrefab,
+                    transform.position + new Vector3(i % 2 == 0 ? (-i / 3f - 0.2f) : (i / 3f + 0.2f), 0f, 1.5f),
+                    Quaternion.identity);
+                troop.SetTroop(PlayerTeam.Player1);
+            }
+        }
         public void AssignComponents()
         {
             var r = GetComponentsInChildren<Renderer>();
