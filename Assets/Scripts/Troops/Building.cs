@@ -6,6 +6,7 @@ using MoreMountains.Feedbacks;
 using Players;
 using DG.Tweening;
 using UI;
+using Unity.Mathematics;
 using UnityEditor;
 
 namespace Troops
@@ -38,6 +39,7 @@ namespace Troops
         private readonly List<Link> _myLinks = new ();
         private bool _linkedToTroops;
         private BuildingUI _buildingPanel;
+        private DestroyUI _destroyPanel;
 
         #region Public Variables
         public PlayerTeam GetTroopTeam() => _team;
@@ -62,13 +64,20 @@ namespace Troops
 
         public void Start()
         {
+            var screenPosition1 = GameManager.Camera.WorldToScreenPoint(transform.position);
+            var screenPosition2 = GameManager.Camera.WorldToScreenPoint(transform.position + new Vector3(0, 3f, 0));
+            
             var buildingUI = Instantiate(UIManager.Instance.BuildingPanel,
                 UIManager.Instance.playPanel.buildingsPanel.transform);
             buildingUI.InitializePanel(icon, level, buildingType,
                 _team == PlayerTeam.Player1 ? GameManager.Instance.player1Color : GameManager.Instance.player2Color);
             _buildingPanel = buildingUI;
-            var screenPosition = GameManager.Camera.WorldToScreenPoint(this.transform.position);
-            _buildingPanel.transform.position = screenPosition;
+            _buildingPanel.transform.position = screenPosition1;
+
+            var destroyPanel = Instantiate(UIManager.Instance.destroyPanelPrefab, _buildingPanel.transform);
+            _destroyPanel = destroyPanel;
+            _destroyPanel.transform.position = screenPosition2;
+           
             if(buildingType == BuildingType.Troops) StartCoroutine(SpawnTroops());
         }
 
@@ -150,6 +159,13 @@ namespace Troops
         {
             _myLinks.Remove(myLink);
         }
+
+
+        public void SetDestroyRewardUI(bool state)
+        {
+            _destroyPanel.gameObject.SetActive(state);
+        }
+        
         public List<Link> GetAllLinks()=> _myLinks;
         public void RemoveAllLinks()
         {

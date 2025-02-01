@@ -9,12 +9,14 @@ namespace Core
     {
         public static CoinsManager Instance {get; private set;}
         private int _player1coins, _player2coins, _turnIndex;
-        private static int coinsPerTurn;
-        private static int coinsPerTurnWin;
-        private static int coinsPerTurnLoss;
-        private static int coinsPerMerge;
-        private static int coinsPerSpawn;
-        private static int coinsPerRefund;
+        private int coinsPerTurn;
+        private int coinsPerTurnWin;
+        private int coinsPerTurnLoss;
+        private int coinsPerMerge;
+        private int coinsPerSpawn;
+        private int coinsPerRefund;
+
+        public int GetCoinsPerRefund() => coinsPerRefund;
         
         private void Awake()
         {
@@ -29,7 +31,6 @@ namespace Core
             coinsPerMerge = level.coinsPerMerge;
             coinsPerSpawn = level.coinsPerSpawn;
             coinsPerRefund = level.coinsPerRefund;
-            UIManager.Instance.playPanel.UpdateDestroyRewardText(coinsPerRefund);
         }
 
         public bool HasCoinsToSummon(PlayerTeam player)

@@ -16,7 +16,7 @@ using DG.Tweening;
 namespace Players
 {
     public class Player : PlayerManager
-    { 
+    {
         public static Player Instance { get; private set; }
         [SerializeField] private LayerMask buildingLayer, groundLayer;
         [SerializeField] private GameObject trail;
@@ -32,12 +32,12 @@ namespace Players
             _cam = Camera.main;
         }
 
-        
+
         private IEnumerator Start()
         {
             SetDeck();
             yield return new WaitUntil(() => GameManager.State == GameState.Play);
-            
+
             UIManager.Instance.playPanel.GetSummonButton().onClick.AddListener(SummonButtonClicked);
             UIManager.Instance.playPanel.GetDestroyButton().onClick.AddListener(SetDestroyEnabled);
             StartCoroutine(SelectBuilding());
@@ -45,11 +45,11 @@ namespace Players
             var t = trail;
             trail = Instantiate(t, transform);
         }
-        
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space)) SummonButtonClicked();
-            if(Input.GetKeyDown(KeyCode.B)) GameManager.Instance.StartBattle();
+            if (Input.GetKeyDown(KeyCode.B)) GameManager.Instance.StartBattle();
 
             if (isDestroyEnabled)
             {
@@ -135,7 +135,7 @@ namespace Players
                 Destroy(link.gameObject);
             }
         }
-        
+
         private IEnumerator CutLinks()
         {
             while (GameManager.State == GameState.Play && !isDestroyEnabled)
@@ -145,6 +145,7 @@ namespace Players
                     yield return null;
                     continue;
                 }
+
                 trail.SetActive(Input.GetMouseButton(0) && !_linking);
                 if (Input.GetMouseButton(0) && !_linking)
                 {
@@ -269,18 +270,14 @@ namespace Players
                     building.SetActive(false);
         }
 
-        public void SetDestroyEnabled()
+        private void SetDestroyEnabled()
         {
-            isDestroyEnabled = !isDestroyEnabled;
-
-            if (isDestroyEnabled)
+            isDestroyEnabled = true;
+            foreach (var building in BuildingsOnBoard)
             {
-                foreach (var building in BuildingsOnBoard)
-                    building.Highlight();
+                building.Highlight();
+                building.SetDestroyRewardUI(true);
             }
-
-            else SetDestroyDisabled();
-            
         }
 
         public void SetDestroyDisabled()
@@ -288,13 +285,15 @@ namespace Players
             isDestroyEnabled = false;
             Cursor.visible = true;
             hammerCursor.SetActive(false);
-            UIManager.Instance.playPanel.SetDestroyRewardPanel(false);
             foreach (var building in BuildingsOnBoard)
+            {
                 building.RemoveHighlight();
+                building.SetDestroyRewardUI(true);
+            }
             StartCoroutine(SelectBuilding());
             StartCoroutine(CutLinks());
         }
-        
+
         private void DestroyBuilding()
         {
             if (!isDestroyEnabled) return;
@@ -324,7 +323,7 @@ namespace Players
             Destroy(buildingToDestroy.gameObject, 0.75f);
             UpdateBuildingsVisualAfterLinkCut();
             CoinsManager.Instance.AddDestroyReward(PlayerTeam.Player1);
-            SetDestroyEnabled();
+            SetDestroyDisabled();
         }
 
 
@@ -335,14 +334,11 @@ namespace Players
             {
                 Cursor.visible = false;
                 hammerCursor.SetActive(true);
-                UIManager.Instance.playPanel.SetDestroyRewardPanel(true,
-                    hit.transform.position + new Vector3(0, 4f, 0));
             }
             else
             {
                 Cursor.visible = true;
                 hammerCursor.SetActive(false);
-                UIManager.Instance.playPanel.SetDestroyRewardPanel(false);
             }
         }
 
