@@ -108,6 +108,7 @@ namespace Players
             }
             return false;
         }
+        
         private bool TroopBuildingAvailable()
         {
             foreach (var building in _buildingsOnBoard)
