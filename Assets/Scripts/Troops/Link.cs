@@ -16,7 +16,7 @@ namespace Troops
 
         public void SetLink(PlayerTeam team)
         {
-            renderer.material.SetColor("_Color", team == PlayerTeam.Player1 ? player1Color : player2Color);
+            renderer.material.SetColor("_Line_Color", team == PlayerTeam.Player1 ? player1Color : player2Color);
         }
         public void ShowLink(Vector3 startPos, Vector3 endPos)
         {

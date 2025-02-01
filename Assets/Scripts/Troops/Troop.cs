@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using AI;
 using Cards;
 using Core;
 using DG.Tweening;

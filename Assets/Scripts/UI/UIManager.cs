@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Cards;
 using Core;
 using DG.Tweening;
-using fbg;
 using MoreMountains.Feedbacks;
 using Start_UI;
 using TMPro;
@@ -127,12 +126,12 @@ namespace UI
         [SerializeField] private TextMeshProUGUI timerText, costToSummon, availableGold;
         [SerializeField] private Button summonButton, battleButton;
         [SerializeField] private TextMeshProUGUI spaceErrorText;
-        [SerializeField] public GameObject summonPanel;
-        [SerializeField] public GameObject battlePanel;
+        [SerializeField] public GameObject summonPanel, waitePanel, battlePanel;
         [SerializeField] public DOTweenAnimation CoinsParent;
         
         public void Start()
         {
+            SetPlayUI(PlayState.Summon);
             spaceErrorText.gameObject.SetActive(false);
             if (PlayersProfiles.Instance == null) return;
             player1Name.text = PlayersProfiles.Instance.Player1Name;
@@ -160,16 +159,29 @@ namespace UI
             sequence.OnComplete(() => Object.Destroy(errorTextCopy.gameObject));
         }
 
-        public void UpdateAvailableCoins(){
-            availableGold.text = GameManager.Instance.coins.ToString();
+        public void UpdateAvailableCoins(int coinAmount){
+            availableGold.text = coinAmount.ToString();
 
-            if (GameManager.Instance.currentLevel.coinsPerSpawn > GameManager.Instance.coins)
+            if (GameManager.Instance.currentLevel.coinsPerSpawn > coinAmount)
                 availableGold.color = Color.red;
         }
 
         public void ShowNotEnoughGoldEffect()
         {
            CoinsParent.DORestart();
+        }
+        
+        public void SetPlayUI(PlayState playPanel)
+        {
+            summonPanel.SetActive(false);
+            battlePanel.SetActive(false);
+            waitePanel.SetActive(false);
+            switch (playPanel)
+            {
+                case  PlayState.Summon: summonPanel.SetActive(true); break;
+                case  PlayState.Wait: waitePanel.SetActive(true); break;
+                case  PlayState.Battle:  battlePanel.SetActive(true); break;
+            }
         }
     }
 
@@ -211,14 +223,8 @@ namespace UI
             startPanel.SetActive(false);
             playPanelObject.SetActive(true);
             GameManager.State = GameState.Play;
-            playPanel.GetAvailableGold().text = GameManager.Instance.coins.ToString();
         }
-
-        public void ShowBattleUI()
-        {
-            playPanel.summonPanel.SetActive(false);
-            playPanel.battlePanel.SetActive(false);
-        }
+        
 
         public void GameEnd(bool win)
         {

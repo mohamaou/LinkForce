@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using AI;
 using DG.Tweening;
 using Players;
 using Troops;
@@ -59,6 +59,7 @@ namespace Core
         private bool _player1NotEnoughSpace, _player2NotEnoughSpace;
         private float timeRemaining = 0;
         public float coins = 0;
+
         
         private void Awake()
         {
@@ -68,7 +69,6 @@ namespace Core
             Application.targetFrameRate = 120;
             Time.timeScale = fastGame ? 4f : 1f;
             Level = PlayerPrefs.GetInt("Level", 1);
-            coins = PlayerPrefs.GetInt("coins", 99);
             currentLevel = levels[Level - 1];
             timeRemaining = currentLevel.summonTime;
         }
@@ -99,24 +99,18 @@ namespace Core
             if (minutes < 0 && seconds < 0) return;
             UIManager.Instance.playPanel.GetTimerText().text = $"{minutes}:{seconds:00}";
         }
-
-        public void CutSummonCost(){
-            coins -= currentLevel.coinsPerSpawn;
-            UIManager.Instance.playPanel.UpdateAvailableCoins();
-        }
-
-        public void AddEndTurnReward(){
-            coins += currentLevel.coinsToAddOnTurn;
-            UIManager.Instance.playPanel.UpdateAvailableCoins();
-        }
-
-        public void AddMergeReward(){
-            coins += currentLevel.coinsToAddOnMerge;
-            UIManager.Instance.playPanel.UpdateAvailableCoins();
-        }
+        
 
         public void StartBattle()
         {
+            StartCoroutine(WaitForEnemy());
+        }
+
+        private IEnumerator WaitForEnemy()
+        {
+            TurnsManager.PlayState = PlayState.Wait;
+            UIManager.Instance.playPanel.SetPlayUI(PlayState.Wait);
+            yield return new WaitUntil(() => Bot.Instance.IsReady());
             TurnsManager.PlayState = PlayState.Battle;
             UIManager.Instance.ShowBattleUI();
             print("Start Fight");
@@ -127,6 +121,7 @@ namespace Core
                     building.SpawnTroops();
                 }
             }
+            UIManager.Instance.playPanel.SetPlayUI(PlayState.Battle);
         }
         
         private void Keyboard()

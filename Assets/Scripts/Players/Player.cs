@@ -15,15 +15,9 @@ using DG.Tweening;
 //---------------------------------------
 namespace Players
 {
-    public enum PlayerTeam
-    {
-        Player1,
-        Player2
-    }
-
-    public class Player : MonoBehaviour
-    {
-        [SerializeField] private BuildingCard[] buildingsCards;
+    public class Player : PlayerManager
+    { 
+        public static Player Instance { get; private set; }
         [SerializeField] private LayerMask buildingLayer, groundLayer;
         [SerializeField] private GameObject trail;
         [SerializeField] private Sprite hammer;
@@ -32,9 +26,8 @@ namespace Players
         [SerializeField] private List<Building> _buildingsOnBoard = new();
         private Camera _cam;
         private bool _linking;
-        private List<BuildingCard> _selectedBuilding = new();
-        private List<Troop> _myTroops = new();
-        public static Player Instance { get; private set; }
+        
+       
         public bool isDestroyEnabled = false;
         public List<Troop> GetTroops() => _myTroops;
         public List<Building> GetBuildingsOnBoard() => _buildingsOnBoard;
@@ -48,12 +41,7 @@ namespace Players
         
         private IEnumerator Start()
         {
-            foreach (var card in buildingsCards)
-            {
-                if(card.IsSelected()) _selectedBuilding.Add(card);
-            }
-            UIManager.Instance.startUI.SetPlayer1Card(_selectedBuilding.ToArray());
-            
+            SetDeck();
             yield return new WaitUntil(() => GameManager.State == GameState.Play);
             
             UIManager.Instance.playPanel.GetSummonButton().onClick.AddListener(SummonButtonClicked);
@@ -75,6 +63,7 @@ namespace Players
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space)) SummonButtonClicked();
+            if(Input.GetKeyDown(KeyCode.B)) GameManager.Instance.StartBattle();
 
             if (isDestroyEnabled)
             {
@@ -87,30 +76,13 @@ namespace Players
 
         private void SummonButtonClicked()
         {
-            if (GameManager.Instance.currentLevel.coinsPerSpawn > GameManager.Instance.coins)
+            if (GameManager.Instance.currentLevel.coinsPerSpawn > CoinsManager.Instance.GetCoinsAmount(PlayerTeam.Player1))
             {
                 UIManager.Instance.playPanel.ShowNotEnoughGoldEffect();
                 return;
             }
-
-            for (var i = 0; i < _selectedBuilding.Count; i++)
-            {
-                var targetBuilding = _selectedBuilding[(Random.Range(0, _selectedBuilding.Count) + i) % _selectedBuilding.Count].GetBuilding();
-                var summonPos =
-                    Board.Instance.GetRandomBoardPoint(PlayerTeam.Player1, targetBuilding.GetBuildingType());
-
-                if (summonPos != Vector3.zero)
-                {
-                    var b = Instantiate(targetBuilding, summonPos, Quaternion.identity, transform);
-                    b.Set(PlayerTeam.Player1);
-                    _buildingsOnBoard.Add(b);
-                    GameManager.Instance.CutSummonCost();
-                   
-                    return;
-                }
-            }
-
-            UIManager.Instance.playPanel.ShowSpaceErrorText();
+            CoinsManager.Instance.UseCoins(GameManager.Instance.currentLevel.coinsPerSpawn, PlayerTeam.Player1);
+            if(!SummonRandomBuilding()) UIManager.Instance.playPanel.ShowSpaceErrorText();
         }
 
         private IEnumerator SelectBuilding()
@@ -121,7 +93,7 @@ namespace Players
                 {
                     var ray = _cam.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out var hit, buildingLayer))
-                        foreach (var building in _buildingsOnBoard)
+                        foreach (var building in BuildingsOnBoard)
                             if (building.transform == hit.transform)
                                 yield return LinkBuildings(building);
                 }
@@ -141,7 +113,7 @@ namespace Players
                 if (Physics.Raycast(ray, out var hit, Mathf.Infinity, groundLayer))
                     link.ShowLink(building.transform.position, hit.point);
 
-                foreach (var availableBuilding in _buildingsOnBoard)
+                foreach (var availableBuilding in BuildingsOnBoard)
                     if (ValidateLink(availableBuilding, building) && availableBuilding != building)
                         availableBuilding.Highlight();
 
@@ -149,147 +121,26 @@ namespace Players
             }
 
             _linking = false;
-            foreach (var availableBuilding in _buildingsOnBoard) availableBuilding.RemoveHighlight();
+            foreach (var availableBuilding in BuildingsOnBoard) availableBuilding.RemoveHighlight();
 
             if (Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition), out var b, Mathf.Infinity, buildingLayer))
             {
-                link.ShowLink(building.transform.position, b.transform.position);
                 var targetBuilding = b.transform.gameObject.GetComponent<Building>();
-                if (ValidateLink(targetBuilding, building))
-                {
-                    if (building.GetBuildingType() == targetBuilding.GetBuildingType())
-                    {
-                        Destroy(link.gameObject);
-                        MergeBuildings(targetBuilding, building);
-                    }
-                    else
-                    {
-                        link.SetBuildings(building, targetBuilding);
-                        targetBuilding.SetBuildingLink(link);
-                        building.SetBuildingLink(link);
-                        _myLinks.Add(link);
-
-                        // Increment Weapon to Troops links number
-                        if (building.GetBuildingType() == BuildingType.Weapon &&
-                            targetBuilding.GetBuildingType() == BuildingType.Troops) building.IncrementLinksToTroops();
-                        else if (building.GetBuildingType() == BuildingType.Troops &&
-                                 targetBuilding.GetBuildingType() == BuildingType.Weapon)
-                            targetBuilding.IncrementLinksToTroops();
-
-                        // Increment Weapon to Buffs links number
-                        if (building.GetBuildingType() == BuildingType.Weapon &&
-                            targetBuilding.GetBuildingType() == BuildingType.Buff) building.IncrementLinksToBuffs();
-                        else if (building.GetBuildingType() == BuildingType.Buff &&
-                                 targetBuilding.GetBuildingType() == BuildingType.Weapon)
-                            targetBuilding.IncrementLinksToBuffs();
-                    }
-                }
-                else
-                {
-                    Destroy(link.gameObject);
-                }
+                TryToLinkBuildings(building, targetBuilding);
+                TryMergeBuildings(building, targetBuilding);
             }
-            else
-            {
-                Destroy(link.gameObject);
-            }
+            Destroy(link.gameObject);
         }
-
-        private static bool ValidateLink(Building building1, Building building2)
-        {
-            if (building1 == building2) return false;
-            var type1 = building1.GetBuildingType();
-            var type2 = building2.GetBuildingType();
-            var availableLinksToBuffs1 = building1.GetLinksToTroops() == 0
-                ? 1 - building1.GetLinksToBuffs()
-                : building1.GetLinksToBuffs() - building1.GetLinksToTroops();
-            var availableLinksToBuffs2 = building2.GetLinksToTroops() == 0
-                ? 1 - building2.GetLinksToBuffs()
-                : building2.GetLinksToBuffs() - building2.GetLinksToTroops();
-            var linksCount1 = building1.GetLinksCount();
-            var linksCount2 = building2.GetLinksCount();
-            var level1 = building1.GetLevel();
-            var level2 = building2.GetLevel();
-
-            var isTroopsBuff = (type1 == BuildingType.Troops && type2 == BuildingType.Buff) ||
-                               (type1 == BuildingType.Buff && type2 == BuildingType.Troops);
-            var isTroopsTroops = type1 == BuildingType.Troops && type2 == BuildingType.Troops;
-            var sameType = type1 == type2;
-            var sameId = building1.GetId() == building2.GetId();
-            var sameLevel = level1 == level2;
-
-            var validTypes = !isTroopsBuff && !isTroopsTroops;
-            var noLinksToBuff = (type1 == BuildingType.Weapon && type2 == BuildingType.Buff &&
-                                 availableLinksToBuffs1 == 0) || (type2 == BuildingType.Weapon &&
-                                                                  type1 == BuildingType.Buff &&
-                                                                  availableLinksToBuffs2 == 0);
-            var troopsAlreadyLinked = (type1 == BuildingType.Troops && linksCount1 > 0) ||
-                                      (type2 == BuildingType.Troops && linksCount2 > 0);
-
-            var canLink = !sameType && !noLinksToBuff && !troopsAlreadyLinked;
-            var canMerge = sameId && sameLevel && sameType;
-
-            return (validTypes && canLink) || canMerge;
-        }
-
-
-        private void MergeBuildings(Building target, Building source)
-        {
-            source.transform.DOMove(target.transform.position, .3f).OnComplete(() =>
-            {
-                target.RunGFX();
-                target.IncrementLevel();
-                _buildingsOnBoard.Remove(source);
-
-                if (source.GetBuildingType() == BuildingType.Troops && source.GetMyLinks().Count > 0 &&
-                    target.GetMyLinks().Count > 0)
-                {
-                    var sourceLinks = source.GetMyLinks();
-                    foreach (var link in sourceLinks)
-                    {
-                        var otherBuilding = link.GetLinkedBuilding(source);
-                        otherBuilding.RemoveLink(link);
-                        otherBuilding.SetActive(false);
-                        otherBuilding.SetLinksToTroops(otherBuilding.GetLinksToTroops() - 1);
-                        _myLinks.Remove(link);
-                        Destroy(link.gameObject);
-                    }
-                }
-                else
-                {
-                    var sourceLinks = source.GetMyLinks();
-                    foreach (var link in sourceLinks)
-                    {
-                        var otherBuilding = link.GetLinkedBuilding(source);
-                        otherBuilding.RemoveLink(link);
-
-                        var newLink = otherBuilding.CreateLink();
-                        newLink.SetLink(PlayerTeam.Player1);
-
-                        newLink.SetBuildings(otherBuilding, target);
-                        target.SetBuildingLink(newLink);
-                        otherBuilding.SetBuildingLink(newLink);
-
-                        newLink.ShowLink(otherBuilding.transform.position, target.transform.position);
-
-                        _myLinks.Remove(link);
-                        _myLinks.Add(newLink);
-                        Destroy(link.gameObject);
-                    }
-
-                    target.SetLinksToTroops(target.GetLinksToTroops() + source.GetLinksToTroops());
-                    target.SetLinksToBuffs(target.GetLinksToBuffs() + source.GetLinksToBuffs());
-                }
-
-                Destroy(source.gameObject);
-                GameManager.Instance.AddMergeReward();
-            });
-        }
-
+        
         private IEnumerator CutLinks()
         {
             while (GameManager.State == GameState.Play && !isDestroyEnabled)
             {
+                if (TurnsManager.PlayState != PlayState.Summon)
+                {
+                    yield return null;
+                    continue;
+                }
                 trail.SetActive(Input.GetMouseButton(0) && !_linking);
                 if (Input.GetMouseButton(0) && !_linking)
                 {
@@ -297,7 +148,7 @@ namespace Players
                     if (Physics.Raycast(ray, out var hit, Mathf.Infinity, groundLayer))
                     {
                         trail.transform.position = hit.point + Vector3.up * 0.15f;
-                        foreach (var link in _myLinks.ToList().Where(link => link.IsBeenCut(hit.point)))
+                        foreach (var link in MyLinks().ToList().Where(link => link.IsBeenCut(hit.point)))
                         {
                             UpdateBuildingsLinksCountAfterLinkCut(link);
                         }
@@ -311,7 +162,7 @@ namespace Players
         private void UpdateBuildingsLinksCountAfterLinkCut(Link link)
         {
             link.Cut();
-            _myLinks.Remove(link);
+            MyLinks().Remove(link);
             Destroy(link.gameObject);
             UpdateBuildingsVisualAfterLinkCut();
 
@@ -340,7 +191,7 @@ namespace Players
                             item._building2.GetBuildingType() != BuildingType.Buff) continue;
 
                         item.Cut();
-                        _myLinks.Remove(item);
+                        MyLinks().Remove(item);
                         Destroy(item.gameObject);
                         UpdateBuildingsVisualAfterLinkCut();
 
@@ -368,7 +219,7 @@ namespace Players
                             item._building2.GetBuildingType() != BuildingType.Buff) continue;
 
                         item.Cut();
-                        _myLinks.Remove(item);
+                        MyLinks().Remove(item);
                         Destroy(item.gameObject);
                         UpdateBuildingsVisualAfterLinkCut();
 
@@ -385,7 +236,7 @@ namespace Players
         private void UpdateBuildingsVisualAfterLinkCut()
         {
             var reachableBuildings = new HashSet<Building>();
-            var troopsBuildings = _buildingsOnBoard
+            var troopsBuildings = BuildingsOnBoard
                 .Where(b => b.GetBuildingType() == BuildingType.Troops && b.IsActive()).ToList();
 
             foreach (var troopsBuilding in troopsBuildings)
@@ -409,7 +260,7 @@ namespace Players
                 }
             }
 
-            foreach (var building in _buildingsOnBoard)
+            foreach (var building in BuildingsOnBoard)
                 if (!reachableBuildings.Contains(building) && building.GetBuildingType() != BuildingType.Troops)
                     building.SetActive(false);
         }
@@ -420,14 +271,14 @@ namespace Players
 
             if (isDestroyEnabled)
             {
-                foreach (var building in _buildingsOnBoard)
+                foreach (var building in BuildingsOnBoard)
                     building.Highlight();
             }
             else
             {
                 StartCoroutine(SelectBuilding());
                 StartCoroutine(CutLinks());
-                foreach (var building in _buildingsOnBoard)
+                foreach (var building in BuildingsOnBoard)
                     building.RemoveHighlight();
             }
         }
@@ -442,7 +293,7 @@ namespace Players
             var ray = _cam.ScreenPointToRay(Input.mousePosition);
             if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, buildingLayer)) return;
 
-            var buildingToDestroy = _buildingsOnBoard.FirstOrDefault(b => b.transform == hit.transform);
+            var buildingToDestroy = BuildingsOnBoard.FirstOrDefault(b => b.transform == hit.transform);
 
             if (buildingToDestroy == null) return;
 
@@ -451,7 +302,7 @@ namespace Players
                 UpdateBuildingsLinksCountAfterLinkCut(link);
             }
 
-            _buildingsOnBoard.Remove(buildingToDestroy);
+            BuildingsOnBoard.Remove(buildingToDestroy);
             buildingToDestroy.GetLandFeedback().PlayFeedbacks();
             buildingToDestroy.GetBuildingPanel().gameObject.SetActive(false);
             var renderers = buildingToDestroy.GetRenderers();

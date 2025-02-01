@@ -1,5 +1,4 @@
 using System.Collections;
-using AI;
 using DG.Tweening;
 using Players;
 using UnityEngine;
@@ -10,6 +9,7 @@ namespace Core
     public enum PlayState
     {
         Summon,
+        Wait,
         Battle
     }
     public class TurnsManager : MonoBehaviour
