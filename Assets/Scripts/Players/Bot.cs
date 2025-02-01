@@ -41,10 +41,9 @@ namespace Players
             yield return new WaitForSeconds(Random.Range(0.5f, 2f));
             while (GameManager.State  == GameState.Play)
             {
-                if (GameManager.Instance.currentLevel.coinsPerSpawn <=
-                    CoinsManager.Instance.GetCoinsAmount(PlayerTeam.Player2))
+                if (CoinsManager.HasCoinsToSummon(PlayerTeam.Player2))
                 {
-                    CoinsManager.Instance.UseCoins(GameManager.Instance.currentLevel.coinsPerSpawn, PlayerTeam.Player2);
+                    CoinsManager.Instance.UseCoins(PlayerTeam.Player2);
                     SummonRandomBuilding();
                     yield return new WaitForSeconds(Random.Range(0.2f, .5f));
                 }

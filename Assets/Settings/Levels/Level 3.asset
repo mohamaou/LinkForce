@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 346f7f4eda456ac479fe45408562d137, type: 3}
   m_Name: Level 3
   m_EditorClassIdentifier: 
-  summonTime: 80
-  coinsToAddOnTurn: 1
-  coinsToAddOnMerge: 1
+  summonTime: 70
+  coinsPerTurn: 14
+  coinsPerTurnWin: 1
+  coinsPerTurnLoss: 3
+  coinsPerMerge: 1
   coinsPerSpawn: 3
   coinsPerRefund: 2

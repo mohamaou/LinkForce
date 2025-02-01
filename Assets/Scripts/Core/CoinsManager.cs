@@ -8,10 +8,14 @@ namespace Core
     public class CoinsManager : MonoBehaviour
     {
         public static CoinsManager Instance {get; private set;}
-        [SerializeField] private int[] coinsToAddEachTurn;
-        [SerializeField] private int mergeReward;
-        private int _player1coins, _player2coins, _turnIndex; 
-            
+        private static int _player1coins, _player2coins, _turnIndex;
+        private static int coinsPerTurn;
+        private static int coinsPerTurnWin;
+        private static int coinsPerTurnLoss;
+        private static int coinsPerMerge;
+        private static int coinsPerSpawn;
+        private static int coinsPerRefund;
+        
         private void Awake()
         {
             Instance = this;
@@ -22,32 +26,75 @@ namespace Core
             TurnStart();
         }
 
-        public void TurnStart()
+        public void Initialize(Level level)
         {
-            _player1coins = _player2coins = coinsToAddEachTurn[_turnIndex];
+            coinsPerTurn = level.coinsPerTurn;
+            coinsPerTurnWin = level.coinsPerTurnWin;
+            coinsPerTurnLoss = level.coinsPerTurnLoss;
+            coinsPerMerge = level.coinsPerMerge;
+            coinsPerSpawn = level.coinsPerSpawn;
+            coinsPerRefund = level.coinsPerRefund;
+        }
+
+        public static bool HasCoinsToSummon(PlayerTeam player)
+        {
+            if (player == PlayerTeam.Player1)
+                return _player1coins >= coinsPerSpawn;
+
+            return _player2coins >= coinsPerSpawn;
+        }
+
+        private void TurnStart()
+        {
+            var lastTurnWinner = TurnsManager.Instance.GetLastTurnWinner();
+            var player1Award = lastTurnWinner == PlayerTeam.Player1 ? coinsPerTurnWin :
+                lastTurnWinner == PlayerTeam.Player2 ? coinsPerTurnLoss : 0;
+            var player2Award = lastTurnWinner == PlayerTeam.Player2 ? coinsPerTurnWin :
+                lastTurnWinner == PlayerTeam.Player1 ? coinsPerTurnLoss : 0;
+
+            // playerCoins = rest from turn + win/loss award + turn fixed amount
+            _player1coins = _player1coins + player1Award + coinsPerTurn;
+            _player2coins = _player2coins + player2Award + coinsPerTurn;
+
             UIManager.Instance.playPanel.UpdateAvailableCoins(_player1coins);
             _turnIndex++;
         }
+
+        public void UseCoins(PlayerTeam team)
+        {
+            if (team == PlayerTeam.Player1)
+            {
+                _player1coins -= coinsPerSpawn;
+                UIManager.Instance.playPanel.UpdateAvailableCoins(_player1coins, !HasCoinsToSummon(PlayerTeam.Player1));
+            }
+
+            if (team == PlayerTeam.Player2) _player2coins -= coinsPerSpawn;
+        }
+
+        public void AddDestroyReward(PlayerTeam team)
+        {
+            if (team == PlayerTeam.Player1)
+            {
+                _player1coins += coinsPerRefund;
+                UIManager.Instance.playPanel.UpdateAvailableCoins(_player1coins, !HasCoinsToSummon(PlayerTeam.Player1));
+            }
+
+            if (team == PlayerTeam.Player2) _player2coins += coinsPerRefund;
+        }
+
         public void AddMergeReward(PlayerTeam team)
         {
             if (team == PlayerTeam.Player1)
             {
-                _player1coins += mergeReward;
-                UIManager.Instance.playPanel.UpdateAvailableCoins(_player1coins);
+                _player1coins += coinsPerMerge;
+                UIManager.Instance.playPanel.UpdateAvailableCoins(_player1coins, !HasCoinsToSummon(PlayerTeam.Player1));
             }
-            if(team == PlayerTeam.Player2) _player2coins += mergeReward;
-        }
 
+            if (team == PlayerTeam.Player2) _player2coins += coinsPerMerge;
+        }
+        
         public int GetCoinsAmount(PlayerTeam team) => team == PlayerTeam.Player1 ? _player1coins : _player2coins;
 
-        public void UseCoins(int amount, PlayerTeam team)
-        {
-            if (team == PlayerTeam.Player1)
-            {
-                _player1coins -= amount;
-                UIManager.Instance.playPanel.UpdateAvailableCoins(_player1coins);
-            }
-            if(team == PlayerTeam.Player2) _player2coins -= amount;
-        }
+   
     }
 }
