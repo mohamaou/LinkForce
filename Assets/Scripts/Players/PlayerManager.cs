@@ -155,6 +155,7 @@ namespace Players
 
         protected bool ValidateMerge(Building building1, Building building2)
         {
+            if (building1 == null || building2 == null) return false;
             if (building1 == building2) return false;
             var type1 = building1.GetBuildingType();
             var type2 = building2.GetBuildingType();

@@ -80,17 +80,15 @@ namespace Players
             {
                 foreach (var weaponBuilding in weaponBuildings)
                 {
-                    var l = troopBuilding.CreateLink();
-                    l.SetLink(PlayerTeam.Player2);
-                    l.ShowLink(troopBuilding.transform.position, weaponBuilding.transform.position);
-                    l.SetBuildings(troopBuilding, weaponBuilding);
-
                     if (ValidateLink(troopBuilding, weaponBuilding))
+                    {
+                        var l = troopBuilding.CreateLink();
+                        l.SetLink(PlayerTeam.Player2);
+                        l.ShowLink(troopBuilding.transform.position, weaponBuilding.transform.position);
+                        l.SetBuildings(troopBuilding, weaponBuilding);
                         LinkBuildings(troopBuilding, weaponBuilding, l);
-                    else
-                        Destroy(l.gameObject);
-
-                    yield return new WaitForSeconds(1f);
+                        yield return new WaitForSeconds(1f);
+                    }
                 }
             }
 
@@ -98,15 +96,14 @@ namespace Players
             {
                 foreach (var buffBuilding in buffBuildings)
                 {
-                    var l = weaponBuilding.CreateLink();
-                    l.SetLink(PlayerTeam.Player2);
-                    l.ShowLink(weaponBuilding.transform.position, buffBuilding.transform.position);
-                    l.SetBuildings(weaponBuilding, buffBuilding);
-
                     if (ValidateLink(weaponBuilding, buffBuilding))
+                    {
+                        var l = weaponBuilding.CreateLink();
+                        l.SetLink(PlayerTeam.Player2);
+                        l.ShowLink(weaponBuilding.transform.position, buffBuilding.transform.position);
+                        l.SetBuildings(weaponBuilding, buffBuilding);
                         LinkBuildings(weaponBuilding, buffBuilding, l);
-                    else
-                        Destroy(l.gameObject);
+                    }
                 }
             }
         }

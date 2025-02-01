@@ -108,6 +108,7 @@ namespace Core
 
         private IEnumerator WaitForEnemy()
         {
+            Player.Instance.SetDestroyDisabled();
             TurnsManager.PlayState = PlayState.Wait;
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Wait);
             yield return new WaitUntil(() => Bot.Instance.IsReady());

@@ -24,8 +24,7 @@ namespace Players
         [SerializeField] private GameObject hammerCursor;
         private Camera _cam;
         private bool _linking;
-       
-        public bool isDestroyEnabled = false;
+        private bool isDestroyEnabled;
 
         private void Awake()
         {
@@ -76,7 +75,7 @@ namespace Players
         {
             while (GameManager.State == GameState.Play && !isDestroyEnabled)
             {
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && TurnsManager.PlayState == PlayState.Summon)
                 {
                     var ray = _cam.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out var hit, buildingLayer))
@@ -279,18 +278,23 @@ namespace Players
                 foreach (var building in BuildingsOnBoard)
                     building.Highlight();
             }
-            else
-            {
-                Cursor.visible = true;
-                hammerCursor.SetActive(false);
-                UIManager.Instance.playPanel.SetDestroyRewardPanel(false);
-                foreach (var building in BuildingsOnBoard)
-                    building.RemoveHighlight();
-                StartCoroutine(SelectBuilding());
-                StartCoroutine(CutLinks());
-            }
+
+            else SetDestroyDisabled();
+            
         }
 
+        public void SetDestroyDisabled()
+        {
+            isDestroyEnabled = false;
+            Cursor.visible = true;
+            hammerCursor.SetActive(false);
+            UIManager.Instance.playPanel.SetDestroyRewardPanel(false);
+            foreach (var building in BuildingsOnBoard)
+                building.RemoveHighlight();
+            StartCoroutine(SelectBuilding());
+            StartCoroutine(CutLinks());
+        }
+        
         private void DestroyBuilding()
         {
             if (!isDestroyEnabled) return;
