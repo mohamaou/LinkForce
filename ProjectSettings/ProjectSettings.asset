@@ -165,7 +165,7 @@ PlayerSettings:
   androidMinAspectRatio: 1
   applicationIdentifier:
     Android: com.Wallo.LinkForce
-    Standalone: com.Unity-Technologies.com.unity.template.urp-blank
+    Standalone: com.Wallo.LinkForce
     iPhone: com.Unity-Technologies.com.unity.template.urp-blank
   buildNumber:
     Standalone: 0

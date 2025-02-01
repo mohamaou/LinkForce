@@ -22,11 +22,13 @@ namespace Players
         [SerializeField] private GameObject trail;
         [SerializeField] private Sprite hammer;
         [SerializeField] private GameObject hammerCursor;
+        [SerializeField] private List<Link> _myLinks = new();
+        [SerializeField] private List<Building> _buildingsOnBoard = new();
         private Camera _cam;
         private bool _linking;
-        
        
         public bool isDestroyEnabled = false;
+        public List<Building> GetBuildingsOnBoard() => _buildingsOnBoard;
 
         private void Awake()
         {
@@ -41,13 +43,13 @@ namespace Players
             yield return new WaitUntil(() => GameManager.State == GameState.Play);
             
             UIManager.Instance.playPanel.GetSummonButton().onClick.AddListener(SummonButtonClicked);
+            UIManager.Instance.playPanel.GetDestroyButton().onClick.AddListener(SetDestroyEnabled);
             StartCoroutine(SelectBuilding());
             StartCoroutine(CutLinks());
             var t = trail;
             trail = Instantiate(t, transform);
         }
         
-
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space)) SummonButtonClicked();
@@ -59,17 +61,17 @@ namespace Players
                 DestroyBuilding();
                 if (hammerCursor.activeSelf) UpdateHammerCursorPosition();
             }
-
         }
 
         private void SummonButtonClicked()
         {
-            if (GameManager.Instance.currentLevel.coinsPerSpawn > CoinsManager.Instance.GetCoinsAmount(PlayerTeam.Player1))
+            if (!CoinsManager.HasCoinsToSummon(PlayerTeam.Player1))
             {
                 UIManager.Instance.playPanel.ShowNotEnoughGoldEffect();
                 return;
             }
-            CoinsManager.Instance.UseCoins(GameManager.Instance.currentLevel.coinsPerSpawn, PlayerTeam.Player1);
+
+            CoinsManager.Instance.UseCoins(PlayerTeam.Player1);
             if(!SummonRandomBuilding()) UIManager.Instance.playPanel.ShowSpaceErrorText();
         }
 
@@ -264,10 +266,12 @@ namespace Players
             }
             else
             {
-                StartCoroutine(SelectBuilding());
-                StartCoroutine(CutLinks());
+                Cursor.visible = false;
+                hammerCursor.SetActive(true);
                 foreach (var building in BuildingsOnBoard)
                     building.RemoveHighlight();
+                StartCoroutine(SelectBuilding());
+                StartCoroutine(CutLinks());
             }
         }
 
@@ -299,6 +303,7 @@ namespace Players
 
             Destroy(buildingToDestroy.gameObject, 0.75f);
             UpdateBuildingsVisualAfterLinkCut();
+            CoinsManager.Instance.AddDestroyReward(PlayerTeam.Player1);
         }
 
 

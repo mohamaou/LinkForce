@@ -124,7 +124,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI player1Name, player2Name;
         [SerializeField] private Image player1Image, player2Image;
         [SerializeField] private TextMeshProUGUI timerText, costToSummon, availableGold;
-        [SerializeField] private Button summonButton, battleButton;
+        [SerializeField] private Button summonButton, battleButton, destroyButton;
         [SerializeField] private TextMeshProUGUI spaceErrorText;
         [SerializeField] public GameObject summonPanel, waitePanel, battlePanel;
         [SerializeField] public DOTweenAnimation CoinsParent;
@@ -143,6 +143,7 @@ namespace UI
         public TextMeshProUGUI GetTimerText() => timerText;
         public TextMeshProUGUI GetAvailableGold() => availableGold;
         public Button GetSummonButton() => summonButton;
+        public Button GetDestroyButton() => destroyButton;
         public Button GetBattleButton() => battleButton;
 
         public void ShowSpaceErrorText()
@@ -159,18 +160,17 @@ namespace UI
             sequence.OnComplete(() => Object.Destroy(errorTextCopy.gameObject));
         }
 
-        public void UpdateAvailableCoins(int coinAmount){
+        public void UpdateAvailableCoins(int coinAmount, bool turnToRed = false)
+        {
             availableGold.text = coinAmount.ToString();
-
-            if (GameManager.Instance.currentLevel.coinsPerSpawn > coinAmount)
-                availableGold.color = Color.red;
+            availableGold.color = turnToRed ? Color.red : Color.white;
         }
 
         public void ShowNotEnoughGoldEffect()
         {
            CoinsParent.DORestart();
         }
-        
+
         public void SetPlayUI(PlayState playPanel)
         {
             summonPanel.SetActive(false);

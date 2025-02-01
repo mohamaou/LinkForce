@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Players;
+using Troops;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -49,7 +50,6 @@ namespace Core
         public static Camera Camera;
         public static int Level;
         public List<Level> levels = new List<Level>();
-        public Level currentLevel;
         public bool fastGame, showPlayerProfile;
         private float _timer;
         private float _fpsTimer = 0.0f;
@@ -57,7 +57,8 @@ namespace Core
         private int _fpsDisplay = 0;
         private bool _player1NotEnoughSpace, _player2NotEnoughSpace;
         private float timeRemaining = 0;
-
+        private Level currentLevel;
+        public int currentTurn;
         
         private void Awake()
         {
@@ -72,7 +73,8 @@ namespace Core
         }
 
         private void Start()
-        { 
+        {
+            CoinsManager.Instance.Initialize(currentLevel);
             TinySauce.OnGameStarted(levelNumber:Level);
         }
 
@@ -110,6 +112,14 @@ namespace Core
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Wait);
             yield return new WaitUntil(() => Bot.Instance.IsReady());
             TurnsManager.PlayState = PlayState.Battle;
+            print("Start Fight");
+            foreach (var building in Player.Instance.GetBuildingsOnBoard())
+            {
+                if (building.GetBuildingType() == BuildingType.Troops)
+                {
+                    building.SpawnTroops();
+                }
+            }
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Battle);
         }
         
