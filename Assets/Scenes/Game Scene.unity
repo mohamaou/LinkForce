@@ -8587,7 +8587,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d829ed16fe9592f42a0f72d285b98976, type: 2}
   - {fileID: 11400000, guid: c17f2b0dd76853a449a750dc41828535, type: 2}
   - {fileID: 11400000, guid: 0eb3035feeab1774aac8870b3e0c1117, type: 2}
-  player1Color: {r: 0, g: 0.8039216, b: 1, a: 1}
+  player1Color: {r: 0, g: 0.53333336, b: 1, a: 1}
   player2Color: {r: 0.8773585, g: 0.053800307, b: 0.053800307, a: 1}
   fastGame: 0
   showPlayerProfile: 1

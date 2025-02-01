@@ -162,8 +162,7 @@ namespace Players
         {
             if (building2.GetId() != building1.GetId() || building2.GetLevel() != building1.GetLevel())
                 return false;
-
-            }
+            
             building1.transform.DOMove(building2.transform.position, .3f).OnComplete(() =>
             {
                 building2.RunGFX();
