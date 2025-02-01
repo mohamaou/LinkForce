@@ -19,8 +19,7 @@ namespace Core
         public static PlayState PlayState;
         private PlayerTeam _playerTurn;
         private PlayerTeam _lastTurnWinner;
-
-        public PlayerTeam GetLastTurnWinner() => _lastTurnWinner;
+        private int _currentTurn = 0;
 
         private void Awake()
         {
@@ -30,7 +29,14 @@ namespace Core
 
         private IEnumerator Start()
         {
+            StartNewTurn();
             yield return new WaitUntil(() => GameManager.State == GameState.Play);
+        }
+
+        private void StartNewTurn()
+        {
+            _currentTurn++;
+            CoinsManager.Instance.InitializeTurnCoins(_lastTurnWinner, true);
         }
     }
 }

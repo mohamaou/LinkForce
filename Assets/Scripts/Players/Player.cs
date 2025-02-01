@@ -22,13 +22,10 @@ namespace Players
         [SerializeField] private GameObject trail;
         [SerializeField] private Sprite hammer;
         [SerializeField] private GameObject hammerCursor;
-        [SerializeField] private List<Link> _myLinks = new();
-        [SerializeField] private List<Building> _buildingsOnBoard = new();
         private Camera _cam;
         private bool _linking;
        
         public bool isDestroyEnabled = false;
-        public List<Building> GetBuildingsOnBoard() => _buildingsOnBoard;
 
         private void Awake()
         {
@@ -65,14 +62,14 @@ namespace Players
 
         private void SummonButtonClicked()
         {
-            if (!CoinsManager.HasCoinsToSummon(PlayerTeam.Player1))
+            if (!CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player1))
             {
                 UIManager.Instance.playPanel.ShowNotEnoughGoldEffect();
                 return;
             }
 
-            CoinsManager.Instance.UseCoins(PlayerTeam.Player1);
-            if(!SummonRandomBuilding()) UIManager.Instance.playPanel.ShowSpaceErrorText();
+            if (!SummonRandomBuilding()) UIManager.Instance.playPanel.ShowSpaceErrorText();
+            else CoinsManager.Instance.UseCoins(PlayerTeam.Player1);
         }
 
         private IEnumerator SelectBuilding()
@@ -117,7 +114,7 @@ namespace Players
             {
                 var targetBuilding = b.transform.gameObject.GetComponent<Building>();
                 TryToLinkBuildings(building, targetBuilding);
-                TryMergeBuildings(building, targetBuilding);
+                TryMergeBuildings(building, targetBuilding, () => { });
             }
             Destroy(link.gameObject);
         }
@@ -266,8 +263,8 @@ namespace Players
             }
             else
             {
-                Cursor.visible = false;
-                hammerCursor.SetActive(true);
+                Cursor.visible = true;
+                hammerCursor.SetActive(false);
                 foreach (var building in BuildingsOnBoard)
                     building.RemoveHighlight();
                 StartCoroutine(SelectBuilding());
@@ -304,6 +301,7 @@ namespace Players
             Destroy(buildingToDestroy.gameObject, 0.75f);
             UpdateBuildingsVisualAfterLinkCut();
             CoinsManager.Instance.AddDestroyReward(PlayerTeam.Player1);
+            SetDestroyEnabled();
         }
 
 

@@ -58,7 +58,6 @@ namespace Core
         private bool _player1NotEnoughSpace, _player2NotEnoughSpace;
         private float timeRemaining = 0;
         private Level currentLevel;
-        public int currentTurn;
         
         private void Awake()
         {
@@ -112,14 +111,6 @@ namespace Core
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Wait);
             yield return new WaitUntil(() => Bot.Instance.IsReady());
             TurnsManager.PlayState = PlayState.Battle;
-            print("Start Fight");
-            foreach (var building in Player.Instance.GetBuildingsOnBoard())
-            {
-                if (building.GetBuildingType() == BuildingType.Troops)
-                {
-                    building.SpawnTroops();
-                }
-            }
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Battle);
         }
         

@@ -102,13 +102,15 @@ namespace Players
                 if (summonPos == Vector3.zero) 
                     continue;
 
-                var b = Instantiate(targetBuilding, summonPos, Quaternion.identity, transform);
+                var b = Instantiate(targetBuilding, summonPos, 
+                    team == PlayerTeam.Player1?Quaternion.identity: Quaternion.Euler(0,180,0), transform);
                 b.Set(team);
                 _buildingsOnBoard.Add(b);
                 return true;
             }
             return false;
         }
+        
         private bool TroopBuildingAvailable()
         {
             foreach (var building in _buildingsOnBoard)
@@ -155,22 +157,22 @@ namespace Players
             var canMerge = sameId && sameLevel && sameType;
             return (validTypes && canLink) || canMerge;
         }
-        protected bool TryMergeBuildings(Building building1, Building  building2)
+        protected bool TryMergeBuildings(Building building1, Building  building2, System.Action mergeDone)
         {
             if (building2.GetId() != building1.GetId() || building2.GetLevel() != building1.GetLevel())
             {
                 return false;
             }
-
             building1.transform.DOMove(building2.transform.position, .3f).OnComplete(() =>
             {
                 building2.RunGFX();
                 building2.IncrementLevel();
                 _buildingsOnBoard.Remove(building1);
-
+               
+                
                 if (building1.GetBuildingType() == BuildingType.Troops && building1.GetMyLinks().Count > 0 &&
                     building2.GetMyLinks().Count > 0)
-                {
+                { 
                     var sourceLinks = building1.GetMyLinks();
                     foreach (var link in sourceLinks)
                     {
@@ -209,6 +211,7 @@ namespace Players
                 }
                 Destroy(building1.gameObject);
                 CoinsManager.Instance.AddMergeReward(team);
+                mergeDone?.Invoke();
             });
             return true;
         }
