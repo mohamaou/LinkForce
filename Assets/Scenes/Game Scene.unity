@@ -8587,7 +8587,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c17f2b0dd76853a449a750dc41828535, type: 2}
   - {fileID: 11400000, guid: 0eb3035feeab1774aac8870b3e0c1117, type: 2}
   fastGame: 0
-  showPlayerProfile: 1
+  showPlayerProfile: 0
   currentTurn: 0
 --- !u!4 &976142742
 Transform:
@@ -8653,7 +8653,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 976142740}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56ed238d249cfd04591183cc2fde45b4, type: 3}
   m_Name: 
@@ -8676,7 +8676,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4cdd57563ed1a5e4bb707e4e686597c7, type: 2}
   - {fileID: 11400000, guid: f237b300e8f0603409b67e95bc4aad0a, type: 2}
   team: 1
-  _myLinks: []
 --- !u!114 &976142745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8829,59 +8828,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0a1a374f3094b704c86e9bc726a84e23, type: 2}
   - {fileID: 11400000, guid: 764e06841aa86ff4d9c84930fad38ca3, type: 2}
   - {fileID: 11400000, guid: f15cd503bf4b57a45afa49e2c0c1e6c3, type: 2}
-  rewardsType:
-  - {fileID: 11400000, guid: defcb5543ddcf814bb578a007372319d, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   trophiesText:
   - {fileID: 409745319}
   - {fileID: 21855543}

@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Core;
-using DG.Tweening;
-using Models;
 using Troops;
 using UI;
 using UnityEngine;
@@ -14,8 +12,6 @@ namespace Players
     {
         private string _difficultyKey = "Difficulty";
         public static Bot Instance { get; private set; }
-       
-        [SerializeField] private List<Link> _myLinks = new();
         private bool _ready;
 
         private void Awake()

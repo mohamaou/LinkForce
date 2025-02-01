@@ -89,6 +89,7 @@ namespace Players
         #region Summon Building
         protected bool SummonRandomBuilding()
         {
+            if (_selectedBuilding.Count == 0) return true;
             for (int i = 0; i < _selectedBuilding.Count; i++)
             {
                 var index = (Random.Range(0, _selectedBuilding.Count) + i) % _selectedBuilding.Count;
