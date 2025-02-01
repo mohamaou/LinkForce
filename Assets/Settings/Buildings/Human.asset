@@ -18,7 +18,7 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: c45be987f52b21e48874ddfd0584c210, type: 3}
   building: {fileID: 2832940480316813797, guid: 57391a14589a86b4abf32cc1461af580, type: 3}
   defaultTroop: 1
-  description: 
+  description: Humans are a troop with a lot of health but low damage.
   melee:
     damage: []
     range: 0
@@ -44,14 +44,14 @@ MonoBehaviour:
   troop:
     damage:
     - 10
-    - 10
-    - 10
-    - 10
-    - 10
+    - 22
+    - 48
+    - 106
+    - 233
     health:
-    - 100
-    - 10
-    - 10
-    - 10
-    - 10
+    - 150
+    - 330
+    - 720
+    - 1597
+    - 3513
     range: 1

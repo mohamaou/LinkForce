@@ -18,14 +18,14 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: 89d4c59c7867e5a49a35b264809d7cd9, type: 3}
   building: {fileID: 2832940480316813797, guid: 7806c095813115e44bfcec545fa00162, type: 3}
   defaultTroop: 0
-  description: 
+  description: A melee weapon that attacks a large group of enemies
   melee:
     damage:
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
+    - 38
+    - 84
+    - 184
+    - 405
+    - 891
     range: 1.5
   range:
     damage: []
@@ -50,4 +50,3 @@ MonoBehaviour:
     damage: []
     health: []
     range: 1
-    speed: 0

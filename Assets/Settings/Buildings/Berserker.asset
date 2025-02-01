@@ -18,7 +18,7 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: e30caac6b27c9c94eb2bf2397961e688, type: 3}
   building: {fileID: 2832940480316813797, guid: 4abd02778e1334a4fb03c5ba67b8f105, type: 3}
   defaultTroop: 0
-  description: 
+  description: Increase your troop's health and damage by the utmost
   melee:
     damage: []
     range: 0
@@ -27,17 +27,16 @@ MonoBehaviour:
     range: 0
   berserker:
     damageIncreased:
-    - 17.6
-    - 30.4
-    - 53.1
-    - 79.3
-    - 100
+    - 8
+    - 10
+    - 13
+    - 17
+    - 20
     healthIncreased:
-    - 22.1
-    - 42.3
-    - 63.9
-    - 80.3
-    - 100
+    - 5
+    - 7.5
+    - 10
+    - 15
   ghost:
     ghostDamage: []
     ghostRange: 0
@@ -55,4 +54,3 @@ MonoBehaviour:
     damage: []
     health: []
     range: 1
-    speed: 0

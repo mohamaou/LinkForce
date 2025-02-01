@@ -18,7 +18,8 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: ee2562ee0a55d3a41b2d8819621015d3, type: 3}
   building: {fileID: 2832940480316813797, guid: 1b409a52541ec074e9224995f16c06f1, type: 3}
   defaultTroop: 0
-  description: 
+  description: The skeleton is a fast unit with low damage and health, adept at evading
+    ranged attacks.
   melee:
     damage: []
     range: 0
@@ -43,15 +44,15 @@ MonoBehaviour:
     hideTime: []
   troop:
     damage:
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
+    - 5
+    - 11
+    - 24
+    - 53
+    - 117
     health:
-    - 100
-    - 100
-    - 100
-    - 100
-    - 100
+    - 80
+    - 176
+    - 387
+    - 851
+    - 1872
     range: 1

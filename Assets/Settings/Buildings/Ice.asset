@@ -18,23 +18,23 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: 85011e7e5fffa74498f615fdf5b65a23, type: 3}
   building: {fileID: 2832940480316813797, guid: 6b17878f42d5f134a9b7719bb1dc1d09, type: 3}
   defaultTroop: 0
-  description: 
+  description: The Ice Staff fires an icy projectile that slows enemies.
   melee:
     damage: []
     range: 0
   range:
     damage:
-    - damage: 5
+    - damage: 30
       damageType: 2
-    - damage: 5
+    - damage: 66
       damageType: 2
-    - damage: 5
+    - damage: 145
       damageType: 2
-    - damage: 5
+    - damage: 319
       damageType: 2
-    - damage: 5
+    - damage: 702
       damageType: 2
-    range: 8
+    range: 6
   berserker:
     damageIncreased: []
     healthIncreased: []
@@ -55,4 +55,3 @@ MonoBehaviour:
     damage: []
     health: []
     range: 1
-    speed: 0

@@ -12,7 +12,6 @@ namespace UI
         public static EndGameUI Instance {get; private set;}
         [SerializeField] private GameObject winPanel, losePanel, drawPanel;
         [SerializeField] private Reward[] rewards;
-        [SerializeField] private BuildingCard[] rewardsType;
         [SerializeField] private TextMeshProUGUI[] trophiesText, goldToAddText;
         [SerializeField] private TextMeshProUGUI endGameText;
         private GameResult _gameResult;

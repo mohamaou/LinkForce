@@ -18,23 +18,24 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: c5f5b396afbdcf741b98551ff5be3261, type: 3}
   building: {fileID: 2832940480316813797, guid: ddb3802676c0e0742b363ac7d1efd4c5, type: 3}
   defaultTroop: 0
-  description: 
+  description: Electric staff shotts lighting at enemies that stuns them for a short
+    amount of time
   melee:
     damage: []
     range: 0
   range:
     damage:
-    - damage: 7
+    - damage: 32
       damageType: 3
-    - damage: 7
+    - damage: 70
       damageType: 3
-    - damage: 7
+    - damage: 154
       damageType: 3
-    - damage: 7
+    - damage: 339
       damageType: 3
-    - damage: 7
+    - damage: 746
       damageType: 3
-    range: 8
+    range: 6
   berserker:
     damageIncreased: []
     healthIncreased: []
@@ -55,4 +56,3 @@ MonoBehaviour:
     damage: []
     health: []
     range: 1
-    speed: 0

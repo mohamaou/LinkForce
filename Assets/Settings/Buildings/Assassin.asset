@@ -18,7 +18,7 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: 8f26767314f6f5149948f4d2077a8b16, type: 3}
   building: {fileID: 2832940480316813797, guid: 20da8018812542141a6f9e944fac226e, type: 3}
   defaultTroop: 0
-  description: 
+  description: Make your troops invisible for a certain amount of time
   melee:
     damage: []
     range: 0
@@ -41,13 +41,12 @@ MonoBehaviour:
     damageNegation: []
   assassin:
     hideTime:
-    - 3
     - 2
+    - 2.5
     - 3
+    - 3.5
     - 4
-    - 5
   troop:
     damage: []
     health: []
     range: 1
-    speed: 0

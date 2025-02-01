@@ -18,7 +18,7 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: eb0875618d6d3c54694d6e696245a93a, type: 3}
   building: {fileID: 2832940480316813797, guid: 6f334f9802e16594782b673509d2afba, type: 3}
   defaultTroop: 0
-  description: 
+  description: Surround your troop with ghost that attack enemies
   melee:
     damage: []
     range: 0
@@ -30,12 +30,12 @@ MonoBehaviour:
     healthIncreased: []
   ghost:
     ghostDamage:
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-    ghostRange: 0
+    - 15
+    - 33
+    - 73
+    - 161
+    - 354
+    ghostRange: 8
   rocket:
     rocketDamage: []
     shootTime: 0
@@ -50,4 +50,3 @@ MonoBehaviour:
     damage: []
     health: []
     range: 1
-    speed: 0

@@ -18,7 +18,8 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: 4ef8fd1d0f27c754c98aa4cc3b038921, type: 3}
   building: {fileID: 2832940480316813797, guid: a9c2d15ee2b49f044ab414880981aff7, type: 3}
   defaultTroop: 0
-  description: 
+  description: Shield creates multiple rotating barriers around your troop. Each
+    time you take damage, one shield drops.
   melee:
     damage: []
     range: 0
@@ -36,7 +37,7 @@ MonoBehaviour:
     shootTime: 0
     range: 0
   shield:
-    shieldCount: 0500000002000000020000000200000002000000
+    shieldCount: 0200000003000000040000000500000006000000
   armor:
     damageNegation: []
   assassin:
@@ -45,4 +46,3 @@ MonoBehaviour:
     damage: []
     health: []
     range: 1
-    speed: 0
