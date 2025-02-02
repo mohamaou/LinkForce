@@ -48,8 +48,8 @@ namespace Players
                         yield return new WaitForSeconds(Random.Range(0.2f, 0.7f));
                     }
 
-                    yield return TryToMerge();
                     yield return TryLinkBuildings();
+                    yield return TryToMerge();
                 
                     if(!CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player2) || summonsTry > 2) _ready = true;
                     yield return new WaitForSeconds(Random.Range(0.2f, .5f));
@@ -85,7 +85,7 @@ namespace Players
                         l.ShowLink(troopBuilding.transform.position, weaponBuilding.transform.position);
                         l.SetBuildings(troopBuilding, weaponBuilding);
                         LinkBuildings(troopBuilding, weaponBuilding, l);
-                        yield return new WaitForSeconds(.3f);
+                        yield return new WaitForSeconds(.7f);
                     }
                 }
             }
@@ -139,7 +139,7 @@ namespace Players
                     {
                         MergeBuildings(b, building, () => mergeDone = true);
                         yield return new WaitUntil(() => mergeDone);
-                        yield return new WaitForSeconds(.5f);
+                        yield return new WaitForSeconds(.7f);
                     }
                 }
             }
