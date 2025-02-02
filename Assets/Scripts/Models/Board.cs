@@ -20,6 +20,7 @@ namespace Models
         [SerializeField] private GameObject[] rocks;
         [SerializeField] private Transform player1Board, player2Board;
         private readonly List<Tile> _player1Tiles = new (), _player2Tiles = new ();
+        private readonly List<Transform> _rocks = new ();
         
 
         private void Awake()
@@ -42,12 +43,16 @@ namespace Models
                 var rock = Instantiate(rocks[Random.Range(0, rocks.Length)], tile.Position, Quaternion.identity);
                 tile.SetRock(rock);
                 rock.transform.SetParent(player1Board);
+                rock.transform.localScale = Vector3.one;
+                _rocks.Add(rock.transform);
             }
             foreach (var tile in GetRandomTiles(PlayerTeam.Player2))
             {
                 var rock = Instantiate(rocks[Random.Range(0, rocks.Length)], tile.Position, Quaternion.identity);
                 tile.SetRock(rock);
                 rock.transform.SetParent(player2Board);
+                rock.transform.localScale = Vector3.one;
+                _rocks.Add(rock.transform);
             }
         }
 
@@ -103,7 +108,11 @@ namespace Models
             var mergedTile = PositionToTile(position: mergePosition);
             foreach (var tile in GetNearByTiles(mergedTile,team))
             {
-                if(tile.HasRock()) tile.RemoveRock();
+                if (tile.HasRock())
+                {
+                    _rocks.Remove(tile.GetRock());
+                    tile.RemoveRock();
+                }
             }
         }
 
@@ -115,10 +124,18 @@ namespace Models
                 yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Battle);
                 player1Board.DOMove(Vector3.back * 4.2f, 0.4f);
                 player2Board.DOMove(Vector3.forward * 4.2f, 0.4f);
+                foreach (var rock in _rocks)
+                {
+                    rock.transform.DOScale(Vector3.zero, 0.2f);
+                }
                 
                 yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Summon);
                 player1Board.DOMove(Vector3.zero,0.4f);
                 player2Board.DOMove(Vector3.zero,0.4f);
+                foreach (var rock in _rocks)
+                {
+                    rock.transform.DOScale(Vector3.one, 0.2f);
+                }
                 
             }
         }
@@ -294,6 +311,7 @@ namespace Models
                 if (HasRock()) return true;
                 return false;
             }
+            public Transform GetRock()=> rock.transform;
             
             public Tile(Vector3 position, BuildingType buildingType)
             {

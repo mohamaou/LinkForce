@@ -36,8 +36,8 @@ namespace Players
             while (GameManager.State == GameState.Play)
             {
                 _ready = false;   
-                yield return new WaitForSeconds(Random.Range(0.5f, 1f));
                 yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Summon);
+                yield return new WaitForSeconds(Random.Range(1.5f, 2f));
                 while (!_ready)
                 {
                     var summonsTry = 0;

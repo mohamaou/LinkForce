@@ -114,6 +114,7 @@ namespace Core
             yield return new WaitUntil(() => Bot.Instance.IsReady());
             TurnsManager.PlayState = PlayState.Battle;
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Battle);
+            TroopsFightingManager.Instance.BattleStart();
         }
         
         private void Keyboard()

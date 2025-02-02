@@ -122,6 +122,10 @@ namespace UI
     public class BattlePanel
     {
         [SerializeField] private Slider player1Health, player2Health;
+        
+        
+        public void SetPlayer1Health(float value) => player1Health.value = value;
+        public void SetPlayer2Health(float value) => player2Health.value = value;
     }
 
     [Serializable]  

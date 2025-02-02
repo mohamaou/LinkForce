@@ -248,6 +248,7 @@ namespace Troops
         #endregion
 
         #region Bublic Varialbles
+        public PlayerTeam GetTeam() => _team;
         public TroopState GetTroopStat()=> _troopState;
         public Movement GetMovement() => movement;
         public Troop GetClosestEnemy()
@@ -270,6 +271,7 @@ namespace Troops
         }
         public Rigidbody GetRigidbody() => rigidbody;
         public AnimationManager GetAnimator() => animation;
+        public float GetHealth() => _health;
         #endregion
         
         #region Building
@@ -288,6 +290,7 @@ namespace Troops
             _health += originalEquipment.GetHealth();
             _maxHealth = _health;
             healthBar.SetHealthBar(_health,team == PlayerTeam.Player1);
+            TroopsFightingManager.Instance.AddTroop(this, team);
         }
         public void SetEquipment(TroopType equipment)
         {

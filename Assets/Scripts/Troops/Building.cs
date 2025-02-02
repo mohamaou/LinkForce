@@ -80,7 +80,7 @@ namespace Troops
             var destroyPanel = Instantiate(UIManager.Instance.destroyPanelPrefab, _buildingPanel.transform);
             _destroyPanel = destroyPanel;
             _destroyPanel.transform.position = screenPosition2;
-
+            StartCoroutine(UIHandler());
             if (buildingType == BuildingType.Troops) StartCoroutine(SpawnTroops());
         }
 
@@ -97,13 +97,22 @@ namespace Troops
                 var spawnRotation = Quaternion.LookRotation(transform.forward);
                 var troop = Instantiate(troopPrefab, spawnPosition, spawnRotation);
 
-                troop.SetTroop(PlayerTeam.Player1);
+                troop.SetTroop(_team);
                 StartCoroutine(troop.GetMovement().SpawnMovement(troop.transform, targetPosition));
                 yield return new WaitForSeconds(0.25f);
             }
 
             yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Summon);
             StartCoroutine(SpawnTroops());
+        }
+
+        private IEnumerator UIHandler()
+        {
+            while (_buildingPanel != null)
+            {
+                _buildingPanel.transform.position = GameManager.Camera.WorldToScreenPoint(transform.position);
+                yield return null;
+            }
         }
         
         public void AssignComponents()

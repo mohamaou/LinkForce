@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using Players;
+using Troops;
 using UI;
 using UnityEngine;
 
@@ -38,11 +39,11 @@ namespace Core
             if(Input.GetKeyDown(KeyCode.V)) EndBattle(PlayerTeam.Player1);
         }
 
-        public void EndBattle(PlayerTeam team)
+        public void EndBattle(PlayerTeam winingPLayer)
         {
-            CoinsManager.Instance.InitializeTurnCoins(_lastTurnWinner, false);
+            CoinsManager.Instance.InitializeTurnCoins(winingPLayer, false);
             PlayState = PlayState.Summon;
-            if (team == PlayerTeam.Player2) UIManager.Instance.playersHealth.PlayerTakesDamage();
+            if (winingPLayer == PlayerTeam.Player2) UIManager.Instance.playersHealth.PlayerTakesDamage();
             else UIManager.Instance.playersHealth.EnemyTakesDamage();
             UIManager.Instance.playPanel.SetPlayUI(PlayState);
         }
