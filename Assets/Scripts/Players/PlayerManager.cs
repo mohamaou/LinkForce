@@ -192,7 +192,7 @@ namespace Players
                      targetBuilding.GetBuildingType() == BuildingType.Weapon)
                 targetBuilding.IncrementLinksToBuffs();
         }
-
+        
         protected void MergeBuildings(Building target, Building source, System.Action mergeDone)
         {
             source.transform.DOMove(target.transform.position, .3f).OnComplete(() =>
@@ -225,6 +225,7 @@ namespace Players
 
                         var newLink = otherBuilding.CreateLink();
                         newLink.SetLink(team);
+                        newLink.SetLink(team);
 
                         newLink.SetBuildings(otherBuilding, target);
                         target.SetBuildingLink(newLink);
@@ -240,10 +241,12 @@ namespace Players
                     target.SetLinksToBuffs(target.GetLinksToBuffs() + source.GetLinksToBuffs());
                 }
 
-                Destroy(source.gameObject);
+                Board.Instance.BuildingMerged(target.transform.position, team);
                 CoinsManager.Instance.AddMergeReward(team);
+                Destroy(source.gameObject);
                 mergeDone?.Invoke();
             });
+            Board.Instance.ClearTile(source.transform.position);
         }
         #endregion
     }
