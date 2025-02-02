@@ -938,7 +938,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2890596516191483023}
@@ -1014,7 +1014,7 @@ MonoBehaviour:
   rigidbody: {fileID: -1017605484087852521}
   healthBar: {fileID: 3130762095002219195}
   animation: {fileID: 6168069933749111171}
-  movement: {fileID: 0}
+  movement: {fileID: 8575255319196525763}
   enemiesLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -1264,6 +1264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   troop: {fileID: -4396117857146195542}
   speed: 3
+  spawnSpeed: 2
 --- !u!1 &9218742892800150159
 GameObject:
   m_ObjectHideFlags: 0

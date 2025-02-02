@@ -13,7 +13,9 @@ namespace Troops
 {
     public enum BuildingType
     {
-        Troops, Weapon, Buff
+        Troops,
+        Weapon,
+        Buff
     }
 
     public class Building : MonoBehaviour
@@ -28,7 +30,7 @@ namespace Troops
         private Vector3 _localScale;
         [SerializeField] private Troop troopPrefab;
         [SerializeField] private BuildingType buildingType;
-        [SerializeField] private string id; 
+        [SerializeField] private string id;
         [SerializeField] private Link link;
         [SerializeField] private int numberOfTroops = 4;
         [SerializeField] private int level = 1;
@@ -36,12 +38,13 @@ namespace Troops
         [SerializeField] private int _linksToTroops = 0;
         [SerializeField] private int _linksToBuffs = 0;
         private bool _active;
-        private readonly List<Link> _myLinks = new ();
+        private readonly List<Link> _myLinks = new();
         private bool _linkedToTroops;
         private BuildingUI _buildingPanel;
         private DestroyUI _destroyPanel;
 
         #region Public Variables
+
         public PlayerTeam GetTroopTeam() => _team;
         public Rigidbody GetTroopRigidbody() => GetComponent<Rigidbody>();
         public Renderer[] GetRenderers() => renderers;
@@ -66,19 +69,19 @@ namespace Troops
         {
             var screenPosition1 = GameManager.Camera.WorldToScreenPoint(transform.position);
             var screenPosition2 = GameManager.Camera.WorldToScreenPoint(transform.position + new Vector3(0, 3f, 0));
-            
+
             var buildingUI = Instantiate(UIManager.Instance.BuildingPanel,
                 UIManager.Instance.playPanel.buildingsPanel.transform);
             buildingUI.InitializePanel(icon, level, buildingType,
-                _team == PlayerTeam.Player1 ? GameManager.Instance.player1Color : GameManager.Instance.player2Color);
+                _team);
             _buildingPanel = buildingUI;
             _buildingPanel.transform.position = screenPosition1;
 
             var destroyPanel = Instantiate(UIManager.Instance.destroyPanelPrefab, _buildingPanel.transform);
             _destroyPanel = destroyPanel;
             _destroyPanel.transform.position = screenPosition2;
-           
-            if(buildingType == BuildingType.Troops) StartCoroutine(SpawnTroops());
+
+            if (buildingType == BuildingType.Troops) StartCoroutine(SpawnTroops());
         }
 
         private IEnumerator SpawnTroops()
@@ -87,10 +90,15 @@ namespace Troops
 
             for (var i = 0; i < numberOfTroops; i++)
             {
-                var troop = Instantiate(troopPrefab,
-                    transform.position + new Vector3(i % 2 == 0 ? (-i / 3f - 0.2f) : (i / 3f + 0.2f), 0f, 1.5f),
-                    Quaternion.identity);
+                var targetX = i % 2 == 0 ? ((-i / 3f) - 0.2f) : ((i / 3f) + 0.2f);
+                var targetPosition = transform.position + new Vector3(targetX, 0f, transform.forward.z * 1.75f);
+
+                var spawnPosition = transform.position + new Vector3(0f, 0f, transform.forward.z);
+                var spawnRotation = Quaternion.LookRotation(transform.forward);
+                var troop = Instantiate(troopPrefab, spawnPosition, spawnRotation);
+
                 troop.SetTroop(PlayerTeam.Player1);
+                StartCoroutine(troop.GetMovement().SpawnMovement(troop.transform, targetPosition));
                 yield return new WaitForSeconds(0.25f);
             }
 
@@ -139,22 +147,23 @@ namespace Troops
         {
             SetActive(buildingType == BuildingType.Troops);
         }
-        
+
         public void SetBuildingLink(Link myLink)
         {
             _myLinks.Add(myLink);
             var active = false;
             foreach (var l in _myLinks)
-            { 
-                if(l.LinkToActiveBuilding()) active = true;
+            {
+                if (l.LinkToActiveBuilding()) active = true;
             }
-            
-            if(!active) return;
+
+            if (!active) return;
             foreach (var l in _myLinks)
-            { 
+            {
                 l.SetAllLinkedBuildingsActive();
             }
         }
+
         public void RemoveLink(Link myLink)
         {
             _myLinks.Remove(myLink);
@@ -165,16 +174,19 @@ namespace Troops
         {
             _destroyPanel.gameObject.SetActive(state);
         }
-        
-        public List<Link> GetAllLinks()=> _myLinks;
+
+        public List<Link> GetAllLinks() => _myLinks;
+
         public void RemoveAllLinks()
         {
             foreach (var l in _myLinks)
             {
                 Destroy(l.gameObject);
             }
+
             _myLinks.Clear();
         }
+
         public void IncrementLevel()
         {
             level++;
@@ -210,7 +222,7 @@ namespace Troops
         {
             if (_buildingPanel != null) Destroy(_buildingPanel.gameObject);
         }
-        
+
         #region Visuals
 
         public void Highlight()
@@ -229,6 +241,7 @@ namespace Troops
                 r.material.SetFloat("_Highlite", 0);
             }
         }
+
         public void SetActive(bool active)
         {
             _active = active;
@@ -247,6 +260,7 @@ namespace Troops
             gfx.DOLocalMove(Vector3.zero, 0.2f);
             SetBuilding();
         }
+
         #endregion
     }
 

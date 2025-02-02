@@ -10,7 +10,8 @@ namespace Troops
     public class Movement : MonoBehaviour
     {
         [SerializeField] private Troop troop;
-        [SerializeField] private float speed = 6f;
+        [SerializeField] private float speed = 3f;
+        [SerializeField] private float spawnSpeed = 2f;
         private Rigidbody _rb;
 
 
@@ -27,7 +28,7 @@ namespace Troops
         private void Start()
         {
             _rb = troop.GetRigidbody();
-            StartCoroutine(BattleMovement());
+            // StartCoroutine(BattleMovement());
         }
 
         private IEnumerator BattleMovement()
@@ -56,6 +57,37 @@ namespace Troops
 
                 yield return new WaitForFixedUpdate();
             }
+        }
+
+        public IEnumerator SpawnMovement(Transform troopTransform, Vector3 targetPosition)
+        {
+            troop.GetAnimator().Move(true);
+            var direction = (targetPosition - troopTransform.position).normalized;
+            troopTransform.rotation = Quaternion.LookRotation(direction);
+
+            while (Vector3.Distance(troopTransform.position, targetPosition) > 0.1f)
+            {
+                troopTransform.position =
+                    Vector3.MoveTowards(troopTransform.position, targetPosition, spawnSpeed * Time.deltaTime);
+
+                direction = (targetPosition - troopTransform.position).normalized;
+                troopTransform.rotation = Quaternion.LookRotation(direction);
+
+                yield return null;
+            }
+
+            troopTransform.position = targetPosition;
+            troop.GetAnimator().Move(false);
+
+            var targetRotation = Quaternion.LookRotation(troopTransform.forward);
+            while (Quaternion.Angle(troopTransform.rotation, targetRotation) > 1f)
+            {
+                troopTransform.rotation =
+                    Quaternion.Slerp(troopTransform.rotation, targetRotation, Time.deltaTime * 5f);
+                yield return null;
+            }
+
+            troopTransform.rotation = targetRotation;
         }
     }
 }

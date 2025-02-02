@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level 1
   m_EditorClassIdentifier: 
   summonTime: 60
-  coinsPerTurn: 100
+  coinsPerTurn: 12
   coinsPerTurnWin: 1
   coinsPerTurnLoss: 3
   coinsPerMerge: 1
