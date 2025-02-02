@@ -104,6 +104,7 @@ namespace Players
                 {
                     var b = Instantiate(building.GetBuilding(), summonPos,summonRot , transform);
                     b.Set(team);
+                    b.transform.parent = Board.Instance.GetBoard(team);
                     _buildingsOnBoard.Add(b);
                     return true;
                 }

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using Players;
+using UI;
 using UnityEngine;
 
 
@@ -19,24 +21,30 @@ namespace Core
         public static PlayState PlayState;
         private PlayerTeam _playerTurn;
         private PlayerTeam _lastTurnWinner;
-        private int _currentTurn = 0;
-
+        
         private void Awake()
         {
             Instance = this;
             PlayState = PlayState.Summon;
         }
 
-        private IEnumerator Start()
+        private void Start()
         {
-            StartNewTurn();
-            yield return new WaitUntil(() => GameManager.State == GameState.Play);
+            CoinsManager.Instance.InitializeTurnCoins(_lastTurnWinner, true);
         }
 
-        private void StartNewTurn()
+        private void Update()
         {
-            _currentTurn++;
-            CoinsManager.Instance.InitializeTurnCoins(_lastTurnWinner, true);
+            if(Input.GetKeyDown(KeyCode.V)) EndBattle(PlayerTeam.Player1);
+        }
+
+        public void EndBattle(PlayerTeam team)
+        {
+            CoinsManager.Instance.InitializeTurnCoins(_lastTurnWinner, false);
+            PlayState = PlayState.Summon;
+            if (team == PlayerTeam.Player2) UIManager.Instance.playersHealth.PlayerTakesDamage();
+            else UIManager.Instance.playersHealth.EnemyTakesDamage();
+            UIManager.Instance.playPanel.SetPlayUI(PlayState);
         }
     }
 }

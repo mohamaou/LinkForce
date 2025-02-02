@@ -118,6 +118,12 @@ namespace UI
         }
     }
 
+    [Serializable]
+    public class BattlePanel
+    {
+        [SerializeField] private Slider player1Health, player2Health;
+    }
+
     [Serializable]  
     public class PlayPanel
     {
@@ -191,6 +197,7 @@ namespace UI
         public StartUI startUI;
         public PlayersHealth playersHealth;
         public PlayPanel playPanel;
+        public BattlePanel battlePanel;
         public BuildingUI BuildingPanel;
         public DestroyUI destroyPanelPrefab;
 

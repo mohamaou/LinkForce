@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Core;
 using DG.Tweening;
 using Players;
 using Troops;
@@ -16,7 +18,9 @@ namespace Models
         [SerializeField] private bool makeRocks;
         [SerializeField] private Transform[] player1BoardPoints, player2BoardPoints;
         [SerializeField] private GameObject[] rocks;
+        [SerializeField] private Transform player1Board, player2Board;
         private readonly List<Tile> _player1Tiles = new (), _player2Tiles = new ();
+        
 
         private void Awake()
         {
@@ -26,18 +30,24 @@ namespace Models
         private void Start()
         {
             SetTiles();
-            if (makeRocks)
+            SetRocks();
+            StartCoroutine(BoardMovement());
+        }
+
+        private void SetRocks()
+        {
+            if (!makeRocks) return;
+            foreach (var tile in GetRandomTiles(PlayerTeam.Player1))
             {
-                foreach (var tile in GetRandomTiles(PlayerTeam.Player1))
-                {
-                    var rock = Instantiate(rocks[Random.Range(0, rocks.Length)], tile.Position, Quaternion.identity);
-                    tile.SetRock(rock);
-                }
-                foreach (var tile in GetRandomTiles(PlayerTeam.Player2))
-                {
-                    var rock = Instantiate(rocks[Random.Range(0, rocks.Length)], tile.Position, Quaternion.identity);
-                    tile.SetRock(rock);
-                }
+                var rock = Instantiate(rocks[Random.Range(0, rocks.Length)], tile.Position, Quaternion.identity);
+                tile.SetRock(rock);
+                rock.transform.SetParent(player1Board);
+            }
+            foreach (var tile in GetRandomTiles(PlayerTeam.Player2))
+            {
+                var rock = Instantiate(rocks[Random.Range(0, rocks.Length)], tile.Position, Quaternion.identity);
+                tile.SetRock(rock);
+                rock.transform.SetParent(player2Board);
             }
         }
 
@@ -88,7 +98,6 @@ namespace Models
             return tile.Position;
         }
         
-
         public void BuildingMerged(Vector3 mergePosition, PlayerTeam team)
         { 
             var mergedTile = PositionToTile(position: mergePosition);
@@ -97,7 +106,24 @@ namespace Models
                 if(tile.HasRock()) tile.RemoveRock();
             }
         }
+
+        private IEnumerator BoardMovement()
+        {
+            yield return new WaitUntil(() => GameManager.State == GameState.Play);
+            while (GameManager.State == GameState.Play)
+            {
+                yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Battle);
+                player1Board.DOMove(Vector3.back * 4.2f, 0.4f);
+                player2Board.DOMove(Vector3.forward * 4.2f, 0.4f);
+                
+                yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Summon);
+                player1Board.DOMove(Vector3.zero,0.4f);
+                player2Board.DOMove(Vector3.zero,0.4f);
+                
+            }
+        }
         
+        public Transform GetBoard(PlayerTeam team) => team == PlayerTeam.Player1 ? player1Board : player2Board;
         
         #region Tiles
         private List<Tile> GetRandomTiles(PlayerTeam team)
@@ -241,7 +267,6 @@ namespace Models
             Gizmos.color = Color.black;
             Gizmos.DrawWireSphere(tile.Position, 0.5f); // Draw a wireframe around it for clarity
         }
-
 
         private class Tile
         {
