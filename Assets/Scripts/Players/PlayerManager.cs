@@ -226,14 +226,13 @@ namespace Players
 
                         var newLink = otherBuilding.CreateLink();
                         newLink.SetLink(team);
+                        newLink.SetLink(team);
 
                         newLink.SetBuildings(otherBuilding, target);
                         target.SetBuildingLink(newLink);
                         otherBuilding.SetBuildingLink(newLink);
 
-                        if(team== PlayerTeam.Player1) newLink.ShowLink(target.transform.position,otherBuilding.transform.position);
-                        if(team== PlayerTeam.Player2) newLink.ShowLink(otherBuilding.transform.position,target.transform.position);
-
+                        newLink.ShowLink(target.transform.position, otherBuilding.transform.position);
                         _myLinks.Remove(link);
                         _myLinks.Add(newLink);
                         Destroy(link.gameObject);

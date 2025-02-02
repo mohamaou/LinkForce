@@ -917,7 +917,7 @@ MonoBehaviour:
   rigidbody: {fileID: 4678055768351366049}
   healthBar: {fileID: 3877543675587846795}
   animation: {fileID: 9175649657181345889}
-  movement: {fileID: 0}
+  movement: {fileID: -2967651969467706275}
   enemiesLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -1166,7 +1166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   troop: {fileID: 8219518976704670539}
-  speed: 2
+  speed: 3
+  spawnSpeed: 2
 --- !u!1 &6030609721561603375
 GameObject:
   m_ObjectHideFlags: 0

@@ -249,6 +249,7 @@ namespace Troops
 
         #region Bublic Varialbles
         public TroopState GetTroopStat()=> _troopState;
+        public Movement GetMovement() => movement;
         public Troop GetClosestEnemy()
         {
             Troop closestTroop = null;

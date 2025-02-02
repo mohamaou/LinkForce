@@ -272,6 +272,12 @@ namespace Players
 
         private void SetDestroyEnabled()
         {
+            if (isDestroyEnabled)
+            {
+                SetDestroyDisabled();
+                return;
+            }
+            
             isDestroyEnabled = true;
             foreach (var building in BuildingsOnBoard)
             {
@@ -288,7 +294,7 @@ namespace Players
             foreach (var building in BuildingsOnBoard)
             {
                 building.RemoveHighlight();
-                building.SetDestroyRewardUI(true);
+                building.SetDestroyRewardUI(false);
             }
             StartCoroutine(SelectBuilding());
             StartCoroutine(CutLinks());
