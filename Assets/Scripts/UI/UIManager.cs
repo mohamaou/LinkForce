@@ -5,6 +5,7 @@ using Cards;
 using Core;
 using DG.Tweening;
 using MoreMountains.Feedbacks;
+using Players;
 using Start_UI;
 using TMPro;
 using UnityEngine;
@@ -138,11 +139,19 @@ namespace UI
         [SerializeField] private TextMeshProUGUI spaceErrorText;
         [SerializeField] public GameObject summonPanel, waitePanel, battlePanel, buildingsPanel;
         [SerializeField] public DOTweenAnimation CoinsParent;
+        [Header("Turn Result")]
+        [SerializeField] private TextMeshProUGUI resultText;
+        [SerializeField] private TextMeshProUGUI roundCountText;
+        [SerializeField] private Transform resultHolder;
+        
+        
         
         public void Start()
         {
             SetPlayUI(PlayState.Summon);
             spaceErrorText.gameObject.SetActive(false);
+            resultHolder.gameObject.SetActive(false);
+            
             if (PlayersProfiles.Instance == null) return;
             player1Name.text = PlayersProfiles.Instance.Player1Name;
             player2Name.text = PlayersProfiles.Instance.Player2Name;
@@ -192,6 +201,20 @@ namespace UI
                 case  PlayState.Wait: waitePanel.SetActive(true); break;
                 case  PlayState.Battle:  battlePanel.SetActive(true); break;
             }
+        }
+
+        public void ShowTurnResult(PlayerTeam winingPlayer, int turnCount)
+        {
+            roundCountText.text = $"Round {turnCount}";
+            resultText.text = winingPlayer == PlayerTeam.Player1? "Victory!" : "Defeat!";
+            resultText.color = winingPlayer == PlayerTeam.Player1 ? Color.green : Color.red;
+            resultHolder.gameObject.SetActive(true);
+            resultHolder.transform.localScale = Vector3.zero;
+            resultHolder.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack);
+            DOVirtual.DelayedCall(2f, () =>
+            {
+                resultHolder.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InBack);
+            },false);
         }
     }
 

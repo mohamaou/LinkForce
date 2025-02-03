@@ -1121,9 +1121,9 @@ MonoBehaviour:
     hideOriginalBody: 0
     changeAnimator: 1
     equipments:
-    - {fileID: 5687742652142747182}
+    - {fileID: 3393428098439580311}
     renderers:
-    - {fileID: 6191912644981678075}
+    - {fileID: 3753500221066029890}
     controller: {fileID: 9100000, guid: 5dc0b878bc2e91b43bb646b85cb37a8c, type: 2}
     player1Material: {fileID: 2100000, guid: 060181342022ebd4aa71cd06727204e2, type: 2}
     player2Material: {fileID: 2100000, guid: 993521beb359c09459e3249f0618fa8a, type: 2}

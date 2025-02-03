@@ -61,6 +61,7 @@ namespace Troops
                 }
                 else
                 {
+                    troop.GetAnimator().Move(false);
                     agent.isStopped = true;
                 }
                 

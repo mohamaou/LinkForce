@@ -36,7 +36,7 @@ namespace Troops
                 var r = rocket[0];
                 rocket.RemoveAt(0);
                 r.SetParent(null);
-                Destroy(r.gameObject,5f);
+                Destroy(r.gameObject,3f);
                 var t =Instantiate(trail, r);
                 t.transform.localPosition = _offset;
                 t.transform.localEulerAngles = _rotation;
