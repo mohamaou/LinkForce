@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using Core;
 using DG.Tweening;
@@ -8,6 +9,7 @@ using MoreMountains.Feedbacks;
 using Players;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Troops
 {
@@ -81,6 +83,7 @@ namespace Troops
             {
                 equipment.SetActive(show);
             }
+            if(shield != null) shield.gameObject.SetActive(show);
         }
         public bool ChangeAnimation() => changeAnimator;
         public bool HideOriginalBody() => hideOriginalBody;
@@ -161,7 +164,6 @@ namespace Troops
         public float GetAssassinHideTime() => _assassinHideTime;
         public float GetDamageIncrease() => _damageIncrease;
         public float GetHealthIncrease() => _healthIncrease;
-
         #endregion
         
 
@@ -204,9 +206,6 @@ namespace Troops
         private float _health, _damageIncrease, _maxHealth;
 
         
-        [Header("For Testing")] 
-        public PlayerTeam test;
-        public TroopType[] equipmentsTest;
 
 
         #region Editor Code
@@ -233,16 +232,6 @@ namespace Troops
             freezeEffect.SetActive(false);
             electrocutedEffect.SetActive(false);
             StartCoroutine(Fight());
-            
-            //This is Only For Testing
-            // if (test == PlayerTeam.Player1) Player.Instance.AddTroop(this);
-            // else Bot.Instance.AddTroop(this);
-            // SetTroop(test);
-            // foreach (var e in equipmentsTest)
-            // {
-            //     SetEquipment(e);
-            // }
-            GoToBattle();
         }
         public void SetDeathEvent(Action onDeath) => _onDeath += onDeath;
         #endregion
@@ -275,10 +264,10 @@ namespace Troops
         #endregion
         
         #region Building
-        public void SetTroop(PlayerTeam team)
+        public void SetTroop(PlayerTeam team, int level)
         {
             _team = team;
-            originalEquipment.SetData(0, team);
+            originalEquipment.SetData(level, team);
             foreach (var equipment in equipments)
             {
                 equipment.SetData(0,team);
@@ -286,37 +275,63 @@ namespace Troops
             transform.tag = team == PlayerTeam.Player1 ? "Player 1" : "Player 2";
             originalEquipment.SetVisualColors(team);
             animation.SetController(originalEquipment.GetController());
-            StartCoroutine(SetBuffs());
             _health += originalEquipment.GetHealth();
             _maxHealth = _health;
             healthBar.SetHealthBar(_health,team == PlayerTeam.Player1);
             TroopsFightingManager.Instance.AddTroop(this, team);
         }
-        public void SetEquipment(TroopType equipment)
+
+        public void GoToBuilding(Building building)
+        {
+            animation.Move(true);
+            var speed = 2f;
+            var distance = Vector3.Distance(transform.position, building.transform.position);
+            var duration = distance / speed;
+            var rotation = Quaternion.LookRotation(building.transform.position - transform.position);
+            transform.DORotate(rotation.eulerAngles, 0.2f);
+            transform.DOMove(building.transform.position, duration).OnComplete(() =>
+            {
+                SetEquipment(building.GetEquipmentType());
+                if (building.GetBuildingType() == BuildingType.Weapon && building.GetLinkedBuffBuilding().Count > 0)
+                { 
+                    animation.Move(true);
+                    var availableBuilding = building.GetLinkedBuffBuilding();
+                    var targetBuilding = availableBuilding[Random.Range(0, availableBuilding.Count)];
+                    GoToBuilding(targetBuilding);
+                }
+                else
+                { 
+                    GoToBattle();
+                }
+            });
+
+        }
+        private void SetEquipment(TroopType equipment)
         {
             foreach (var e in equipments)
             {
-                if (equipment == e.GetEquipmentType())
+                if (equipment != e.GetEquipmentType()) continue;
+                _equipmentsWeHave.Add(e);
+                e.SetVisualColors(team: _team);
+                if (e.ChangeAnimation()) animation.SetController(e.GetController());
+                e.ShowVisual(true);
+                if (e.HideOriginalBody()) originalEquipment.ShowVisual(false);
+                if (e.GetEquipmentType() == TroopType.Berserker)
                 {
-                    _equipmentsWeHave.Add(e);
-                    e.SetVisualColors(team: _team);
-                    if (e.ChangeAnimation()) animation.SetController(e.GetController());
-                    e.ShowVisual(true);
-                    if (e.HideOriginalBody()) originalEquipment.ShowVisual(false);
-                    if (e.GetEquipmentType() == TroopType.Berserker)
-                    {
-                        _damageIncrease = e.GetDamageIncrease();
-                        var increaseFactor = e.GetHealthIncrease() / 100f;
-                        _health += _health * increaseFactor;
-                        _maxHealth = _health;
-                        healthBar.SetHealthBar(_health,_team == PlayerTeam.Player1);
-                    }
+                    _damageIncrease = e.GetDamageIncrease();
+                    var increaseFactor = e.GetHealthIncrease() / 100f;
+                    _health += _health * increaseFactor;
+                    _maxHealth = _health;
+                    healthBar.SetHealthBar(_health,_team == PlayerTeam.Player1);
                 }
             }
         }
         public void GoToBattle()
         {
             _troopState = TroopState.Moving;
+            StartCoroutine(SetBuffs());
+            if(_team== PlayerTeam.Player1) Player.Instance.AddTroop(this);
+            if(_team == PlayerTeam.Player2) Bot.Instance.AddTroop(this);
         }
         #endregion
 
@@ -432,6 +447,7 @@ namespace Troops
         private void MeleeAttack(Equipment weapon)
         {
             var enemy = GetClosestEnemy();
+            if(enemy == null) return;
             if (Vector3.Distance(transform.position, enemy.transform.position) > weapon.GetRange()) return;
             var increaseFactor = _damageIncrease / 100f;
             var damageAmount = weapon.GetDamage().GetDamageAmount() * (1 + increaseFactor);
@@ -440,28 +456,38 @@ namespace Troops
 
         private void RangeAttack(Equipment weapon)
         {
+            var target = GetClosestEnemy();
+            if(target == null) return;
             var shootPoint = weapon.GetShootPoint();
             var projectile = Instantiate(weapon.GetProjectile(), shootPoint.position, shootPoint.rotation);
             
             var increaseFactor = _damageIncrease / 100f;
             var damageAmount = weapon.GetDamage().GetDamageAmount() * (1 + increaseFactor);
             
-            projectile.SetProjectile(GetClosestEnemy().transform.position + Vector3.up,
+            projectile.SetProjectile(target.transform.position + Vector3.up,
                 new Damage(damageAmount, weapon.GetDamage().GetDamageType()), _team);
         }
 
-        public void AOEAttack(Equipment equipment)
+        private void AOEAttack(Equipment equipment)
         {
-            foreach (var enemy in _team == PlayerTeam.Player1 ? Bot.Instance.GetTroops() : Player.Instance.GetTroops())
+            var enemies = _team == PlayerTeam.Player1 ? Bot.Instance.GetTroops() : Player.Instance.GetTroops();
+            var snapshot = enemies.ToList();
+    
+            foreach (var enemy in snapshot)
             {
-                if (Vector3.Distance(enemy.transform.position, transform.position) <= equipment.GetRange())
+                if (enemy == null) 
+                    continue;
+
+                float range = equipment.GetRange();
+                if (Vector3.Distance(enemy.transform.position, transform.position) <= range)
                 {
-                    var increaseFactor = _damageIncrease / 100f;
-                    var damageAmount = equipment.GetDamage().GetDamageAmount() * (1 + increaseFactor);
+                    float increaseFactor = _damageIncrease / 100f;
+                    float damageAmount = equipment.GetDamage().GetDamageAmount() * (1 + increaseFactor);
                     enemy.TakeDamage(new Damage(damageAmount, equipment.GetDamage().GetDamageType()));
                 }
             }
         }
+
 
         private float GetRange()
         {
@@ -575,7 +601,7 @@ namespace Troops
             }
         }
 
-        private void Death()
+        public void Death(bool animate = true)
         {
             if (_troopState == TroopState.Death) return;
             StopAllCoroutines();
@@ -586,16 +612,20 @@ namespace Troops
 
             }
             _onDeath?.Invoke();
-            deathFeedbacks?.PlayFeedbacks();
-            animation.Death();
-            // if(_team == PlayerTeam.Player1) Bot.Instance.RemoveEnemyTroop(this);
+            if (animate)
+            {
+                deathFeedbacks?.PlayFeedbacks(); 
+                animation.Death();
+                Invoke(nameof(HideBody), 2f);
+            }
+            else
+            {
+                transform.DOScale(Vector3.zero, 0.4f).SetEase(Ease.InBounce).OnComplete(()=> Destroy(gameObject));
+            }
             healthBar.gameObject.SetActive(false);
             GetComponent<Collider>().enabled = false;
-            // if (_team == PlayerTeam.Player2) Bot.Instance.RemoveTroop(this);
             _troopState = TroopState.Death;
             rigidbody.isKinematic = true;
-            GameManager.Instance.CheckIfGameEnds(_team);
-            Invoke(nameof(HideBody), 2f);
         }
         private void HideBody()
         {

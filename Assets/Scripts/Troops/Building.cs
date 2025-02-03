@@ -30,7 +30,7 @@ namespace Troops
         private Vector3 _localScale;
         [SerializeField] private Troop troopPrefab;
         [SerializeField] private BuildingType buildingType;
-        [SerializeField] private string id;
+        [SerializeField] private TroopType equipmentType;
         [SerializeField] private Link link;
         [SerializeField] private int numberOfTroops = 4;
         [SerializeField] private int level = 1;
@@ -44,7 +44,6 @@ namespace Troops
         private DestroyUI _destroyPanel;
 
         #region Public Variables
-
         public PlayerTeam GetTroopTeam() => _team;
         public Rigidbody GetTroopRigidbody() => GetComponent<Rigidbody>();
         public Renderer[] GetRenderers() => renderers;
@@ -53,7 +52,7 @@ namespace Troops
         public BuildingUI GetBuildingPanel() => _buildingPanel;
         public MMFeedbacks GetLandFeedback() => landFeedback;
         public List<Link> GetMyLinks() => _myLinks;
-        public string GetId() => id;
+        public TroopType GetEquipmentType() => equipmentType;
         public bool IsActive() => _active;
         public Sprite GetIcon() => icon;
         public int GetLevel() => level;
@@ -62,7 +61,16 @@ namespace Troops
         public int GetLinksToBuffs() => _linksToBuffs;
         public void IncrementLinksToBuffs() => _linksToBuffs++;
         public void DecrementLinksToBuffs() => _linksToBuffs--;
-
+        public List<Building> GetLinkedBuffBuilding()
+        {
+            var buildings = new List<Building>();
+            foreach (var l in _myLinks)
+            {
+                if(l.GetLinkedBuilding(this).GetBuildingType() == BuildingType.Buff) 
+                    buildings.Add(l.GetLinkedBuilding(this));
+            }
+            return buildings;
+        }
         #endregion
 
         public void Start()
@@ -97,8 +105,10 @@ namespace Troops
                 var spawnRotation = Quaternion.LookRotation(transform.forward);
                 var troop = Instantiate(troopPrefab, spawnPosition, spawnRotation);
 
-                troop.SetTroop(_team);
-                StartCoroutine(troop.GetMovement().SpawnMovement(troop.transform, targetPosition));
+                troop.SetTroop(_team,level);
+                if(_myLinks.Count > 0) troop.GoToBuilding(_myLinks[0].GetLinkedBuilding(this));
+                else troop.GoToBattle();
+                
                 yield return new WaitForSeconds(0.25f);
             }
 
@@ -271,6 +281,11 @@ namespace Troops
         }
 
         #endregion
+
+        public void TroopEntered(Troop troop)
+        {
+            
+        }
     }
 
 #if UNITY_EDITOR

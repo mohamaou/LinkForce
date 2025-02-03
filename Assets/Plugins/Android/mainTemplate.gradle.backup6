@@ -33,7 +33,6 @@ allprojects {
 }
 // Android Resolver Repos End
 apply plugin: 'com.android.library'
-apply from: '../shared/keepUnitySymbols.gradle'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:multidex:1.0.3'
@@ -58,9 +57,7 @@ dependencies {
 
 // Android Resolver Exclusions Start
 android {
-    namespace "com.unity3d.player"
-    ndkVersion "**NDKVERSION**"
-  packaging {
+  packagingOptions {
       exclude ('/lib/armeabi/*' + '*')
       exclude ('/lib/mips/*' + '*')
       exclude ('/lib/mips64/*' + '*')
@@ -71,13 +68,13 @@ android {
 // Android Resolver Exclusions End
 android {
     ndkPath "**NDKPATH**"
-    compileSdk **APIVERSION**
+    compileSdkVersion **APIVERSION**
     buildToolsVersion '**BUILDTOOLS**'
 
     defaultConfig {
         multiDexEnabled true
-        minSdk 19
-        targetSdk 29
+        minSdkVersion 19
+        targetSdkVersion 29
         versionCode **VERSIONCODE**
         versionName '**VERSIONNAME**'
         
@@ -88,15 +85,15 @@ android {
         javaMaxHeapSize "4g"
     }
 
-    lint {
+    lintOptions {
         abortOnError false
     }
 
-    packaging {
+    packagingOptions {
        exclude  'jsr305_annotations/Jsr305_annotations.gwt.xml'
     }
 
-    androidResources {
+    aaptOptions {
         noCompress '.unity3d', '.ress', '.resource', '.obb' + unityStreamingAssets.tokenize(', ')
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
     }

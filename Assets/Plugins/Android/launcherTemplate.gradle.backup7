@@ -1,15 +1,13 @@
 apply plugin: 'com.android.application'
-apply from: 'setupSymbols.gradle'
-apply from: '../shared/keepUnitySymbols.gradle'
 
 buildscript {    
-    repositories {        
-        jcenter()        
-        google()    
-    }    
-    dependencies {        
-        classpath 'com.android.tools.build:gradle:3.4.3'
-    }
+	repositories {        
+		jcenter()        
+		google()    
+	}    
+	dependencies {        
+		classpath 'com.android.tools.build:gradle:3.4.3'
+	}
 }
 
 dependencies {
@@ -17,12 +15,10 @@ dependencies {
     }
 
 android {
-    namespace "**NAMESPACE**"
-    ndkVersion "**NDKVERSION**"
     ndkPath "**NDKPATH**"
 
 
-    compileSdk **APIVERSION**
+    compileSdkVersion **APIVERSION**
     buildToolsVersion '**BUILDTOOLS**'
 
     compileOptions {
@@ -32,11 +28,10 @@ android {
 
     defaultConfig {
         multiDexEnabled true
-        minSdk **MINSDK**
-        targetSdk **TARGETSDK**
+        minSdkVersion **MINSDKVERSION**
+        targetSdkVersion **TARGETSDKVERSION**
         applicationId '**APPLICATIONID**'
         ndk {
-            debugSymbolLevel **DEBUGSYMBOLLEVEL**
             abiFilters **ABIFILTERS**
         }
         versionCode **VERSIONCODE**
@@ -44,12 +39,12 @@ android {
         resConfigs "en", "US"
     }
 
-    androidResources {
-    noCompress = **BUILTIN_NOCOMPRESS** + unityStreamingAssets.tokenize(', ')
+    aaptOptions {
+        noCompress = ['.unity3d', '.ress', '.resource', '.obb']+ unityStreamingAssets.tokenize(', ')
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
     }**SIGN**
 
-    lint {
+    lintOptions {
         abortOnError false
     }
 

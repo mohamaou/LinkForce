@@ -106,7 +106,7 @@ MonoBehaviour:
   player2: {fileID: 2100000, guid: 37429d5e8cc7d034e963ba1383049def, type: 2}
   troopPrefab: {fileID: 8219518976704670539, guid: 7da1b91bd44fc9342a1c3c2bbf2873d3, type: 3}
   buildingType: 0
-  id: Human
+  equipmentType: 13
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
   numberOfTroops: 4
   level: 1

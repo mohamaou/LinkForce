@@ -32,7 +32,6 @@ namespace Models
         {
             SetTiles();
             SetRocks();
-            StartCoroutine(BoardMovement());
         }
 
         private void SetRocks()
@@ -116,22 +115,22 @@ namespace Models
             }
         }
 
-        private IEnumerator BoardMovement()
+        public void BoardMovement(PlayState state, Action onFinished = null)
         {
-            yield return new WaitUntil(() => GameManager.State == GameState.Play);
-            while (GameManager.State == GameState.Play)
+            if (state == PlayState.Battle)
             {
-                yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Battle);
                 player1Board.DOMove(Vector3.back * 4.2f, 0.4f);
-                player2Board.DOMove(Vector3.forward * 4.2f, 0.4f);
+                player2Board.DOMove(Vector3.forward * 4.2f, 0.4f).OnComplete(()=>onFinished?.Invoke());
                 foreach (var rock in _rocks)
                 {
                     rock.transform.DOScale(Vector3.zero, 0.2f);
                 }
-                
-                yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Summon);
+            }
+
+            if (state == PlayState.Summon)
+            {
                 player1Board.DOMove(Vector3.zero,0.4f);
-                player2Board.DOMove(Vector3.zero,0.4f);
+                player2Board.DOMove(Vector3.zero,0.4f).OnComplete(()=>onFinished?.Invoke());
                 foreach (var rock in _rocks)
                 {
                     rock.transform.DOScale(Vector3.one, 0.2f);

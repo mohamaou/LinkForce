@@ -48,8 +48,12 @@ namespace Players
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space)) SummonButtonClicked();
-            if (Input.GetKeyDown(KeyCode.B)) GameManager.Instance.StartBattle();
+            if (Input.GetKeyDown(KeyCode.Alpha1)) SummonBuildingEditor(0);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) SummonBuildingEditor(1);
+            if (Input.GetKeyDown(KeyCode.Alpha3)) SummonBuildingEditor(2);
+            if (Input.GetKeyDown(KeyCode.Alpha4)) SummonBuildingEditor(3);
+            if (Input.GetKeyDown(KeyCode.Alpha5)) SummonBuildingEditor(4);
+            if (Input.GetKeyDown(KeyCode.Space)) GameManager.Instance.StartBattle();
 
             if (isDestroyEnabled)
             {
@@ -68,6 +72,17 @@ namespace Players
             }
 
             if (!SummonRandomBuilding()) UIManager.Instance.playPanel.ShowSpaceErrorText();
+            else CoinsManager.Instance.UseCoins(PlayerTeam.Player1);
+        }
+        private void SummonBuildingEditor(int index)
+        {
+            if (!CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player1))
+            {
+                UIManager.Instance.playPanel.ShowNotEnoughGoldEffect();
+                return;
+            }
+
+            if (!SummonBuilding(index)) UIManager.Instance.playPanel.ShowSpaceErrorText();
             else CoinsManager.Instance.UseCoins(PlayerTeam.Player1);
         }
 
@@ -326,6 +341,7 @@ namespace Players
             foreach (var r in renderers)
                 r.gameObject.SetActive(false);
 
+            Board.Instance.ClearTile(buildingToDestroy.transform.position);
             Destroy(buildingToDestroy.gameObject, 0.75f);
             UpdateBuildingsVisualAfterLinkCut();
             CoinsManager.Instance.AddDestroyReward(PlayerTeam.Player1);

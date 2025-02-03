@@ -17,7 +17,7 @@ MonoBehaviour:
   troopType: 3
   cardSprite: {fileID: 21300000, guid: c68d3ac2c9bbdfc4b9b5e5f931685c5a, type: 3}
   building: {fileID: 2832940480316813797, guid: 0d3ab1f883083ad4ab5d03a09b6f7450, type: 3}
-  defaultTroop: 1
+  defaultTroop: 0
   description: The rocket launcher fires a rocket at one enemy at a time.
   melee:
     damage: []

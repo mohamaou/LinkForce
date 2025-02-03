@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Core;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 namespace Troops
@@ -10,9 +11,9 @@ namespace Troops
     public class Movement : MonoBehaviour
     {
         [SerializeField] private Troop troop;
+        [SerializeField] private NavMeshAgent agent;
         [SerializeField] private float speed = 3f;
         [SerializeField] private float spawnSpeed = 2f;
-        private Rigidbody _rb;
 
 
         private void Reset()
@@ -22,13 +23,16 @@ namespace Troops
 
         private void Awake()
         {
-            troop.SetDeathEvent(() => { Destroy(this); });
+            troop.SetDeathEvent(() =>
+            {
+                Destroy(agent);
+                Destroy(this);
+            });
         }
 
         private void Start()
         {
-            _rb = troop.GetRigidbody();
-            // StartCoroutine(BattleMovement());
+             StartCoroutine(BattleMovement());
         }
 
         private IEnumerator BattleMovement()
@@ -40,54 +44,29 @@ namespace Troops
 
             while (troop.GetTroopStat() != TroopState.Death)
             {
-                if (troop.GetTroopStat() == TroopState.Moving)
+                if (troop.GetTroopStat() == TroopState.Moving && !troop.IsShocked())
                 {
+                    agent.isStopped = false;
                     var target = troop.GetClosestEnemy();
                     troop.GetAnimator().Move(target != null);
                     if (target != null && !troop.IsShocked())
                     {
-                        var direction = (target.transform.position - _rb.position).normalized;
-                        _rb.MovePosition(_rb.position + direction * ((troop.IsFreezed()? speed/2f:speed )* Time.fixedDeltaTime));
-
+                        agent.speed = troop.IsFreezed() ? speed / 2f : speed;
+                        var direction = (target.transform.position - transform.position).normalized;
+                        agent.SetDestination(target.transform.position);
                         var lookRotation = Quaternion.LookRotation(direction);
-                        _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, lookRotation,
+                        transform.rotation = (Quaternion.Slerp(transform.rotation, lookRotation,
                             rotationSpeed * Time.fixedDeltaTime));
                     }
                 }
-
+                else
+                {
+                    agent.isStopped = true;
+                }
+                
                 yield return new WaitForFixedUpdate();
             }
         }
-
-        public IEnumerator SpawnMovement(Transform troopTransform, Vector3 targetPosition)
-        {
-            troop.GetAnimator().Move(true);
-            var direction = (targetPosition - troopTransform.position).normalized;
-            troopTransform.rotation = Quaternion.LookRotation(direction);
-
-            while (Vector3.Distance(troopTransform.position, targetPosition) > 0.1f)
-            {
-                troopTransform.position =
-                    Vector3.MoveTowards(troopTransform.position, targetPosition, spawnSpeed * Time.deltaTime);
-
-                direction = (targetPosition - troopTransform.position).normalized;
-                troopTransform.rotation = Quaternion.LookRotation(direction);
-
-                yield return null;
-            }
-
-            troopTransform.position = targetPosition;
-            troop.GetAnimator().Move(false);
-
-            var targetRotation = Quaternion.LookRotation(troopTransform.forward);
-            while (Quaternion.Angle(troopTransform.rotation, targetRotation) > 1f)
-            {
-                troopTransform.rotation =
-                    Quaternion.Slerp(troopTransform.rotation, targetRotation, Time.deltaTime * 5f);
-                yield return null;
-            }
-
-            troopTransform.rotation = targetRotation;
-        }
+        
     }
 }

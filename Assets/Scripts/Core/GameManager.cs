@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Models;
 using Players;
 using Troops;
 using UI;
@@ -112,10 +113,15 @@ namespace Core
             TurnsManager.PlayState = PlayState.Wait;
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Wait);
             yield return new WaitUntil(() => Bot.Instance.IsReady());
+            bool done = false;
+            Board.Instance.BoardMovement(PlayState.Battle, () => done = true);
+            yield return new WaitUntil(() => done);
+            timeRemaining = currentLevel.summonTime;
             TurnsManager.PlayState = PlayState.Battle;
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Battle);
             TroopsFightingManager.Instance.BattleStart();
         }
+
         
         private void Keyboard()
         {
@@ -125,7 +131,6 @@ namespace Core
             if (Input.GetKeyDown(KeyCode.R)) Restart();
             if (Input.GetKeyDown(KeyCode.H)) SceneManager.LoadScene(0);
             if (Input.GetKeyDown(KeyCode.N)) GameEnd(GameResult.Win);
-            if(Input.GetKeyDown(KeyCode.G)) CheckIfGameEnds(PlayerTeam.Player2);
         }
   
         private void OnGUI()
@@ -177,20 +182,6 @@ namespace Core
         {
             if(team == PlayerTeam.Player1) _player1NotEnoughSpace = true;
             if(team == PlayerTeam.Player2) _player2NotEnoughSpace = true;
-        }
-        public void CheckIfGameEnds(PlayerTeam playerTeam)
-        {
-            var spaceAvailable = playerTeam == PlayerTeam.Player1? _player1NotEnoughSpace: _player2NotEnoughSpace;
-            if (!spaceAvailable) return;
-           // var troopsCount = playerTeam == PlayerTeam.Player1
-              //  ? Player.Instance.GetTroopsCount()
-              //  : Bot.Instance.GetTroopCount();
-           // if (troopsCount == 0)
-                GameEnd(playerTeam == PlayerTeam.Player1 ? GameResult.Lose : GameResult.Win, false, true);
-            //if (!Board.Instance.IsPathConnected() && _player1NotEnoughSpace && _player2NotEnoughSpace)
-            {
-                GameEnd(GameResult.Draw,false, true);
-            }
         }
 
         public void GameEnd(GameResult result, bool tutorial = false, bool deathMatch = false)

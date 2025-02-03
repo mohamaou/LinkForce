@@ -107,12 +107,11 @@ MonoBehaviour:
   player2: {fileID: 2100000, guid: 4051aaece45de3941a24b52fc4dfce68, type: 2}
   troopPrefab: {fileID: 2551166701284768134, guid: 3744091586b9dd74893cd7aee5d69b23, type: 3}
   buildingType: 0
-  id: Goblin
+  equipmentType: 15
   link: {fileID: 5732937013643219366, guid: 2765881636a3ab9428a26055235103a7, type: 3}
   numberOfTroops: 4
   level: 1
   icon: {fileID: 21300000, guid: ccb57f6ae619ed240a84b25b8e247ae7, type: 3}
-  _myLinks: []
   _linksToTroops: 0
   _linksToBuffs: 0
 --- !u!1001 &4438553736309730388

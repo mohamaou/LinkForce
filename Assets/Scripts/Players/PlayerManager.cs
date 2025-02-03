@@ -15,24 +15,26 @@ namespace Players
         Player1,
         Player2
     }
+
     public class PlayerManager : MonoBehaviour
     {
         [SerializeField] private BuildingCard[] buildingCards;
         [SerializeField] private PlayerTeam team;
-        private readonly List<BuildingCard> _selectedBuilding = new(); 
+        private readonly List<BuildingCard> _selectedBuilding = new();
         private readonly List<Building> _buildingsOnBoard = new();
-        private readonly List<Troop> _myTroops = new ();
+        private readonly List<Troop> _myTroops = new();
         private List<Link> _myLinks = new();
-        
-        
+
+
         protected void SetDeck()
         {
             if (team == PlayerTeam.Player1)
             {
                 foreach (var card in buildingCards)
                 {
-                    if(card.IsSelected()) _selectedBuilding.Add(card);
+                    if (card.IsSelected()) _selectedBuilding.Add(card);
                 }
+
                 UIManager.Instance.startUI.SetPlayer1Card(_selectedBuilding.ToArray());
             }
             else
@@ -69,61 +71,88 @@ namespace Players
                         _selectedBuilding.Add(buildingCards[randomIndex]);
                     }
                 }
+
                 UIManager.Instance.startUI.SetPlayer2Card(_selectedBuilding.ToArray());
             }
-            
         }
+
         protected List<BuildingCard> GetSelectedBuildingCards() => _selectedBuilding;
 
         #region public Variable
+
         public void AddTroop(Troop troop)
         {
             _myTroops.Add(troop);
-            troop.SetDeathEvent(()=>_myTroops.Remove(troop));
+            troop.SetDeathEvent(() => _myTroops.Remove(troop));
         }
+
         public List<Troop> GetTroops() => _myTroops;
         protected List<Building> BuildingsOnBoard => _buildingsOnBoard;
         protected List<Link> MyLinks() => _myLinks;
+
         #endregion
 
         #region Summon Building
+
         protected bool SummonRandomBuilding()
         {
             System.Random random = new System.Random();
             var selectedBuilding = _selectedBuilding.OrderBy(b => random.Next()).ToList();
             if (!TroopBuildingAvailable())
             {
-                var troopBuildingListList = _selectedBuilding.Where(b => b.GetBuildingType() == BuildingType.Troops).OrderBy(b=> random.Next()).ToList();
-                if(troopBuildingListList.Count > 0) selectedBuilding = troopBuildingListList;
+                var troopBuildingListList = _selectedBuilding.Where(b => b.GetBuildingType() == BuildingType.Troops)
+                    .OrderBy(b => random.Next()).ToList();
+                if (troopBuildingListList.Count > 0) selectedBuilding = troopBuildingListList;
             }
+
             foreach (var building in selectedBuilding)
             {
                 var summonPos = Board.Instance.GetRandomBoardPoint(team, building.GetBuildingType());
                 var summonRot = team == PlayerTeam.Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
                 if (summonPos != Vector3.zero)
                 {
-                    var b = Instantiate(building.GetBuilding(), summonPos,summonRot , transform);
+                    var b = Instantiate(building.GetBuilding(), summonPos, summonRot, transform);
                     b.Set(team);
                     b.transform.parent = Board.Instance.GetBoard(team);
                     _buildingsOnBoard.Add(b);
                     return true;
                 }
             }
+
             return false;
         }
-        
+
+        protected bool SummonBuilding(int index)
+        {
+            var building = _selectedBuilding[index];
+            var summonPos = Board.Instance.GetRandomBoardPoint(team, building.GetBuildingType());
+            var summonRot = team == PlayerTeam.Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
+            if (summonPos != Vector3.zero)
+            {
+                var b = Instantiate(building.GetBuilding(), summonPos, summonRot, transform);
+                b.Set(team);
+                b.transform.parent = Board.Instance.GetBoard(team);
+                _buildingsOnBoard.Add(b);
+                return true;
+            }
+            return false;
+        }
+
         private bool TroopBuildingAvailable()
         {
             foreach (var building in _buildingsOnBoard)
             {
-                if(building.GetBuildingType() == BuildingType.Troops) return true;
+                if (building.GetBuildingType() == BuildingType.Troops) return true;
             }
+
             return false;
         }
+
         #endregion
 
         #region Links Manage
-        protected  bool ValidateLink(Building building1, Building building2)
+
+        protected bool ValidateLink(Building building1, Building building2)
         {
             if (building1 == building2) return false;
             var type1 = building1.GetBuildingType();
@@ -165,7 +194,7 @@ namespace Players
             var level2 = building2.GetLevel();
 
             var sameType = type1 == type2;
-            var sameId = building1.GetId() == building2.GetId();
+            var sameId = building1.GetEquipmentType() == building2.GetEquipmentType();
             var sameLevel = level1 == level2;
 
             var canMerge = sameId && sameLevel && sameType;
@@ -193,7 +222,7 @@ namespace Players
                      targetBuilding.GetBuildingType() == BuildingType.Weapon)
                 targetBuilding.IncrementLinksToBuffs();
         }
-        
+
         protected void MergeBuildings(Building target, Building source, System.Action mergeDone)
         {
             source.transform.DOMove(target.transform.position, .3f).OnComplete(() =>
@@ -249,6 +278,7 @@ namespace Players
             });
             Board.Instance.ClearTile(source.transform.position);
         }
+
         #endregion
     }
 }
