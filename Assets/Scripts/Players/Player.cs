@@ -88,9 +88,9 @@ namespace Players
 
         private IEnumerator SelectBuilding()
         {
-            while (GameManager.State == GameState.Play && !isDestroyEnabled)
+            while (GameManager.State == GameState.Play)
             {
-                if (Input.GetMouseButtonDown(0) && TurnsManager.PlayState == PlayState.Summon)
+                if (Input.GetMouseButtonDown(0) && TurnsManager.PlayState == PlayState.Summon && !isDestroyEnabled)
                 {
                     var ray = _cam.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out var hit, buildingLayer))
@@ -153,9 +153,9 @@ namespace Players
 
         private IEnumerator CutLinks()
         {
-            while (GameManager.State == GameState.Play && !isDestroyEnabled)
+            while (GameManager.State == GameState.Play)
             {
-                if (TurnsManager.PlayState != PlayState.Summon)
+                if (TurnsManager.PlayState != PlayState.Summon || isDestroyEnabled)
                 {
                     yield return null;
                     continue;
@@ -311,8 +311,6 @@ namespace Players
                 building.RemoveHighlight();
                 building.SetDestroyRewardUI(false);
             }
-            StartCoroutine(SelectBuilding());
-            StartCoroutine(CutLinks());
         }
 
         private void DestroyBuilding()

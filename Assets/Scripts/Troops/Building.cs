@@ -33,10 +33,11 @@ namespace Troops
         [SerializeField] private TroopType equipmentType;
         [SerializeField] private Link link;
         [SerializeField] private int numberOfTroops = 4;
-        [SerializeField] private int level = 1;
         [SerializeField] private Sprite icon;
-        [SerializeField] private int _linksToTroops = 0;
-        [SerializeField] private int _linksToBuffs = 0;
+        
+        private int _linksToTroops = 0;
+        private int _linksToBuffs = 0;
+        private int _level = 1;
         private bool _active;
         private readonly List<Link> _myLinks = new();
         private bool _linkedToTroops;
@@ -55,7 +56,7 @@ namespace Troops
         public TroopType GetEquipmentType() => equipmentType;
         public bool IsActive() => _active;
         public Sprite GetIcon() => icon;
-        public int GetLevel() => level;
+        public int GetLevel() => _level;
         public int GetLinksCount() => _myLinks.Count;
         public int GetLinksToTroops() => _linksToTroops;
         public int GetLinksToBuffs() => _linksToBuffs;
@@ -80,7 +81,7 @@ namespace Troops
 
             var buildingUI = Instantiate(UIManager.Instance.BuildingPanel,
                 UIManager.Instance.playPanel.buildingsPanel.transform);
-            buildingUI.InitializePanel(icon, level, buildingType,
+            buildingUI.InitializePanel(icon, _level, buildingType,
                 _team);
             _buildingPanel = buildingUI;
             _buildingPanel.transform.position = screenPosition1;
@@ -105,7 +106,7 @@ namespace Troops
                 var spawnRotation = Quaternion.LookRotation(transform.forward);
                 var troop = Instantiate(troopPrefab, spawnPosition, spawnRotation);
 
-                troop.SetTroop(_team,level);
+                troop.SetTroop(_team,_level);
                 if(_myLinks.Count > 0) troop.GoToBuilding(_myLinks[0].GetLinkedBuilding(this));
                 else troop.GoToBattle();
                 
@@ -208,8 +209,9 @@ namespace Troops
 
         public void IncrementLevel()
         {
-            level++;
-            _buildingPanel.UpdateLevelNumber(level);
+            _level++;
+            if(_team == PlayerTeam.Player1) print(_level);
+            _buildingPanel.UpdateLevelNumber(_level);
         }
 
         public void IncrementLinksToTroops()
