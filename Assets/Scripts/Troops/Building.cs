@@ -34,7 +34,7 @@ namespace Troops
         [SerializeField] private Link link;
         [SerializeField] private int numberOfTroops = 4;
         [SerializeField] private Sprite icon;
-        
+
         private int _linksToTroops = 0;
         private int _linksToBuffs = 0;
         private int _level = 1;
@@ -45,6 +45,7 @@ namespace Troops
         private DestroyUI _destroyPanel;
 
         #region Public Variables
+
         public PlayerTeam GetTroopTeam() => _team;
         public Rigidbody GetTroopRigidbody() => GetComponent<Rigidbody>();
         public Renderer[] GetRenderers() => renderers;
@@ -62,16 +63,19 @@ namespace Troops
         public int GetLinksToBuffs() => _linksToBuffs;
         public void IncrementLinksToBuffs() => _linksToBuffs++;
         public void DecrementLinksToBuffs() => _linksToBuffs--;
+
         public List<Building> GetLinkedBuffBuilding()
         {
             var buildings = new List<Building>();
             foreach (var l in _myLinks)
             {
-                if(l.GetLinkedBuilding(this).GetBuildingType() == BuildingType.Buff) 
+                if (l.GetLinkedBuilding(this).GetBuildingType() == BuildingType.Buff)
                     buildings.Add(l.GetLinkedBuilding(this));
             }
+
             return buildings;
         }
+
         #endregion
 
         public void Start()
@@ -106,10 +110,10 @@ namespace Troops
                 var spawnRotation = Quaternion.LookRotation(transform.forward);
                 var troop = Instantiate(troopPrefab, spawnPosition, spawnRotation);
 
-                troop.SetTroop(_team,_level);
-                if(_myLinks.Count > 0) troop.GoToBuilding(_myLinks[0].GetLinkedBuilding(this));
+                troop.SetTroop(_team, _level);
+                if (_myLinks.Count > 0) troop.GoToBuilding(_myLinks[0].GetLinkedBuilding(this));
                 else troop.GoToBattle();
-                
+
                 yield return new WaitForSeconds(0.25f);
             }
 
@@ -125,7 +129,7 @@ namespace Troops
                 yield return null;
             }
         }
-        
+
         public void AssignComponents()
         {
             var r = GetComponentsInChildren<Renderer>();
@@ -210,16 +214,15 @@ namespace Troops
         public void IncrementLevel()
         {
             _level++;
-            if(_team == PlayerTeam.Player1) print(_level);
+            if (_team == PlayerTeam.Player1) print(_level);
             _buildingPanel.UpdateLevelNumber(_level);
         }
 
         public void IncrementLinksToTroops()
         {
-            if (_linksToTroops != 0)
-                _buildingPanel.AddLinkPoint(_team == PlayerTeam.Player1
-                    ? GameManager.Instance.player1Color
-                    : GameManager.Instance.player2Color);
+            if (_linksToTroops != 0 && _team == PlayerTeam.Player1)
+                _buildingPanel.AddLinkPoint(GameManager.Instance.player1Color);
+            
             _linksToTroops++;
         }
 
@@ -286,7 +289,6 @@ namespace Troops
 
         public void TroopEntered(Troop troop)
         {
-            
         }
     }
 

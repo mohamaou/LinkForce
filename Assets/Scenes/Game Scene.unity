@@ -682,11 +682,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 30403410}
   m_CullTransparentMesh: 1
---- !u!4 &52881118 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2346413483022922558, guid: 70f9d5070640e8448b4bf158b2fea8e1, type: 3}
-  m_PrefabInstance: {fileID: 1299297947}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &56279435
 GameObject:
   m_ObjectHideFlags: 0
@@ -5562,11 +5557,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534720350}
   m_CullTransparentMesh: 1
---- !u!4 &539837558 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6529560375404029750, guid: 70f9d5070640e8448b4bf158b2fea8e1, type: 3}
-  m_PrefabInstance: {fileID: 1299297947}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &545653009 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7523098683983054597, guid: 2f0461bbb914b034baf26a0c5d2485b4, type: 3}
@@ -9397,8 +9387,8 @@ MonoBehaviour:
     buildingsPanel: {fileID: 2000588280}
     CoinsParent: {fileID: 1501061639}
   battlePanel:
-    player1Health: {fileID: 1589617538}
-    player2Health: {fileID: 192248791}
+    player1Health: {fileID: 0}
+    player2Health: {fileID: 0}
   BuildingPanel: {fileID: 6282130088315262113, guid: f73bc186ab0ccf74abf285cdc645f40e, type: 3}
   destroyPanelPrefab: {fileID: 7181115213189211894, guid: d1ee1cd5fb4213148a4610e3af6d67e6, type: 3}
   startPanel: {fileID: 821670318}
@@ -20009,8 +19999,8 @@ MonoBehaviour:
   - {fileID: 1970956663519431388, guid: 38045a27ce43ab748befe6a955b1d9ee, type: 3}
   - {fileID: 6744753518473489123, guid: 38045a27ce43ab748befe6a955b1d9ee, type: 3}
   - {fileID: -1958018015711838136, guid: 38045a27ce43ab748befe6a955b1d9ee, type: 3}
-  player1Board: {fileID: 52881118}
-  player2Board: {fileID: 539837558}
+  player1Board: {fileID: 0}
+  player2Board: {fileID: 0}
 --- !u!1 &1817024019 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7173c28273105c6479a0d85cf99282a0, type: 3}
