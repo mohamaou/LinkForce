@@ -123,7 +123,6 @@ namespace Core
             bool done = false;
             Board.Instance.BoardMovement(PlayState.Battle, () => done = true);
             yield return new WaitUntil(() => done);
-            print("qqqq");
             timeRemaining = currentLevel.summonTime;
             TurnsManager.PlayState = PlayState.Battle;
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Battle);

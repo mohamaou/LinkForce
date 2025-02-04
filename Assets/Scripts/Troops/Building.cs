@@ -178,7 +178,10 @@ namespace Troops
             var active = false;
             foreach (var l in _myLinks)
             {
-                if (l.LinkToActiveBuilding()) active = true;
+                if (l.LinkToActiveBuilding() && !(l._building1.GetBuildingType() == BuildingType.Buff ||
+                                                  l._building1.GetBuildingType() == BuildingType.Weapon) &&
+                    !(l._building1.GetBuildingType() == BuildingType.Weapon ||
+                      l._building1.GetBuildingType() == BuildingType.Buff)) active = true;
             }
 
             if (!active) return;
@@ -192,8 +195,7 @@ namespace Troops
         {
             _myLinks.Remove(myLink);
         }
-
-
+        
         public void SetDestroyRewardUI(bool state)
         {
             _destroyPanel.gameObject.SetActive(state);

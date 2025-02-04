@@ -226,6 +226,8 @@ namespace Players
 
         protected void MergeBuildings(Building target, Building source, System.Action mergeDone)
         {
+            var isActive = source.IsActive() || target.IsActive();
+            print(isActive);
             source.transform.DOMove(target.transform.position, .3f).OnComplete(() =>
             {
                 target.RunGFX();
@@ -280,6 +282,7 @@ namespace Players
 
                     target.SetLinksToTroops(target.GetLinksToTroops() + source.GetLinksToTroops());
                     target.SetLinksToBuffs(target.GetLinksToBuffs() + source.GetLinksToBuffs());
+                    target.SetActive(isActive);
                 }
 
                 Board.Instance.BuildingMerged(target.transform.position, team);
