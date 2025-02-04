@@ -10,12 +10,12 @@ namespace UI
 
         private void Start()
         {
-            SetRefundText();
+            SetRefundText(CoinsManager.Instance.GetCoinsPerRefund());
         }
 
-        private void SetRefundText()
+        public void SetRefundText(int amount)
         {
-            refundText.text = "+" + CoinsManager.Instance.GetCoinsPerRefund();
+            refundText.text = "+" + amount;
         }
     }
 }

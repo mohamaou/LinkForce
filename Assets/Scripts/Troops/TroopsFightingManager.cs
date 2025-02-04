@@ -71,7 +71,7 @@ namespace Troops
             BattleEnds(_player2Troop.Count > 0 ? PlayerTeam.Player2 : PlayerTeam.Player1);
         }
         
-        private void BattleEnds(PlayerTeam winingPlayer)
+        public void BattleEnds(PlayerTeam winingPlayer)
         {
             Board.Instance.BoardMovement(PlayState.Summon);
             DOVirtual.DelayedCall(2f, () =>

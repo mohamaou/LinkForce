@@ -215,6 +215,7 @@ namespace Troops
         {
             _level++;
             _buildingPanel.UpdateLevelNumber(_level);
+            _destroyPanel.SetRefundText(CoinsManager.Instance.GetDestroyReward(_level));
         }
 
         public void IncrementLinksToTroops()

@@ -88,6 +88,7 @@ namespace Players
 
         public List<Troop> GetTroops() => _myTroops;
         protected List<Building> BuildingsOnBoard => _buildingsOnBoard;
+        public List<Building> GetBuildingsOnBoard => _buildingsOnBoard;
         protected List<Link> MyLinks() => _myLinks;
 
         #endregion
@@ -261,7 +262,17 @@ namespace Players
                         target.SetBuildingLink(newLink);
                         otherBuilding.SetBuildingLink(newLink);
 
-                        newLink.ShowLink(target.transform.position, otherBuilding.transform.position);
+                        var from = otherBuilding.transform.position;
+                        var to = target.transform.position;
+                        if (target.GetBuildingType() == BuildingType.Troops ||
+                            otherBuilding.GetBuildingType() == BuildingType.Buff)
+                        {
+                            from = target.transform.position;
+                            to = otherBuilding.transform.position;
+                        }
+
+                        newLink.ShowLink(from, to);
+                       
                         _myLinks.Remove(link);
                         _myLinks.Add(newLink);
                         Destroy(link.gameObject);

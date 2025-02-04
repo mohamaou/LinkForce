@@ -9200,7 +9200,7 @@ MonoBehaviour:
   player1Color: {r: 0, g: 0.53333336, b: 1, a: 1}
   player2Color: {r: 0.8773585, g: 0.053800307, b: 0.053800307, a: 1}
   fastGame: 0
-  showPlayerProfile: 0
+  showPlayerProfile: 1
 --- !u!4 &976142742
 Transform:
   m_ObjectHideFlags: 0
@@ -9526,8 +9526,8 @@ MonoBehaviour:
     roundCountText: {fileID: 1127031731}
     resultHolder: {fileID: 1175220662}
   battlePanel:
-    player1Health: {fileID: 0}
-    player2Health: {fileID: 0}
+    player1Health: {fileID: 1589617538}
+    player2Health: {fileID: 192248791}
   BuildingPanel: {fileID: 6282130088315262113, guid: f73bc186ab0ccf74abf285cdc645f40e, type: 3}
   destroyPanelPrefab: {fileID: 7181115213189211894, guid: d1ee1cd5fb4213148a4610e3af6d67e6, type: 3}
   startPanel: {fileID: 821670318}
@@ -17969,6 +17969,11 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!4 &1593077228 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2346413483022922558, guid: 70f9d5070640e8448b4bf158b2fea8e1, type: 3}
+  m_PrefabInstance: {fileID: 1299297947}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1605308022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20228,6 +20233,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee9b938bdd574a7480883394c76cad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1803814287 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6529560375404029750, guid: 70f9d5070640e8448b4bf158b2fea8e1, type: 3}
+  m_PrefabInstance: {fileID: 1299297947}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1804759054
 GameObject:
   m_ObjectHideFlags: 0
@@ -20352,8 +20362,8 @@ MonoBehaviour:
   - {fileID: 1970956663519431388, guid: 38045a27ce43ab748befe6a955b1d9ee, type: 3}
   - {fileID: 6744753518473489123, guid: 38045a27ce43ab748befe6a955b1d9ee, type: 3}
   - {fileID: -1958018015711838136, guid: 38045a27ce43ab748befe6a955b1d9ee, type: 3}
-  player1Board: {fileID: 0}
-  player2Board: {fileID: 0}
+  player1Board: {fileID: 1593077228}
+  player2Board: {fileID: 1803814287}
 --- !u!1 &1817024019 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7173c28273105c6479a0d85cf99282a0, type: 3}

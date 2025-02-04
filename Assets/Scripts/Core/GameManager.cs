@@ -104,7 +104,14 @@ namespace Core
 
         public void StartBattle()
         {
-            StartCoroutine(WaitForEnemy());
+            foreach (var b in Player.Instance.GetBuildingsOnBoard)
+                if (b.GetBuildingType() == BuildingType.Troops)
+                {
+                    StartCoroutine(WaitForEnemy());
+                    return;
+                }
+
+            TroopsFightingManager.Instance.BattleEnds(PlayerTeam.Player2);
         }
 
         private IEnumerator WaitForEnemy()
@@ -116,6 +123,7 @@ namespace Core
             bool done = false;
             Board.Instance.BoardMovement(PlayState.Battle, () => done = true);
             yield return new WaitUntil(() => done);
+            print("qqqq");
             timeRemaining = currentLevel.summonTime;
             TurnsManager.PlayState = PlayState.Battle;
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Battle);
