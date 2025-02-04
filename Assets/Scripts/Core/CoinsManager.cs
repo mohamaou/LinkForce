@@ -67,11 +67,16 @@ namespace Core
             if (team == PlayerTeam.Player2) _player2coins -= coinsPerSpawn;
         }
 
-        public void AddDestroyReward(PlayerTeam team)
+        public int GetDestroyReward(int level)
+        {
+            return coinsPerRefund * level;
+        }
+
+        public void AddDestroyReward(PlayerTeam team, int level)
         {
             if (team == PlayerTeam.Player1)
             {
-                _player1coins += coinsPerRefund;
+                _player1coins += GetDestroyReward(level);
                 UIManager.Instance.playPanel.UpdateAvailableCoins(_player1coins, !HasCoinsToSummon(PlayerTeam.Player1));
             }
 

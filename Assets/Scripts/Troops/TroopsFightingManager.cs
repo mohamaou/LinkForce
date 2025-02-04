@@ -48,6 +48,7 @@ namespace Troops
         private IEnumerator BattleState()
         {
             yield return new WaitUntil(() => _player1Troop.Count > 0 && _player2Troop.Count > 0);
+            print($"Player1: {_player1Troop.Count} / Player2: {_player2Troop.Count}");
             while ( _player1Troop.Count > 0  && _player2Troop.Count > 0)
             {
                 _player1Troop.RemoveAll(t => t == null);
@@ -71,7 +72,7 @@ namespace Troops
             BattleEnds(_player2Troop.Count > 0 ? PlayerTeam.Player2 : PlayerTeam.Player1);
         }
         
-        private void BattleEnds(PlayerTeam winingPlayer)
+        public void BattleEnds(PlayerTeam winingPlayer)
         {
             Board.Instance.BoardMovement(PlayState.Summon);
             DOVirtual.DelayedCall(2f, () =>

@@ -54,6 +54,7 @@ namespace Players
                     if(!CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player2) || summonsTry > 2) _ready = true;
                     yield return new WaitForSeconds(Random.Range(0.2f, .5f));
                 }
+
                 yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Battle);
             }
         }

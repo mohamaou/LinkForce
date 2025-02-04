@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -120,6 +119,10 @@ namespace Core
             TurnsManager.PlayState = PlayState.Battle;
             UIManager.Instance.playPanel.SetPlayUI(PlayState.Battle);
             TroopsFightingManager.Instance.BattleStart();
+            foreach (var b in Player.Instance.GetBuildingsOnBoard) 
+                if (b.GetBuildingType() == BuildingType.Troops) yield break;
+            yield return new WaitForSeconds(2f);
+            TroopsFightingManager.Instance.BattleEnds(PlayerTeam.Player2);
         }
 
         
@@ -165,19 +168,15 @@ namespace Core
             Rect fpsPosition = new Rect(Screen.width * 0.88f, Screen.height * 0.01f, Screen.width, Screen.height);
             GUI.Label(fpsPosition, fpsText, fpsStyle);
         }
-
-
         public void Restart()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-
         public void QuitGame()
         {
             Time.timeScale = 1;
             SceneManager.LoadScene(0);
         }
-
         public void NotEnoughSpace(PlayerTeam team)
         {
             if(team == PlayerTeam.Player1) _player1NotEnoughSpace = true;

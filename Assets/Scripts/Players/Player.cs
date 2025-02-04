@@ -94,9 +94,11 @@ namespace Players
                 {
                     var ray = _cam.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out var hit, buildingLayer))
-                        foreach (var building in BuildingsOnBoard)
-                            if (building.transform == hit.transform)
-                                yield return LinkBuildings(building);
+                        for (int i = 0; i < BuildingsOnBoard.Count(); i++)
+                        {
+                            if (BuildingsOnBoard[i] != null && BuildingsOnBoard[i].transform == hit.transform)
+                                yield return LinkBuildings(BuildingsOnBoard[i]);
+                        }
                 }
 
                 yield return null;
@@ -342,11 +344,10 @@ namespace Players
             Board.Instance.ClearTile(buildingToDestroy.transform.position);
             Destroy(buildingToDestroy.gameObject, 0.75f);
             UpdateBuildingsVisualAfterLinkCut();
-            CoinsManager.Instance.AddDestroyReward(PlayerTeam.Player1);
+            CoinsManager.Instance.AddDestroyReward(PlayerTeam.Player1, buildingToDestroy.GetLevel());
             SetDestroyDisabled();
         }
-
-
+        
         private void CheckCursorOverBuilding()
         {
             var ray = _cam.ScreenPointToRay(Input.mousePosition);

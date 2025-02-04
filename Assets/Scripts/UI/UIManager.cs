@@ -132,6 +132,7 @@ namespace UI
     [Serializable]  
     public class PlayPanel
     {
+        [SerializeField] private GameObject gameStartText;
         [SerializeField] private TextMeshProUGUI player1Name, player2Name;
         [SerializeField] private Image player1Image, player2Image;
         [SerializeField] private TextMeshProUGUI timerText, costToSummon, availableGold;
@@ -151,12 +152,27 @@ namespace UI
             SetPlayUI(PlayState.Summon);
             spaceErrorText.gameObject.SetActive(false);
             resultHolder.gameObject.SetActive(false);
+            gameStartText.SetActive(false);
             
             if (PlayersProfiles.Instance == null) return;
             player1Name.text = PlayersProfiles.Instance.Player1Name;
             player2Name.text = PlayersProfiles.Instance.Player2Name;
             player1Image.sprite = PlayersProfiles.Instance.Player1Sprite;
             player2Image.sprite = PlayersProfiles.Instance.Player2Sprite;
+        }
+
+        public void GameStart()
+        {
+            gameStartText.gameObject.SetActive(true);
+            gameStartText.transform.localScale = Vector3.zero;
+            gameStartText.transform.DOScale(Vector3.one, .4f).SetEase(Ease.OutBack);
+            DOVirtual.DelayedCall(1f, () =>
+            { 
+                gameStartText.transform.DOScale(Vector3.zero, .4f).SetEase(Ease.InBack).OnComplete(() =>
+                {
+                    gameStartText.gameObject.SetActive(false);
+                });
+            }, false);
         }
         
         public TextMeshProUGUI GetTimerText() => timerText;
@@ -255,6 +271,7 @@ namespace UI
             
             gameStartFeedback?.PlayFeedbacks();
             playPanel.Start();
+            playPanel.GameStart();
             startPanel.SetActive(false);
             playPanelObject.SetActive(true);
             GameManager.State = GameState.Play;
