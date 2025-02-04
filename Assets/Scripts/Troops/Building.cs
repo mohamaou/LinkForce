@@ -214,7 +214,6 @@ namespace Troops
         public void IncrementLevel()
         {
             _level++;
-            if (_team == PlayerTeam.Player1) print(_level);
             _buildingPanel.UpdateLevelNumber(_level);
         }
 

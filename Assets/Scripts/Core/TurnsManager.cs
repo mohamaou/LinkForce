@@ -4,6 +4,7 @@ using DG.Tweening;
 using Players;
 using Troops;
 using UI;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -22,6 +23,7 @@ namespace Core
         public static PlayState PlayState;
         private PlayerTeam _playerTurn;
         private PlayerTeam _lastTurnWinner;
+        private int _turnCount;
         
         private void Awake()
         {
@@ -34,17 +36,14 @@ namespace Core
             CoinsManager.Instance.InitializeTurnCoins(_lastTurnWinner, true);
         }
 
-        private void Update()
+        public void EndBattle(PlayerTeam winingPlayer)
         {
-            if(Input.GetKeyDown(KeyCode.V)) EndBattle(PlayerTeam.Player1);
-        }
-
-        public void EndBattle(PlayerTeam winingPLayer)
-        {
-            CoinsManager.Instance.InitializeTurnCoins(winingPLayer, false);
+            _turnCount++;
+            CoinsManager.Instance.InitializeTurnCoins(winingPlayer, false);
             PlayState = PlayState.Summon;
-            if (winingPLayer == PlayerTeam.Player2) UIManager.Instance.playersHealth.PlayerTakesDamage();
+            if (winingPlayer == PlayerTeam.Player2) UIManager.Instance.playersHealth.PlayerTakesDamage();
             else UIManager.Instance.playersHealth.EnemyTakesDamage();
+            UIManager.Instance.playPanel.ShowTurnResult(winingPlayer, _turnCount);
             UIManager.Instance.playPanel.SetPlayUI(PlayState);
         }
     }

@@ -71,9 +71,9 @@ namespace Troops
         #region Visuals
          public void SetVisualColors(PlayerTeam team)
         {
-            foreach (var r in renderers)
+            for (int i = 0; i < renderers.Length; i++)
             {
-                r.material = team == PlayerTeam.Player1 ? player1Material : player2Material;
+                if(renderers[i] != null) renderers[i].material = team == PlayerTeam.Player1 ? player1Material : player2Material;
             }
             if(id != TroopType.Ghost) SetBodyColor(Color.white);
         }
@@ -132,27 +132,48 @@ namespace Troops
         #endregion
 
         #region Stats
-        public void SetData(int level,PlayerTeam team)
+        public void SetData(int level,PlayerTeam team,TroopType equipmentType)
         {
+            if (equipmentType != id) return;
             _buildingType = buildingCard.GetBuildingType();
-            if (id == TroopType.Axe || id == TroopType.Bow || id == TroopType.Electric || id == TroopType.Goblin
-                || id == TroopType.Goblin || id == TroopType.Human || id == TroopType.Zombie || id == TroopType.Ice
-                || id == TroopType.Sword || id == TroopType.Skeleton || id == TroopType.Poison)
+            switch (equipmentType)
             {
-                _range = buildingCard.GetRange();
-                _damage = buildingCard.GetDamage(level);
-            }
-            if (shield != null) shield.SetShields(buildingCard.GetShieldsCount(level));
-            if (ghost != null) ghost.SetGhost(team, buildingCard.GetGhostDamage(level));
-            if (rocket != null) rocket.SetupRocket(team,buildingCard.GetRocketDamage(level));
-            if(buildingCard.GetTroopType() == TroopType.Assassin) _assassinHideTime = buildingCard.GetAssassinHideTime(level);
-            if (id == TroopType.Armor) _armor = buildingCard.GetArmorDamageNegation(level);
-            if (id == TroopType.Human || id == TroopType.Skeleton || id == TroopType.Goblin || id == TroopType.Zombie)
-                _health = buildingCard.GetHealth(level);
-            if (id == TroopType.Berserker)
-            {
-                _damageIncrease = buildingCard.GetBerserkerDamageIncrease(level);
-                _healthIncrease = buildingCard.GetBerserkerHealthIncrease(level);
+                case TroopType.Human:
+                case TroopType.Zombie:
+                case TroopType.Goblin:
+                case TroopType.Skeleton:
+                    _health = buildingCard.GetHealth(level);
+                    _range = buildingCard.GetRange();
+                    _damage = buildingCard.GetDamage(level);
+                    break;
+                case TroopType.Axe:
+                case TroopType.Bow:
+                case TroopType.Sword:
+                case TroopType.Electric:
+                case TroopType.Ice:
+                case TroopType.Poison:
+                    _range = buildingCard.GetRange();
+                    _damage = buildingCard.GetDamage(level);
+                    break;
+                case TroopType.Shield:
+                    shield.SetShields(buildingCard.GetShieldsCount(level));
+                    break;
+                case TroopType.Ghost:
+                    ghost.SetGhost(team, buildingCard.GetGhostDamage(level));
+                    break;
+                case TroopType.Rocket:
+                    rocket.SetupRocket(team,buildingCard.GetRocketDamage(level));
+                    break;
+                case TroopType.Assassin:
+                    _assassinHideTime = buildingCard.GetAssassinHideTime(level);
+                    break;
+                case TroopType.Armor:
+                    _armor = buildingCard.GetArmorDamageNegation(level);
+                    break;
+                case TroopType.Berserker:
+                    _damageIncrease = buildingCard.GetBerserkerDamageIncrease(level);
+                    _healthIncrease = buildingCard.GetBerserkerHealthIncrease(level);
+                    break;
             }
         }
 
@@ -267,11 +288,8 @@ namespace Troops
         public void SetTroop(PlayerTeam team, int level)
         {
             _team = team;
-            originalEquipment.SetData(level, team);
-            foreach (var equipment in equipments)
-            {
-                equipment.SetData(0,team);
-            }
+            var troopType =  originalEquipment.GetEquipmentType();
+            originalEquipment.SetData(level, team, troopType);
             transform.tag = team == PlayerTeam.Player1 ? "Player 1" : "Player 2";
             originalEquipment.SetVisualColors(team);
             animation.SetController(originalEquipment.GetController());
@@ -291,7 +309,7 @@ namespace Troops
             transform.DORotate(rotation.eulerAngles, 0.2f);
             transform.DOMove(building.transform.position, duration).OnComplete(() =>
             {
-                SetEquipment(building.GetEquipmentType());
+                SetEquipment(building.GetEquipmentType(), building.GetLevel());
                 if (building.GetBuildingType() == BuildingType.Weapon && building.GetLinkedBuffBuilding().Count > 0)
                 { 
                     animation.Move(true);
@@ -306,12 +324,13 @@ namespace Troops
             });
 
         }
-        private void SetEquipment(TroopType equipment)
+        private void SetEquipment(TroopType equipment,int level)
         {
             foreach (var e in equipments)
             {
                 if (equipment != e.GetEquipmentType()) continue;
-                _equipmentsWeHave.Add(e);
+                e.SetData(level, _team, equipment);
+                _equipmentsWeHave.Add(e); 
                 e.SetVisualColors(team: _team);
                 if (e.ChangeAnimation()) animation.SetController(e.GetController());
                 e.ShowVisual(true);

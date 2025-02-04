@@ -74,8 +74,10 @@ namespace Troops
         private void BattleEnds(PlayerTeam winingPlayer)
         {
             Board.Instance.BoardMovement(PlayState.Summon);
-            TurnsManager.Instance.EndBattle(winingPlayer);
-            _player1Health = _player2Health = 0;
+            DOVirtual.DelayedCall(2f, () =>
+            {
+                TurnsManager.Instance.EndBattle(winingPlayer);
+            });
             foreach (var troop in _player1Troop)
             {
                 troop.transform.DOScale(Vector3.zero, 0.4f ).SetEase(Ease.InBounce).OnComplete(()=> troop.Death(false));
@@ -86,6 +88,7 @@ namespace Troops
             }
             _player1Troop.Clear();
             _player2Troop.Clear();
+            _player1Health = _player2Health = 0;
             if (winingPlayer == PlayerTeam.Player1) _player1Wins++;
             if (winingPlayer == PlayerTeam.Player2) _player2Wins++;
             if(_player1Wins >= 4) GameManager.Instance.GameEnd(GameResult.Win);
