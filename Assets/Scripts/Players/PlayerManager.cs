@@ -18,6 +18,7 @@ namespace Players
 
     public class PlayerManager : MonoBehaviour
     {
+        [SerializeField] private bool randomDeck;
         [SerializeField] private BuildingCard[] buildingCards;
         [SerializeField] private PlayerTeam team;
         private List<BuildingCard> _selectedBuilding = new();
@@ -28,7 +29,7 @@ namespace Players
 
         protected void SetDeck()
         {
-            if (team == PlayerTeam.Player1)
+            if (team == PlayerTeam.Player1 && !randomDeck)
             {
                 foreach (var card in buildingCards)
                 {

@@ -24,15 +24,15 @@ MonoBehaviour:
     range: 0
   range:
     damage:
-    - damage: 30
+    - damage: 20
       damageType: 2
-    - damage: 66
+    - damage: 44
       damageType: 2
-    - damage: 145
+    - damage: 97
       damageType: 2
-    - damage: 319
+    - damage: 213
       damageType: 2
-    - damage: 702
+    - damage: 469
       damageType: 2
     range: 6
   berserker:

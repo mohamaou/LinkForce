@@ -36,9 +36,17 @@ namespace Core
             CoinsManager.Instance.InitializeTurnCoins(_lastTurnWinner, true);
         }
 
+        public void BattleStarted()
+        {
+            PlayState = PlayState.Battle;
+            UIManager.Instance.playPanel.SetPlayUI(PlayState.Battle);
+            TroopsFightingManager.Instance.BattleStart();
+            Time.timeScale = 1.5f;
+        }
         public void EndBattle(PlayerTeam winingPlayer)
         {
             _turnCount++;
+            Time.timeScale = 1f;
             CoinsManager.Instance.InitializeTurnCoins(winingPlayer, false);
             PlayState = PlayState.Summon;
             if (winingPlayer == PlayerTeam.Player2) UIManager.Instance.playersHealth.PlayerTakesDamage();

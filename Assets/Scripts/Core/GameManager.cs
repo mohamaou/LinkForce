@@ -117,9 +117,7 @@ namespace Core
             Board.Instance.BoardMovement(PlayState.Battle, () => done = true);
             yield return new WaitUntil(() => done);
             timeRemaining = currentLevel.summonTime;
-            TurnsManager.PlayState = PlayState.Battle;
-            UIManager.Instance.playPanel.SetPlayUI(PlayState.Battle);
-            TroopsFightingManager.Instance.BattleStart();
+            TurnsManager.Instance.BattleStarted();
             foreach (var b in Player.Instance.GetBuildingsOnBoard) 
                 if (b.GetBuildingType() == BuildingType.Troops) yield break;
             yield return new WaitForSeconds(2f);

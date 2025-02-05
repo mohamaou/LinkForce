@@ -44,11 +44,12 @@ namespace Troops
 
             while (troop.GetTroopStat() != TroopState.Death)
             {
+                troop.GetAnimator().Move(agent.velocity.magnitude > 0.1f);
                 if (troop.GetTroopStat() == TroopState.Moving && !troop.IsShocked())
                 {
                     agent.isStopped = false;
                     var target = troop.GetClosestEnemy();
-                    troop.GetAnimator().Move(target != null);
+                  //  troop.GetAnimator().Move(target != null);
                     if (target != null && !troop.IsShocked())
                     {
                         agent.speed = troop.IsFreezed() ? speed / 2f : speed;
@@ -61,7 +62,6 @@ namespace Troops
                 }
                 else
                 {
-                    troop.GetAnimator().Move(false);
                     agent.isStopped = true;
                 }
                 
