@@ -13,10 +13,12 @@ namespace Players
         private string _difficultyKey = "Difficulty";
         public static Bot Instance { get; private set; }
         private bool _ready;
+        private float _difficulty;
 
         private void Awake()
         {
             Instance = this;
+            _difficulty =  PlayerPrefs.GetFloat(_difficultyKey, 0);
         }
 
         private void Start()
@@ -29,6 +31,10 @@ namespace Players
 
 
         public bool IsReady() => _ready;
+        public float GetDifficulty()
+        {
+            return _difficulty;
+        }
 
 
         private IEnumerator AIPlay()
@@ -170,5 +176,11 @@ namespace Players
             }
         }
 
+        public void AdjustDifficulty(bool b)
+        {
+            _difficulty += b ? 0.2f : -0.2f;
+            _difficulty = Mathf.Clamp(_difficulty, 0f, 1f);
+            PlayerPrefs.SetFloat(_difficultyKey, _difficulty);
+        }
     }
 }

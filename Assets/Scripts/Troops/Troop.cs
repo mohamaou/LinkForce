@@ -20,7 +20,6 @@ namespace Troops
         Ice,
         Lightning
     }
-
     [Serializable]
     public struct Damage
     {
@@ -36,18 +35,15 @@ namespace Troops
         public float GetDamageAmount() => damage;
         public DamageType GetDamageType() => damageType;
     }
-
     public enum TroopState
     {
         Building, Idle, Attacking, Moving, Death
     }
-
     public enum TroopType
     {
         Assassin, Berserker, Ghost, Rocket, Armor, Shield, Axe,
         Bow, Electric, Ice, Poison, Sword, Zombie, Human, Skeleton, Goblin
     }
-
     [Serializable]
     public class Equipment
     {
@@ -199,6 +195,7 @@ namespace Troops
         public float GetDamageNegation() => _armor;
     }
 
+    
     public class Troop : MonoBehaviour
     {
         [SerializeField] private new Collider collider;
@@ -212,9 +209,8 @@ namespace Troops
         [Header("Equipment")] [SerializeField] private Equipment originalEquipment;
         [SerializeField] private Equipment[] equipments;
 
-        [Header("Damage Effects")] [SerializeField]
-        private GameObject electrocutedEffect;
-
+        [Header("Damage Effects")] 
+        [SerializeField] private GameObject electrocutedEffect;
         [SerializeField] private GameObject poisonedEffect, freezeEffect;
 
         private TroopState _troopState = TroopState.Idle;
@@ -227,8 +223,6 @@ namespace Troops
         private float _health, _damageIncrease, _maxHealth;
 
         
-
-
         #region Editor Code
         public void AssignComponents()
         {
@@ -550,8 +544,13 @@ namespace Troops
                     damage = new Damage(d, damage.GetDamageType());
                 }
             }
-
-            _health -= damage.GetDamageAmount();
+            var da = damage.GetDamageAmount();
+            var difficulty = Bot.Instance.GetDifficulty();
+            if (_team == PlayerTeam.Player1) da *= 1f + difficulty;
+            else da *= 1f - 0.5f * difficulty;
+            
+            
+            _health -= da;
             healthBar.TakeDamage(damage.GetDamageAmount());
             if (_health <= 0) Death();
             switch (damage.GetDamageType())
