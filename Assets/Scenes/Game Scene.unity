@@ -1752,7 +1752,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -5.630432, y: 86}
-  m_SizeDelta: {x: -11.260712, y: 101.8397}
+  m_SizeDelta: {x: -11.260712, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &192248791
 MonoBehaviour:
@@ -9240,6 +9240,7 @@ MonoBehaviour:
   player2Color: {r: 0.8773585, g: 0.053800307, b: 0.053800307, a: 1}
   fastGame: 0
   showPlayerProfile: 1
+  tutorialLevel: 0
 --- !u!4 &976142742
 Transform:
   m_ObjectHideFlags: 0
@@ -9546,6 +9547,7 @@ MonoBehaviour:
     deathColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
   playPanel:
     gameStartText: {fileID: 1392267538}
+    timerHolder: {fileID: 0}
     player1Name: {fileID: 279131899}
     player2Name: {fileID: 7773846255446262799}
     player1Image: {fileID: 231170005}
@@ -18033,7 +18035,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 7.630005, y: 86}
-  m_SizeDelta: {x: -7.2607117, y: 101.8397}
+  m_SizeDelta: {x: -7.2607117, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1589617538
 MonoBehaviour:

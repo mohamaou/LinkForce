@@ -71,7 +71,7 @@ namespace Players
             //Round 1
             SummonBuilding(0);
             yield return new WaitForSeconds(Random.Range(0.2f, 1.7f));
-            SummonBuilding(1);
+          
             yield return TryLinkBuildings();
             yield return TryToMerge();
             _ready = true;
@@ -80,6 +80,7 @@ namespace Players
             yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Summon);
             
             //Round2
+            SummonBuilding(1);
         }
 
         private IEnumerator TryLinkBuildings()

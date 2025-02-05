@@ -78,16 +78,24 @@ namespace Troops
             {
                 TurnsManager.Instance.EndBattle(winingPlayer);
             },false);
-            foreach (var troop in _player1Troop)
+            DOVirtual.DelayedCall(2f, () =>
             {
-                troop.transform.DOScale(Vector3.zero, 0.4f ).SetEase(Ease.InBounce).OnComplete(()=> troop.Death(false));
-            }
-            foreach (var troop in _player2Troop)
-            {
-                troop.transform.DOScale(Vector3.zero, 0.4f ).SetEase(Ease.InBounce).OnComplete(()=> troop.Death(false));
-            }
-            _player1Troop.Clear();
-            _player2Troop.Clear();
+                foreach (var troop in _player1Troop)
+                {
+                    troop.transform.DOScale(Vector3.zero, 0.4f).SetEase(Ease.InBounce)
+                        .OnComplete(() => troop.Death(false));
+                }
+
+                foreach (var troop in _player2Troop)
+                {
+                    troop.transform.DOScale(Vector3.zero, 0.4f).SetEase(Ease.InBounce)
+                        .OnComplete(() => troop.Death(false));
+                }
+
+                _player1Troop.Clear();
+                _player2Troop.Clear();
+            }, false);
+         
             _player1Health = _player2Health = 0;
             if (winingPlayer == PlayerTeam.Player1) _player1Wins++;
             if (winingPlayer == PlayerTeam.Player2) _player2Wins++;

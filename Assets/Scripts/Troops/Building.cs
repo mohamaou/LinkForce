@@ -106,7 +106,7 @@ namespace Troops
                 var targetX = i % 2 == 0 ? ((-i / 3f) - 0.2f) : ((i / 3f) + 0.2f);
                 var targetPosition = transform.position + new Vector3(targetX, 0f, transform.forward.z * 1.75f);
 
-                var spawnPosition = transform.position + new Vector3(0f, 0f, transform.forward.z);
+                var spawnPosition = gfx.position + new Vector3(0f, 0f, transform.forward.z);
                 var spawnRotation = Quaternion.LookRotation(transform.forward);
                 var troop = Instantiate(troopPrefab, spawnPosition, spawnRotation);
 
