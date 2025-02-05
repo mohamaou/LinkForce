@@ -91,8 +91,13 @@ namespace Troops
             _player1Health = _player2Health = 0;
             if (winingPlayer == PlayerTeam.Player1) _player1Wins++;
             if (winingPlayer == PlayerTeam.Player2) _player2Wins++;
-            if(_player1Wins >= 4) GameManager.Instance.GameEnd(GameResult.Win);
-            if (_player2Wins >= 4) GameManager.Instance.GameEnd(GameResult.Lose);
+            if(_player1Wins >= RoundsCount()) GameManager.Instance.GameEnd(GameResult.Win);
+            if (_player2Wins >= RoundsCount()) GameManager.Instance.GameEnd(GameResult.Lose);
+        }
+
+        private int RoundsCount()
+        {
+            return GameManager.Instance.tutorialLevel ? 3 : 4;
         }
     }
 }

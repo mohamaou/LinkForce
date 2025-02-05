@@ -61,11 +61,13 @@ namespace Core
             //Round 3
             yield return new WaitUntil(()=> TurnsManager.PlayState == PlayState.Summon);
             yield return SummonBuilding(3);
+            ShowHintText(3);
             yield return LinkBuilding(TroopType.Sword, TroopType.Armor);
+            ShowHintText(4);
             yield return MergeBuilding(TroopType.Human, TroopType.Human);
+            ShowHintText();
             yield return BattleButtonClicked();
-            
-            
+            mask.enabled = false;
         }
 
         private IEnumerator ButtonClicked()
@@ -86,11 +88,13 @@ namespace Core
                 .FirstOrDefault();
 
             var t = buildings.FirstOrDefault(b => b.GetEquipmentType() == target);
+            s.gameObject.layer = t.gameObject.layer = 9;
             hand.transform.position = _cam.WorldToScreenPoint(s.transform.position);
             hand.transform.DOKill();
             hand.transform.DOMove(_cam.WorldToScreenPoint(t.transform.position), 1f).SetLoops(-1, LoopType.Restart);
             yield return new WaitUntil(() => _buildingLinks);
             _buildingLinks = false;
+             s.gameObject.layer = t.gameObject.layer = 0;
             hand.gameObject.SetActive(false);
         }
         private IEnumerator MergeBuilding(TroopType source, TroopType target)
@@ -99,10 +103,12 @@ namespace Core
             var buildings = Player.Instance.GetBuildingsOnBoard;
             var s = buildings.LastOrDefault(b => b.GetEquipmentType() == source);
             var t = buildings.FirstOrDefault(b => b.GetEquipmentType() == target && b != s);
+            s.gameObject.layer = t.gameObject.layer = 9;
             hand.transform.position = _cam.WorldToScreenPoint(s.transform.position);
             hand.transform.DOKill();
             hand.transform.DOMove(_cam.WorldToScreenPoint(t.transform.position), 1f).SetLoops(-1, LoopType.Restart);
             yield return new WaitUntil(() => _buildingLinks);
+            s.gameObject.layer = t.gameObject.layer = 9;
             _buildingLinks = false;
             hand.gameObject.SetActive(false);
         }
@@ -121,7 +127,6 @@ namespace Core
             yield return new WaitUntil(() => buttonClicked);
             hand.gameObject.SetActive(false);
         }
-
         private IEnumerator SummonBuilding(int index)
         {
             hand.gameObject.SetActive(true);
@@ -130,8 +135,13 @@ namespace Core
             yield return ButtonClicked();
             Player.Instance.SummonBuildingEditor(index);
             hand.gameObject.SetActive(false);
+            foreach (var building in Player.Instance.GetBuildingsOnBoard)
+            {
+                building.gameObject.layer = 0;
+            }
         }
 
+        
         private void ScaleHand()
         {
             hand.transform.DOKill();
@@ -141,7 +151,6 @@ namespace Core
         {
             _buildingLinks = true;
         }
-
         private void ShowHintText(int index = 100)
         {
             for (int i = 0; i < hintsPanels.Length; i++)

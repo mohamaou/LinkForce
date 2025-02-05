@@ -93,12 +93,14 @@ namespace Players
                 if (Input.GetMouseButtonDown(0) && TurnsManager.PlayState == PlayState.Summon && !isDestroyEnabled)
                 {
                     var ray = _cam.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out var hit, buildingLayer))
+                    if (Physics.Raycast(ray, out var hit, float.MaxValue,buildingLayer))
+                    {
                         for (int i = 0; i < BuildingsOnBoard.Count(); i++)
                         {
                             if (BuildingsOnBoard[i] != null && BuildingsOnBoard[i].transform == hit.transform)
                                 yield return LinkBuildings(BuildingsOnBoard[i]);
                         }
+                    }
                 }
 
                 yield return null;
