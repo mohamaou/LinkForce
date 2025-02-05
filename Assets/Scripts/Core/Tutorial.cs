@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using System.Linq;
+using DG.Tweening;
 using Players;
 using Troops;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,21 +13,13 @@ namespace Core
 {
     public class Tutorial : MonoBehaviour
     {
-
         public static Tutorial Instance { get; private set; }
         [SerializeField] private Button hand;
         [SerializeField] private Image mask;
         [SerializeField] private GameObject[] hintsPanels;
-        [SerializeField] private Button endTurnButton;
-        private int _diceIndex;
-        private Transform _card;
         private Camera _cam;
-        private bool _cardSelected;
-        private Troop _troop;
-        private bool _diceSummoned;
-        private bool _secondSummon;
-        private bool _troopAttacked;
-        private System.Action _panelClosed;
+        private bool _buildingLinks;
+     
         
 
         private void Awake()
@@ -33,193 +28,126 @@ namespace Core
             _cam = Camera.main;
         }
 
-        public void CardSelected() => _cardSelected = true;
-        public void SetTroop(Troop troop) => _troop = troop;
-
-        public void TroopSelected(Troop troop)
-        {
-            _troop = troop;
-           // var tilePosition = Board.Instance.GetClosestAvailableEdgeTile(troop, 50).Position;
-            //hand.transform.position = _cam.WorldToScreenPoint(tilePosition);
-        }
-
-        public void DiceSummoned(Action closed)
-        {
-            _panelClosed += closed;
-            _diceSummoned = true;
-        }
-        public bool IsSecondSummoned() => _secondSummon;
-
-        public void SetAttackButton(EventTrigger button)
-        {
-            hand.onClick.RemoveAllListeners();
-            hand.onClick.AddListener(() =>
-            {
-                foreach (var entry in button.triggers)
-                    if (entry.eventID == EventTriggerType.PointerClick)
-                        entry.callback.Invoke(new BaseEventData(EventSystem.current));
-            });
-            hand.transform.position = button.transform.position;
-        }
-        public void SetAttackButton(Button button)
-        {
-            hand.onClick.RemoveAllListeners();
-            hand.transform.position = button.transform.position;
-            hand.onClick.AddListener(() => {
-            {
-                button.onClick.Invoke();
-                _troopAttacked = true;
-            } });
-            
-        }
-
         private IEnumerator Start()
         {
-            _diceIndex = 0;
-            mask.enabled = false;
             hand.gameObject.SetActive(false);
-            foreach (var panel in hintsPanels)
-            {
-                panel.SetActive(false);
-            }
+            yield return new WaitUntil(() => GameManager.State == GameState.Play);
+            yield return new WaitForSeconds(2);
 
-            // yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Battle); 
-            //
-            hintsPanels[0].SetActive(true);
-            yield return new WaitUntil(() => _cardSelected); 
+            //Summon First Building
+            ShowHintText(0);
+            yield return SummonBuilding(0);
+            yield return new WaitForSeconds(1);
+            //Summon Second Building
+            yield return SummonBuilding(1);
+            //Link The Tow Building Together
+            ShowHintText(1);
+            yield return LinkBuilding(TroopType.Human, TroopType.Sword);
+            yield return new WaitForSeconds(0.5f);
+            //Starr Battle
+            ShowHintText(2);
+            yield return BattleButtonClicked();
+            ShowHintText();
+
+            //Round 2
+            yield return new WaitUntil(()=> TurnsManager.PlayState == PlayState.Summon);
+            yield return SummonBuilding(2);
+            yield return SummonBuilding(0);
+            ShowHintText(1);
+            yield return LinkBuilding(TroopType.Human, TroopType.Bow);
+            ShowHintText();
+            yield return BattleButtonClicked();
+
+            //Round 3
+            yield return new WaitUntil(()=> TurnsManager.PlayState == PlayState.Summon);
+            yield return SummonBuilding(3);
+            yield return LinkBuilding(TroopType.Sword, TroopType.Armor);
+            yield return MergeBuilding(TroopType.Human, TroopType.Human);
+            yield return BattleButtonClicked();
             
-            _cardSelected = false;
-            hintsPanels[0].SetActive(false);
-            hand.gameObject.SetActive(true);
-            yield return new WaitUntil(() => _troop != null);
             
-            mask.enabled = true;
-            hand.gameObject.SetActive(true);
-            hand.transform.position = _cam.WorldToScreenPoint(_troop.transform.position);
-            var toopSelected = false;
-            hand.onClick.AddListener(() =>
-            {
-               // var targetTile = Board.Instance.GetTileFromMousePoint(true);
-              //  if (targetTile.GetTroop() != null)
-                { 
-                    toopSelected = true;
-                  //  targetTile.GetTroop().SelectMe();
-                }
-            });
-            yield return new WaitUntil(() => toopSelected && Input.GetMouseButtonUp(0));
-            
-            hand.onClick.RemoveAllListeners();
-            hand.gameObject.SetActive(false);
-            hintsPanels[1].SetActive(true);
-            yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
-            
-            var troopMoved = false;
-            hintsPanels[1].SetActive(false);
-            hand.gameObject.SetActive(true);
-            hand.onClick.RemoveAllListeners();
-            hand.onClick.AddListener(() =>
-            {
-               // Player.Instance.MoveTroopFromTutorial(() => troopMoved = true);
-            });
-            yield return new WaitUntil(()=>troopMoved);
-            
-            var turnEnds = false;
-            hand.onClick.RemoveAllListeners();
-            hintsPanels[2].SetActive(true);
-            hand.transform.position = endTurnButton.transform.position;
-            hand.onClick.AddListener(()=>
-            {
-                turnEnds = true;
-                endTurnButton.onClick?.Invoke();
-            });
-            yield return new WaitUntil(() => turnEnds);
-            
-            _diceSummoned = false;
-            mask.enabled = false;
-            hand.onClick.RemoveAllListeners();
-            hand.gameObject.SetActive(false);
-            hintsPanels[2].SetActive(false);
-            _secondSummon = true;
-            yield return new WaitUntil(() => _diceSummoned);
-            
-            hintsPanels[3].SetActive(true);
-            _diceSummoned = false;
-            yield return new WaitUntil(()=> Input.GetMouseButtonDown(0));
-            
-            hintsPanels[3].SetActive(false);
-            mask.enabled = true;
-            _panelClosed?.Invoke();
-            _panelClosed = null;
-            //yield return new WaitUntil(() => Player.Instance.GetTroopsCount() >= 2);
-            
-            toopSelected = false;
-           // var myTroops = Player.Instance.GetTroopsOnBoard().ToList();
-          //  var troop = myTroops.OrderByDescending(t => t.transform.position.z).FirstOrDefault();
-          //  hand.transform.position = _cam.WorldToScreenPoint(troop.transform.position);
-            hand.gameObject.SetActive(true);
-            hand.onClick.RemoveAllListeners();
-            hand.onClick.AddListener(() =>
-            {
-               // var targetTile = Board.Instance.GetTileFromMousePoint(true);
-               // if (targetTile.GetTroop() != null)
-                { 
-                    toopSelected = true;
-               //     targetTile.GetTroop().SelectMe();
-                }
-            });
-            yield return new WaitUntil(() => toopSelected);
-            
-            hand.gameObject.SetActive(false);
-            hintsPanels[4].SetActive(true);
-            yield return new WaitUntil(()=> Input.GetMouseButtonUp(0));
-            yield return new WaitUntil(()=> Input.GetMouseButtonDown(0));
-            
-            hintsPanels[4].SetActive(false);
-            hand.gameObject.SetActive(true);
-            //yield return new WaitUntil(() => _troopAttacked && Player.Instance.AllTroopsAvailable());
-            
-            hand.onClick.RemoveAllListeners();
-            hintsPanels[2].SetActive(true);
-            turnEnds = false;
-            hand.transform.position = endTurnButton.transform.position;
-            hand.onClick.AddListener(()=>
-            {
-                turnEnds = true;
-                endTurnButton.onClick?.Invoke();
-            });
-            yield return new WaitUntil(()=> turnEnds);
-            
-            hand.gameObject.SetActive(false);
-            hintsPanels[2].SetActive(false);
-           
-            
-            toopSelected = false;
-          //  myTroops = Player.Instance.GetTroopsOnBoard().ToList();
-          //  troop = myTroops.OrderByDescending(t => t.transform.position.z).FirstOrDefault();
-          //  hand.transform.position = _cam.WorldToScreenPoint(troop.transform.position);
-            hand.gameObject.SetActive(true);
-            hand.onClick.RemoveAllListeners();
-            hand.onClick.AddListener(() =>
-            {
-               // var targetTile = Board.Instance.GetTileFromMousePoint(true);
-               // if (targetTile.GetTroop() != null)
-                { 
-                    toopSelected = true;
-                 //   targetTile.GetTroop().SelectMe();
-                }
-            });
-            _troopAttacked = false;
-            yield return new WaitUntil(() => _troopAttacked);
-            
-            hand.gameObject.SetActive(false);
-            mask.enabled = false;
         }
-        
 
-       // public AbilityType[] GetDiceResults()
-       // {
-         //   _diceIndex++;
-         //   return diceResults[_diceIndex-1].diceResults;
-       // }
+        private IEnumerator ButtonClicked()
+        {
+            hand.gameObject.SetActive(true);
+            var buttonClicked = false;
+            hand.onClick.RemoveAllListeners();
+            hand.onClick.AddListener(() => { buttonClicked = true; });
+            yield return new WaitUntil(() => buttonClicked);
+        }
+        private IEnumerator LinkBuilding(TroopType source, TroopType target)
+        {
+            hand.gameObject.SetActive(true);
+            var buildings = Player.Instance.GetBuildingsOnBoard;
+            var s = buildings
+                .Where(b => b.GetEquipmentType() == source)
+                .OrderBy(b => b.GetAllLinks().Count)
+                .FirstOrDefault();
+
+            var t = buildings.FirstOrDefault(b => b.GetEquipmentType() == target);
+            hand.transform.position = _cam.WorldToScreenPoint(s.transform.position);
+            hand.transform.DOKill();
+            hand.transform.DOMove(_cam.WorldToScreenPoint(t.transform.position), 1f).SetLoops(-1, LoopType.Restart);
+            yield return new WaitUntil(() => _buildingLinks);
+            _buildingLinks = false;
+            hand.gameObject.SetActive(false);
+        }
+        private IEnumerator MergeBuilding(TroopType source, TroopType target)
+        {
+            hand.gameObject.SetActive(true);
+            var buildings = Player.Instance.GetBuildingsOnBoard;
+            var s = buildings.LastOrDefault(b => b.GetEquipmentType() == source);
+            var t = buildings.FirstOrDefault(b => b.GetEquipmentType() == target && b != s);
+            hand.transform.position = _cam.WorldToScreenPoint(s.transform.position);
+            hand.transform.DOKill();
+            hand.transform.DOMove(_cam.WorldToScreenPoint(t.transform.position), 1f).SetLoops(-1, LoopType.Restart);
+            yield return new WaitUntil(() => _buildingLinks);
+            _buildingLinks = false;
+            hand.gameObject.SetActive(false);
+        }
+        private IEnumerator BattleButtonClicked()
+        {
+            hand.gameObject.SetActive(true);
+            hand.transform.position = UIManager.Instance.playPanel.GetBattleButton().transform.position;
+            ScaleHand();
+            var buttonClicked = false;
+            hand.onClick.RemoveAllListeners();
+            hand.onClick.AddListener(() =>
+            {
+                UIManager.Instance.playPanel.GetBattleButton().onClick.Invoke();
+                buttonClicked = true;
+            });
+            yield return new WaitUntil(() => buttonClicked);
+            hand.gameObject.SetActive(false);
+        }
+
+        private IEnumerator SummonBuilding(int index)
+        {
+            hand.gameObject.SetActive(true);
+            hand.transform.position = UIManager.Instance.playPanel.GetSummonButton().transform.position;
+            ScaleHand();
+            yield return ButtonClicked();
+            Player.Instance.SummonBuildingEditor(index);
+            hand.gameObject.SetActive(false);
+        }
+
+        private void ScaleHand()
+        {
+            hand.transform.DOKill();
+            hand.transform.DOScale(Vector3.one  * 1.2f,.5f).SetLoops(-1, LoopType.Yoyo);
+        }
+        public void BuildingLinked()
+        {
+            _buildingLinks = true;
+        }
+
+        private void ShowHintText(int index = 100)
+        {
+            for (int i = 0; i < hintsPanels.Length; i++)
+            {
+                hintsPanels[i].SetActive(index == i);
+            }
+        }
     }
 }

@@ -51,8 +51,7 @@ namespace Core
         public static int Level;
         public List<Level> levels = new List<Level>();
         public Color player1Color, player2Color;
-        public bool fastGame, showPlayerProfile;
-        private float _timer;
+        public bool fastGame, showPlayerProfile, tutorialLevel;
         private float _fpsTimer = 0.0f;
         private int _fpsCount = 0;  
         private int _fpsDisplay = 0;
@@ -76,6 +75,7 @@ namespace Core
         {
             CoinsManager.Instance.Initialize(currentLevel);
             TinySauce.OnGameStarted(levelNumber:Level);
+            if(tutorialLevel) UIManager.Instance.playPanel.HideTimer();
         }
 
         private void Update()
@@ -86,6 +86,7 @@ namespace Core
 
         private void CountDown()
         {
+            if (tutorialLevel) return;
             if (timeRemaining <= 0)
             {
                 StartBattle();
@@ -135,39 +136,7 @@ namespace Core
             if (Input.GetKeyDown(KeyCode.H)) SceneManager.LoadScene(0);
             if (Input.GetKeyDown(KeyCode.N)) GameEnd(GameResult.Win);
         }
-  
-        private void OnGUI()
-        {
-            return;
-            // Timer Display
-            int totalSeconds = Mathf.FloorToInt(_timer);
-            int minutes = totalSeconds / 60;
-            int seconds = totalSeconds % 60;
-            string timeText = $"{minutes:D2}:{seconds:D2}";
-
-            GUIStyle timerStyle = new GUIStyle
-            {
-                fontSize = Mathf.RoundToInt(Screen.height * 0.03f), // 3% of screen height
-                normal = { textColor = Color.black }, // Blue text
-                fontStyle = FontStyle.Bold // Thick font
-            };
-
-            Rect timerPosition = new Rect(Screen.width * 0.01f, Screen.height * 0.01f, Screen.width, Screen.height);
-            GUI.Label(timerPosition, $"{timeText}", timerStyle);
-
-            // FPS Display
-            string fpsText = $"{_fpsDisplay}";
-
-            GUIStyle fpsStyle = new GUIStyle
-            {
-                fontSize = Mathf.RoundToInt(Screen.height * 0.03f), // 3% of screen height
-                normal = { textColor = Color.green }, // Green text
-                fontStyle = FontStyle.Bold // Thick font
-            };
-
-            Rect fpsPosition = new Rect(Screen.width * 0.88f, Screen.height * 0.01f, Screen.width, Screen.height);
-            GUI.Label(fpsPosition, fpsText, fpsStyle);
-        }
+        
         public void Restart()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

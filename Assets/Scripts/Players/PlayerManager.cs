@@ -79,18 +79,15 @@ namespace Players
         protected List<BuildingCard> GetSelectedBuildingCards() => _selectedBuilding;
 
         #region public Variable
-
         public void AddTroop(Troop troop)
         {
             _myTroops.Add(troop);
             troop.SetDeathEvent(() => _myTroops.Remove(troop));
         }
-
         public List<Troop> GetTroops() => _myTroops;
         protected List<Building> BuildingsOnBoard => _buildingsOnBoard;
         public List<Building> GetBuildingsOnBoard => _buildingsOnBoard;
         protected List<Link> MyLinks() => _myLinks;
-
         #endregion
 
         #region Summon Building
@@ -151,8 +148,7 @@ namespace Players
 
         #endregion
 
-        #region Links Manage
-
+        #region Links And Merge
         protected bool ValidateLink(Building building1, Building building2)
         {
             if (building1 == building2) return false;
@@ -183,7 +179,6 @@ namespace Players
             var canLink = !sameType && !noLinksToBuff && !troopsAlreadyLinked;
             return validTypes && canLink;
         }
-
         protected bool ValidateMerge(Building building1, Building building2)
         {
             if (building1 == null || building2 == null) return false;
@@ -201,13 +196,15 @@ namespace Players
             var canMerge = sameId && sameLevel && sameType;
             return canMerge;
         }
-
         protected void LinkBuildings(Building building, Building targetBuilding, Link link)
         {
             link.SetBuildings(building, targetBuilding);
             targetBuilding.SetBuildingLink(link);
             building.SetBuildingLink(link);
             _myLinks.Add(link);
+            
+            if (GameManager.Instance.tutorialLevel && team == PlayerTeam.Player1) 
+                Tutorial.Instance.BuildingLinked();
 
             // Increment Weapon to Troops links number
             if (building.GetBuildingType() == BuildingType.Weapon &&
@@ -223,9 +220,10 @@ namespace Players
                      targetBuilding.GetBuildingType() == BuildingType.Weapon)
                 targetBuilding.IncrementLinksToBuffs();
         }
-
         protected void MergeBuildings(Building target, Building source, System.Action mergeDone)
         {
+            if (GameManager.Instance.tutorialLevel && team == PlayerTeam.Player1) 
+                Tutorial.Instance.BuildingLinked();
             var isActive = source.IsActive() || target.IsActive();
             source.transform.DOMove(target.transform.position, .3f).OnComplete(() =>
             {
@@ -291,7 +289,6 @@ namespace Players
             });
             Board.Instance.ClearTile(source.transform.position);
         }
-
         #endregion
     }
 }

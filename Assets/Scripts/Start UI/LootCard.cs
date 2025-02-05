@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cards;
 using Core;
 using DG.Tweening;
@@ -51,11 +52,37 @@ namespace Start_UI
             return false;
         }
         
-        private BuildingCard GetRandomTroop() => towerCards[UnityEngine.Random.Range(0, towerCards.Length)];
-
-        public void SetReward(int rewardAmount, bool isGold)
+        private BuildingCard GetRandomTroop(bool firstTime)
         {
-            var tower = GetRandomTroop();
+            if (!firstTime) return towerCards[UnityEngine.Random.Range(0, towerCards.Length)];
+
+            var unavailableCards = new List<BuildingCard>();
+    
+            foreach (var card in towerCards)
+            {
+                if (!IsCardAvailable(card))
+                {
+                    unavailableCards.Add(card);
+                }
+            }
+
+            if (unavailableCards.Count > 0)
+            {
+                return unavailableCards[UnityEngine.Random.Range(0, unavailableCards.Count)];
+            }
+
+            return towerCards[UnityEngine.Random.Range(0, towerCards.Length)];
+        }
+
+
+        private bool IsCardAvailable(BuildingCard card)
+        {
+            return !card.IsLocked();
+        }
+
+        public void SetReward(int rewardAmount, bool isGold, int count)
+        {
+            var tower = GetRandomTroop(count == 1);
             goldImage.gameObject.SetActive(isGold);
             towerImage.gameObject.SetActive(!isGold);
             cardAmount.text = $"X{rewardAmount.ToShortString()}";

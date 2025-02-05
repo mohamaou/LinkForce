@@ -41,7 +41,7 @@ namespace Players
             UIManager.Instance.playPanel.GetSummonButton().onClick.AddListener(SummonButtonClicked);
             UIManager.Instance.playPanel.GetDestroyButton().onClick.AddListener(SetDestroyEnabled);
             StartCoroutine(SelectBuilding());
-            StartCoroutine(CutLinks());
+            if(!GameManager.Instance.tutorialLevel) StartCoroutine(CutLinks());
             var t = trail;
             trail = Instantiate(t, transform);
         }
@@ -74,7 +74,7 @@ namespace Players
             if (!SummonRandomBuilding()) UIManager.Instance.playPanel.ShowSpaceErrorText();
             else CoinsManager.Instance.UseCoins(PlayerTeam.Player1);
         }
-        private void SummonBuildingEditor(int index)
+        public void SummonBuildingEditor(int index)
         {
             if (!CoinsManager.Instance.HasCoinsToSummon(PlayerTeam.Player1))
             {

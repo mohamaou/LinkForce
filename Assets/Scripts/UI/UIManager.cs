@@ -132,7 +132,7 @@ namespace UI
     [Serializable]  
     public class PlayPanel
     {
-        [SerializeField] private GameObject gameStartText;
+        [SerializeField] private GameObject gameStartText, timerHolder;
         [SerializeField] private TextMeshProUGUI player1Name, player2Name;
         [SerializeField] private Image player1Image, player2Image;
         [SerializeField] private TextMeshProUGUI timerText, costToSummon, availableGold;
@@ -166,15 +166,15 @@ namespace UI
             gameStartText.gameObject.SetActive(true);
             gameStartText.transform.localScale = Vector3.zero;
             gameStartText.transform.DOScale(Vector3.one, .4f).SetEase(Ease.OutBack);
-            DOVirtual.DelayedCall(1f, () =>
-            { 
+            DOVirtual.DelayedCall(1f, () => { 
                 gameStartText.transform.DOScale(Vector3.zero, .4f).SetEase(Ease.InBack).OnComplete(() =>
                 {
                     gameStartText.gameObject.SetActive(false);
                 });
             }, false);
         }
-        
+
+        public void HideTimer() => timerHolder.gameObject.SetActive(false);
         public TextMeshProUGUI GetTimerText() => timerText;
         public TextMeshProUGUI GetAvailableGold() => availableGold;
         public Button GetSummonButton() => summonButton;

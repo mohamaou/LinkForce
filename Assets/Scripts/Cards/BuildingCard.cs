@@ -146,7 +146,11 @@ namespace Cards
         #endregion
 
         #region Card Level
-        public void SetCardChangedEvent(System.Action evento) => _onCardAddedEvent += evento;
+        public void SetCardChangedEvent(Action evento)
+        {
+            _onCardAddedEvent += evento;
+        }
+
         public int GetCardLevel()
         {
             var key = $"CardLevel_{name}";

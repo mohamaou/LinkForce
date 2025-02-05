@@ -23,7 +23,8 @@ namespace Players
         {
             SetDeck();
             UIManager.Instance.startUI.SetPlayer2Card(GetSelectedBuildingCards().ToArray());
-            StartCoroutine(AIPlay());
+            if(!GameManager.Instance.tutorialLevel)StartCoroutine(AIPlay());
+            else StartCoroutine(AITutorial());
         }
 
 
@@ -57,6 +58,28 @@ namespace Players
 
                 yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Battle);
             }
+        }
+
+        private IEnumerator AITutorial()
+        {
+            yield return new WaitUntil(() => GameManager.State == GameState.Play);
+
+            _ready = false;   
+            yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Summon);
+            yield return new WaitForSeconds(Random.Range(1.5f, 2f));
+
+            //Round 1
+            SummonBuilding(0);
+            yield return new WaitForSeconds(Random.Range(0.2f, 1.7f));
+            SummonBuilding(1);
+            yield return TryLinkBuildings();
+            yield return TryToMerge();
+            _ready = true;
+                
+            yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Battle);
+            yield return new WaitUntil(() => TurnsManager.PlayState == PlayState.Summon);
+            
+            //Round2
         }
 
         private IEnumerator TryLinkBuildings()

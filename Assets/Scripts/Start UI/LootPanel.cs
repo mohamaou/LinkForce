@@ -30,7 +30,7 @@ namespace Start_UI
         private List<LootCard> _lootCards = new List<LootCard>();
         private Transform _currentChest;
         private List<RewardLoot> _allRewards = new List<RewardLoot>();
-
+        private int cardCount;
         private void Awake()
         {
             Instance = this;
@@ -39,6 +39,7 @@ namespace Start_UI
 
         public IEnumerator CreateBox(List<RewardLoot> rewardLoots)
         {
+            cardCount = 0;
             lootPanel.SetActive(true);
             _currentChest = Instantiate(chest, chest.transform.position, chest.transform.rotation).transform;
             _currentChest.gameObject.SetActive(true);
@@ -67,7 +68,8 @@ namespace Start_UI
             var card = Instantiate(lootCard,transform);
             card.transform.position = chestRender.position;
             var reward = _allRewards[0];
-            card.SetReward(reward.Amount, reward.IsGold);
+            card.SetReward(reward.Amount, reward.IsGold, cardCount);
+            cardCount++;
             _allRewards.RemoveAt(0);
             _lootCards.Add(card);
             

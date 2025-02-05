@@ -53,12 +53,16 @@ namespace Start_UI
             useButton.onClick.AddListener(UseCard);
             buildingCard.SetCardChangedEvent(() =>
             {
+                if (this == null) return;
                 progressSliderText.text = $"{buildingCard.AvailableCard()} / {RequiredCardToLevelUp(buildingCard.GetCardLevel())}";
                 towerSlider.value = buildingCard.AvailableCard()/(float) RequiredCardToLevelUp(buildingCard.GetCardLevel());
                 var locked = buildingCard.IsLocked(); 
                 if(lockPanel!= null) lockPanel.SetActive(locked);
                 if(towerSlider!= null)towerSlider.gameObject.SetActive(!locked);
                 if(troopLevelText!= null) troopLevelText.gameObject.SetActive(!locked);
+                cardAvailable.SetActive(UpgradeAvailable());
+                cardNotAvailable.SetActive(!UpgradeAvailable());
+                towerSlider.gameObject.SetActive(true);
                 SetCardStats(buildingCard);
             });
             if (UpgradeAvailable())
@@ -84,7 +88,7 @@ namespace Start_UI
                 };
             }
         }
-
+        
         
         private void SetCardStats(BuildingCard towerCard)
         {
