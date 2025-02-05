@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Core;
 using DG.Tweening; // Make sure DOTween is installed and configured.
 
 namespace Troops
@@ -38,7 +39,7 @@ namespace Troops
             healthBar.value = _maxHealth;
 
             // Set fill color based on player/enemy
-            fillImage.color = _isPlayer ? Color.green : Color.red;
+            fillImage.color = _isPlayer ? GameManager.Instance.player1Color : GameManager.Instance.player2Color;
 
             // Hide images at initialization
             SetImagesVisible(false);

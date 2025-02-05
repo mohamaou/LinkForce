@@ -1751,7 +1751,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -5.630432, y: 86}
+  m_AnchoredPosition: {x: -5.630371, y: 86}
   m_SizeDelta: {x: -11.260712, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &192248791
@@ -6974,7 +6974,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.65999997, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &692239297
@@ -6997,7 +6997,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fc0e22511cfb086448d17d1dba4876ea, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 33bc53520cd9c0c42b1dc56736ef5507, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9238,7 +9238,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 07bc08b53d05dd649b4433f2f2e9a97a, type: 2}
   player1Color: {r: 0, g: 0.53333336, b: 1, a: 1}
   player2Color: {r: 0.8773585, g: 0.053800307, b: 0.053800307, a: 1}
-  fastGame: 0
+  fastGame: 1
   showPlayerProfile: 1
   tutorialLevel: 0
 --- !u!4 &976142742
@@ -18034,7 +18034,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 7.630005, y: 86}
+  m_AnchoredPosition: {x: 7.629883, y: 86}
   m_SizeDelta: {x: -7.2607117, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1589617538

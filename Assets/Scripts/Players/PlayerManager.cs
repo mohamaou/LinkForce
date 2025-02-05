@@ -20,8 +20,8 @@ namespace Players
     {
         [SerializeField] private BuildingCard[] buildingCards;
         [SerializeField] private PlayerTeam team;
-        private readonly List<BuildingCard> _selectedBuilding = new();
-        private readonly List<Building> _buildingsOnBoard = new();
+        private List<BuildingCard> _selectedBuilding = new();
+        private List<Building> _buildingsOnBoard = new();
         private readonly List<Troop> _myTroops = new();
         private List<Link> _myLinks = new();
 
@@ -41,6 +41,7 @@ namespace Players
             {
                 var selectedIndices = new HashSet<int>();
                 var troopBuildings = new List<int>();
+                var weaponBuildings = new List<int>();
 
                 for (int i = 0; i < buildingCards.Length; i++)
                 {
@@ -48,13 +49,29 @@ namespace Players
                     {
                         troopBuildings.Add(i);
                     }
+
+                    if (buildingCards[i].GetBuildingType() == BuildingType.Weapon)
+                    {
+                        weaponBuildings.Add(i);
+                    }
                 }
 
                 var requiredTroops = Mathf.Min(2, troopBuildings.Count);
+                var requiredWeapon = Mathf.Min(1, weaponBuildings.Count);
 
                 while (selectedIndices.Count < requiredTroops)
                 {
                     int randomTroopIndex = troopBuildings[Random.Range(0, troopBuildings.Count)];
+                    if (!selectedIndices.Contains(randomTroopIndex))
+                    {
+                        selectedIndices.Add(randomTroopIndex);
+                        _selectedBuilding.Add(buildingCards[randomTroopIndex]);
+                    }
+                }
+
+                if (selectedIndices.Count == 2)
+                {
+                    int randomTroopIndex = weaponBuildings[Random.Range(0, weaponBuildings.Count)];
                     if (!selectedIndices.Contains(randomTroopIndex))
                     {
                         selectedIndices.Add(randomTroopIndex);
@@ -96,11 +113,18 @@ namespace Players
         {
             System.Random random = new System.Random();
             var selectedBuilding = _selectedBuilding.OrderBy(b => random.Next()).ToList();
+            
             if (!TroopBuildingAvailable())
             {
                 var troopBuildingListList = _selectedBuilding.Where(b => b.GetBuildingType() == BuildingType.Troops)
                     .OrderBy(b => random.Next()).ToList();
                 if (troopBuildingListList.Count > 0) selectedBuilding = troopBuildingListList;
+            }
+            else if (!WeaponBuildingAvailable())
+            {
+                var weaponBuildingListList = _selectedBuilding.Where(b => b.GetBuildingType() == BuildingType.Weapon)
+                    .OrderBy(b => random.Next()).ToList();
+                if (weaponBuildingListList.Count > 0) selectedBuilding = weaponBuildingListList;
             }
 
             foreach (var building in selectedBuilding)
@@ -146,6 +170,16 @@ namespace Players
             return false;
         }
 
+        private bool WeaponBuildingAvailable()
+        {
+            foreach (var building in _buildingsOnBoard)
+            {
+                if (building.GetBuildingType() == BuildingType.Weapon) return true;
+            }
+
+            return false;
+        }
+        
         #endregion
 
         #region Links And Merge
