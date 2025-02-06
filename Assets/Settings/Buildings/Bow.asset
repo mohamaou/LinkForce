@@ -34,7 +34,7 @@ MonoBehaviour:
       damageType: 0
     - damage: 585
       damageType: 0
-    range: 6
+    range: 7
   berserker:
     damageIncreased: []
     healthIncreased: []

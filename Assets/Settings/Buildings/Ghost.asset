@@ -30,11 +30,11 @@ MonoBehaviour:
     healthIncreased: []
   ghost:
     ghostDamage:
-    - 15
-    - 33
-    - 73
-    - 161
-    - 354
+    - 10
+    - 22
+    - 48
+    - 106
+    - 233
     ghostRange: 8
   rocket:
     rocketDamage: []

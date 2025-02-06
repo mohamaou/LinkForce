@@ -283,7 +283,7 @@ namespace Troops
         {
             _team = team;
             var troopType =  originalEquipment.GetEquipmentType();
-            originalEquipment.SetData(level, team, troopType);
+            originalEquipment.SetData(level-1, team, troopType);
             transform.tag = team == PlayerTeam.Player1 ? "Player 1" : "Player 2";
             originalEquipment.SetVisualColors(team);
             animation.SetController(originalEquipment.GetController());
@@ -323,7 +323,7 @@ namespace Troops
             foreach (var e in equipments)
             {
                 if (equipment != e.GetEquipmentType()) continue;
-                e.SetData(level, _team, equipment);
+                e.SetData(level-1, _team, equipment);
                 _equipmentsWeHave.Add(e); 
                 e.SetVisualColors(team: _team);
                 if (e.ChangeAnimation()) animation.SetController(e.GetController());
@@ -546,12 +546,25 @@ namespace Troops
             }
             var da = damage.GetDamageAmount();
             var difficulty = Bot.Instance.GetDifficulty();
-            if (_team == PlayerTeam.Player1) da *= 1f + difficulty;
-            else da *= 1f - 0.5f * difficulty;
+            float p1Multiplier, p2Multiplier;
+
+            if (difficulty >= 0f)
+            {
+                p1Multiplier = 1f + difficulty;         
+                p2Multiplier = 1f - 0.5f * difficulty;  
+            }
+            else
+            {
+                float d = -difficulty; 
+                p1Multiplier = 1f - 0.5f * d;  
+                p2Multiplier = 1f + d;        
+            }
+            if (_team == PlayerTeam.Player1) da *= p1Multiplier;
+            else da *= p2Multiplier;
             
             
             _health -= da;
-            healthBar.TakeDamage(damage.GetDamageAmount());
+            healthBar.TakeDamage(da);
             if (_health <= 0) Death();
             switch (damage.GetDamageType())
             {

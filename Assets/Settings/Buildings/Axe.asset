@@ -21,11 +21,11 @@ MonoBehaviour:
   description: A melee weapon that attacks a large group of enemies
   melee:
     damage:
-    - 38
-    - 84
-    - 184
-    - 405
-    - 891
+    - 40
+    - 88
+    - 194
+    - 427
+    - 939
     range: 1.5
   range:
     damage: []

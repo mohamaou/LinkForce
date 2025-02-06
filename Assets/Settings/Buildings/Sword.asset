@@ -22,11 +22,11 @@ MonoBehaviour:
     balanced damage.
   melee:
     damage:
-    - 40
-    - 88
-    - 194
-    - 427
-    - 939
+    - 60
+    - 132
+    - 290
+    - 638
+    - 1404
     range: 1
   range:
     damage: []

@@ -31,9 +31,9 @@ MonoBehaviour:
       damageType: 3
     - damage: 121
       damageType: 3
-    - damage: 256
+    - damage: 266
       damageType: 3
-    - damage: 580
+    - damage: 585
       damageType: 3
     range: 6
   berserker:

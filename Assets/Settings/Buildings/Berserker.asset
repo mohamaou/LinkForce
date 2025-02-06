@@ -37,6 +37,7 @@ MonoBehaviour:
     - 7.5
     - 10
     - 15
+    - 20.9
   ghost:
     ghostDamage: []
     ghostRange: 0

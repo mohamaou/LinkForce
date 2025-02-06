@@ -89,7 +89,7 @@ namespace Troops
         
         private Troop Target()
         {
-            var enemies = FindObjectsOfType<Troop>();
+            var enemies = _team == PlayerTeam.Player1 ? Bot.Instance.GetTroops() : Player.Instance.GetTroops();
             Troop closestEnemy =null;
             var closetDistance = float.MaxValue;
             foreach (var enemy in enemies)

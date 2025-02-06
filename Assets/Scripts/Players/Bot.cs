@@ -178,8 +178,8 @@ namespace Players
 
         public void AdjustDifficulty(bool b)
         {
-            _difficulty += b ? 0.1f : -0.1f;
-            _difficulty = Mathf.Clamp(_difficulty, 0f, 1f);
+            _difficulty += b ? 0.05f : -0.05f;
+            _difficulty = Mathf.Clamp(_difficulty, -1f, 1f);
             PlayerPrefs.SetFloat(_difficultyKey, _difficulty);
         }
     }
